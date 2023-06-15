@@ -1,5 +1,6 @@
 #include "ircserv.hpp"
 #include "colours.hpp"
+#include "Server.hpp"
 
 /*	socket(), getsockopt(), bind(), listen(), accept(), recv()	*/
 # include <sys/types.h>
@@ -44,7 +45,8 @@ int	main(int argc, char **argv)
 	std::string	portStr = argv[1];//a checker
 	std::string	passwordStr = argv[2];
 
-	struct protoent		*proto = getprotobyname("tcp");
+	Server	server(atoi(portStr.c_str()));
+/*	struct protoent		*proto = getprotobyname("tcp");
 	if (proto == NULL)
 	{
 		errorMsg("Failed getprotobyname()");
@@ -52,7 +54,6 @@ int	main(int argc, char **argv)
 	}
 	
 	int	socketServer;
-	int	socketClient;
 
 	socketServer = socket(AF_INET, SOCK_STREAM, proto->p_proto);
 	if (socketServer == -1)
@@ -61,10 +62,11 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	else
-		std::cout << B_HI_GREEN << "Your server has be successfully created!" << RESET << std::endl;
+		std::cout << B_HI_GREEN << "Your server has been successfully created!" << RESET << std::endl;*/
 
+	int	socketClient;
 	int	reuse = 1;
-	int	sockopt = setsockopt(socketServer, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+	int	sockopt = setsockopt(server.getSocket(), SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
 	
 	if (sockopt == -1)
 	{
@@ -78,12 +80,12 @@ int	main(int argc, char **argv)
 	sinServer.sin_port = htons(atoi(portStr.c_str()));
 	sinServer.sin_addr.s_addr = INADDR_ANY;
 
-	if (bind(socketServer, reinterpret_cast<const struct sockaddr *>(&sinServer), sizeof(sinServer)) == -1)
+	if (bind(server.getSocket(), reinterpret_cast<const struct sockaddr *>(&sinServer), sizeof(sinServer)) == -1)
 	{
 		errorMsg("Failed bind()");
 		return (1);
 	}
-	else if (listen(socketServer, MAX_PENDING_CON) == -1)
+	else if (listen(server.getSocket(), MAX_PENDING_CON) == -1)
 	{
 		errorMsg("Failed listen()");
 		return (1);
@@ -96,7 +98,7 @@ int	main(int argc, char **argv)
 	sinClient.sin_port = htons(atoi(portStr.c_str()));
 	sinClient.sin_addr.s_addr = INADDR_ANY;
 
-	socketClient = accept(socketServer, reinterpret_cast<struct sockaddr *>(&sinClient), &sinClientLen);
+	socketClient = accept(server.getSocket(), reinterpret_cast<struct sockaddr *>(&sinClient), &sinClientLen);
 	if (socketClient == -1)
 	{
 		errorMsg("Failed accept()");
@@ -116,12 +118,12 @@ int	main(int argc, char **argv)
 		else if (howManyBitsRead == -1)
 		{
 			errorMsg("Failed recv()");
-			return (1);
+			break ;
 		}
 	}
 
 	std::cout << "Server is shutting down" << std::endl;
-	if (close(socketServer) == -1)
+	if (close(server.getSocket()) == -1)
 	{
 		errorMsg("Failed close(socketServer)");
 		return (1);
