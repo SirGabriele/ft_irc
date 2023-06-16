@@ -1,48 +1,48 @@
-#include "Server.hpp"
+#include "Client.hpp"
 
-Server::Server(void)
+Client::Client(void)
 {
 
 }
 
-Server::Server(int port): _port(port)
+Client::Client(int port): _port(port)
 {
 	this->_initSinValues();
 
 	this->_createSocket();
 
-	std::cout << B_HI_GREEN << "Your server has been successfully created" << RESET << std::endl;
+	std::cout << B_HI_GREEN << "Your client has been successfully created" << RESET << std::endl;
 
 	this->_setSockOptReuseAddr(); 
 	this->_bindSocket();
 	this->_listenSocket();
 }
 
-Server::Server(const Server &src)
+Client::Client(const Client &src)
 {
 	*this = src;
 }
 
-Server::~Server(void)
+Client::~Client(void)
 {
 	this->_closeSocket();
-	std::cout << "Server is shutting down" << std::endl;
+	std::cout << "Client is shutting down" << std::endl;
 }
 
-Server	&Server::operator=(const Server &src)
+Client	&Client::operator=(const Client &src)
 {
 	static_cast<void>(src);
 	return (*this);
 }
 
-void	Server::_initSinValues(void)
+void	Client::_initSinValues(void)
 {
 	this->_sin.sin_family = AF_INET;
 	this->_sin.sin_port = htons(this->_port);
 	this->_sin.sin_addr.s_addr = INADDR_ANY;
 }
 
-void	Server::_createSocket(void)
+void	Client::_createSocket(void)
 {
 	struct protoent	*proto = getprotobyname("tcp");
 
@@ -55,7 +55,7 @@ void	Server::_createSocket(void)
 		throw Error("Failed socket()");
 }
 
-void	Server::_setSockOptReuseAddr(void) const
+void	Client::_setSockOptReuseAddr(void) const
 {
 	int	reuse = 1;
 
@@ -66,7 +66,7 @@ void	Server::_setSockOptReuseAddr(void) const
 	}
 }
 
-void	Server::_bindSocket(void) const
+void	Client::_bindSocket(void) const
 {
 	if (bind(this->_socket, reinterpret_cast<const struct sockaddr *>(&this->_sin), sizeof(this->_sin)) == -1)
 	{
@@ -75,7 +75,7 @@ void	Server::_bindSocket(void) const
 	}
 }
 
-void	Server::_listenSocket(void) const
+void	Client::_listenSocket(void) const
 {
 	if (listen(this->_socket, MAX_PENDING_CON) == -1)
 	{
@@ -84,34 +84,29 @@ void	Server::_listenSocket(void) const
 	}
 }
 
-void	Server::_closeSocket(void) const
+void	Client::_closeSocket(void) const
 {
 	if (close(this->_socket) == -1)
-		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(server.socket)" << std::endl;
+		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(client.socket)" << std::endl;
 }
 
-/*int	Server::acceptCon(void)
-{
-	this->_allClients
-}*/
-
-int	Server::getSocket(void) const
+int	Client::getSocket(void) const
 {
 	return (this->_socket);
 }
 
 	/*	START OF EXCEPTIONS	*/
-Server::Error::Error(const std::string &str) throw(): _errMsg(str)
+Client::Error::Error(const std::string &str) throw(): _errMsg(str)
 {
 
 }
 
-Server::Error::~Error(void) throw()
+Client::Error::~Error(void) throw()
 {
 
 }
 
-const char	*Server::Error::what(void) const throw()
+const char	*Client::Error::what(void) const throw()
 {
 	return (this->_errMsg.c_str());
 }

@@ -7,26 +7,15 @@
 /*	getprotobyname()	*/
 # include <netdb.h>
 
-/*	htons()	*/
-# include <arpa/inet.h>
-
-/*	socket(), getsockopt(), bind(), listen(), accept()	*/
-# include <sys/types.h>
-# include <sys/socket.h>
-
 /*	close()	*/
 # include <unistd.h>
 
 # include <iostream>
 # include <string>
-# include <vector>
 
 # include "colours.hpp"
-//# include "Client.hpp"
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
-
-//class	Client;
 
 class	Server
 {
@@ -34,7 +23,6 @@ class	Server
 		Server(int);
 		~Server(void);
 
-//		int	acceptCon(void);
 		int getSocket(void) const;
 	
 	private:
@@ -50,7 +38,6 @@ class	Server
 		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
 
-//		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;
 		int					_socket;
 		int					_port;

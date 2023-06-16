@@ -6,7 +6,7 @@
 #    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/15 19:05:26 by kbrousse         ###   ########.fr        #
+#    Updated: 2023/06/16 17:31:22 by kbrousse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,7 @@ NAME =	ircserv
 SRCS =	main.cpp	\
 		Server.cpp
 
-HEADERS =	headers/ircserv.hpp	\
-			headers/colours.hpp	\
+HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp
 
 INCLUDE_FOLDER = -I headers/

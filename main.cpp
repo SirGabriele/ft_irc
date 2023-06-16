@@ -1,35 +1,23 @@
-#include "ircserv.hpp"
-#include "colours.hpp"
 #include "Server.hpp"
-
-/*	socket(), getsockopt(), bind(), listen(), accept(), recv()	*/
-# include <sys/types.h>
-# include <sys/socket.h>
-
-/*	struct sockaddr_in	*/
-#include <netinet/in.h>
-
-/*	getprotobyname()	*/
-# include <netdb.h>
-
-/*	htons()	*/
-#include <arpa/inet.h>
 
 /*	atoi()	*/
 #include <cstdlib>
 
-/*	close(), read()	*/
-#include <unistd.h>
-
-/*	std::strerror()	*/
-#include <cstring>
-
-/*	errno	*/
-#include <cerrno>
-
-static void	errorMsg(const std::string &msg)
+int	isPortValid(std::string &portStr)
 {
-	std::cerr << B_HI_RED << "Error:\n" << RESET << msg << ": " << std::strerror(errno) << std::endl;
+	if (portStr.length() > 5)
+		return (-1);
+	for (std::string::size_type i = 0; i < portStr.length(); i++)
+	{
+		if (isdigit(portStr[i]) == 0)
+			return (-1);
+	}
+
+	int	portInt = atoi(portStr.c_str());
+
+	if (portInt > 65535)
+		return (-1);
+	return (portInt);
 }
 
 int	main(int argc, char **argv)
@@ -37,60 +25,32 @@ int	main(int argc, char **argv)
 	if (argc != 3)
 	{
 		std::cerr << B_HI_RED << "Error:\n" << RESET
-				<< "Correct usage is <./ircserv> <port between 1024 and 65535> <password>"
+				<< "Correct usage is <./ircserv> <port> <password>"
 				<< std::endl;
 		return (1);
 	}
 
-	std::string	portStr = argv[1];//a checker
-	std::string	passwordStr = argv[2];
+	std::string	portStr = argv[1];
+	std::string	passwordStr = argv[2];	//----------------------------------------a verifier?
+	int	portInt = isPortValid(portStr);
 
-	Server	server(atoi(portStr.c_str()));
-/*	struct protoent		*proto = getprotobyname("tcp");
-	if (proto == NULL)
+	if (portInt < 1024)
 	{
-		errorMsg("Failed getprotobyname()");
-		return (1);
-	}
-	
-	int	socketServer;
-
-	socketServer = socket(AF_INET, SOCK_STREAM, proto->p_proto);
-	if (socketServer == -1)
-	{
-		errorMsg("Failed socket()");
-		return (1);
-	}
-	else
-		std::cout << B_HI_GREEN << "Your server has been successfully created!" << RESET << std::endl;*/
-
-	int	socketClient;
-	int	reuse = 1;
-	int	sockopt = setsockopt(server.getSocket(), SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
-	
-	if (sockopt == -1)
-	{
-		errorMsg("Failed getsockopt()");
+		std::cerr << B_HI_RED << "Error:\n" << RESET << "<port> must be an numeric value between 1024 and 65535" << std::endl;
 		return (1);
 	}
 
-	struct sockaddr_in	sinServer;
-
-	sinServer.sin_family = AF_INET;
-	sinServer.sin_port = htons(atoi(portStr.c_str()));
-	sinServer.sin_addr.s_addr = INADDR_ANY;
-
-	if (bind(server.getSocket(), reinterpret_cast<const struct sockaddr *>(&sinServer), sizeof(sinServer)) == -1)
+	try
 	{
-		errorMsg("Failed bind()");
-		return (1);
+		Server	server(portInt);
 	}
-	else if (listen(server.getSocket(), MAX_PENDING_CON) == -1)
+	catch (std::exception &exception)
 	{
-		errorMsg("Failed listen()");
+		std::cerr << exception.what() << std::endl;
 		return (1);
 	}
 
+/*	
 	struct sockaddr_in	sinClient;
 	unsigned int		sinClientLen = sizeof(sinClient);
 	
@@ -133,5 +93,6 @@ int	main(int argc, char **argv)
 		errorMsg("Failed closed(socketClient)");
 		return (1);
 	}
+*/
 	return (0);
 }
