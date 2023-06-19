@@ -1,21 +1,8 @@
 #include "Server.hpp"
 
-Server::Server(void)
+Server::Server(void): _socket(0), _port(0), _nbClients(0), _maxFd(0)
 {
 
-}
-
-Server::Server(int port): _port(port)
-{
-	this->_initSinValues();
-
-	this->_createSocket();
-
-	std::cout << B_HI_GREEN << "Your server has been successfully created" << RESET << std::endl;
-
-	this->_setSockOptReuseAddr(); 
-	this->_bindSocket();
-	this->_listenSocket();
 }
 
 Server::Server(const Server &src)
@@ -33,6 +20,24 @@ Server	&Server::operator=(const Server &src)
 {
 	static_cast<void>(src);
 	return (*this);
+}
+
+void	Server::start(int port)
+{
+	this->_port = port;
+	this->_initSinValues();
+
+	this->_createSocket();
+	
+	this->_maxFd = this->_socket;
+	FD_ZERO(&this->_readfds);
+	FD_SET(this->_socket, &this->_readfds);
+	
+	this->_setSockOptReuseAddr(); 
+	this->_bindSocket();
+	this->_listenSocket();
+
+	std::cout << B_HI_GREEN << "Your server has been successfully created" << RESET << std::endl;
 }
 
 void	Server::_initSinValues(void)
@@ -84,20 +89,42 @@ void	Server::_listenSocket(void) const
 	}
 }
 
+void	Server::acceptNewClient(Client &newClient)
+{
+	struct sockaddr_in	clientSin = newClient.getSin();
+	unsigned int		clientSinLength = sizeof(clientSin);
+	int					clientSocket;
+
+	clientSocket = accept(this->_socket, reinterpret_cast<struct sockaddr *>(&clientSin), &clientSinLength);
+	if (this->_socket == -1)
+	{
+		this->_closeSocket();
+		throw Error("Failed accept()");
+	}
+	newClient.setSocket(clientSocket);
+	FD_SET(clientSocket, &this->_readfds);
+	std::cout << "New client added" << std::endl;
+}
+
 void	Server::_closeSocket(void) const
 {
 	if (close(this->_socket) == -1)
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(server.socket)" << std::endl;
 }
 
-/*int	Server::acceptCon(void)
-{
-	this->_allClients
-}*/
-
 int	Server::getSocket(void) const
 {
 	return (this->_socket);
+}
+
+fd_set	Server::getFds(void) const
+{
+	return (this->_readfds);
+}
+
+int	Server::getMaxFd(void) const
+{
+	return (this->_maxFd);
 }
 
 	/*	START OF EXCEPTIONS	*/

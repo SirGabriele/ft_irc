@@ -1,5 +1,5 @@
-#ifndef SERVER_HPP
-# define SERVER_HPP
+#ifndef CLIENT_HPP
+# define CLIENT_HPP
 
 /*  struct sockaddr_in  */
 # include <netinet/in.h>
@@ -15,27 +15,26 @@
 
 # include "colours.hpp"
 
-# define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
-
-class	Server
+class	Client
 {
 	public:
-		Server(int);
-		~Server(void);
+		Client(int);
+		~Client(void);
 
-		int getSocket(void) const;
+		void	create(int);
+
+		struct sockaddr_in	getSin(void) const;
+		int 				getSocket(void) const;
+
+		void	setSocket(int);
 	
 	private:
-		Server(void);
-		Server(const Server &src);
+		Client(void);
+		Client(const Client &src);
 
-		Server	&operator=(const Server &src);
+		Client	&operator=(const Client &src);
 
 		void	_initSinValues(void);
-		void	_createSocket(void);
-		void	_setSockOptReuseAddr(void) const;
-		void	_bindSocket(void) const;
-		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
 
 		struct sockaddr_in	_sin;
@@ -56,4 +55,4 @@ class	Server
 	/*	END OF EXCEPTIONS*/
 };
 
-#endif /*SERVER_HPP*/
+#endif /*CLIENT_HPP*/

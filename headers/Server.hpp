@@ -17,28 +17,32 @@
 /*	close()	*/
 # include <unistd.h>
 
+/*	select()	*/
+# include <sys/select.h>
+
 # include <iostream>
 # include <string>
 # include <vector>
 
 # include "colours.hpp"
-//# include "Client.hpp"
+# include "Client.hpp"
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
-
-//class	Client;
 
 class	Server
 {
 	public:
-		Server(int);
+		Server(void);
 		~Server(void);
 
-//		int	acceptCon(void);
-		int getSocket(void) const;
+		void	start(int);
+		void	acceptNewClient(Client &);
+
+		int		 getSocket(void) const;
+		fd_set	getFds(void) const;
+		int		getMaxFd(void) const;
 	
 	private:
-		Server(void);
 		Server(const Server &src);
 
 		Server	&operator=(const Server &src);
@@ -52,11 +56,14 @@ class	Server
 
 //		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;
+		fd_set				_readfds;
 		int					_socket;
 		int					_port;
+		int					_nbClients;
+		int					_maxFd;
 	
 	/*	START OF EXCEPTIONS	*/
-	class	Error: public std::exception
+	class	Error : public std::exception
 	{
 		public:
 			Error(const std::string &) throw();

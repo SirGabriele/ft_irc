@@ -5,17 +5,9 @@ Client::Client(void)
 
 }
 
-Client::Client(int port): _port(port)
+Client::Client(int port): _socket(0), _port(port)
 {
 	this->_initSinValues();
-
-	this->_createSocket();
-
-	std::cout << B_HI_GREEN << "Your client has been successfully created" << RESET << std::endl;
-
-	this->_setSockOptReuseAddr(); 
-	this->_bindSocket();
-	this->_listenSocket();
 }
 
 Client::Client(const Client &src)
@@ -26,7 +18,6 @@ Client::Client(const Client &src)
 Client::~Client(void)
 {
 	this->_closeSocket();
-	std::cout << "Client is shutting down" << std::endl;
 }
 
 Client	&Client::operator=(const Client &src)
@@ -42,57 +33,25 @@ void	Client::_initSinValues(void)
 	this->_sin.sin_addr.s_addr = INADDR_ANY;
 }
 
-void	Client::_createSocket(void)
-{
-	struct protoent	*proto = getprotobyname("tcp");
-
-	if (proto == NULL)
-		throw Error("Failed getprotobyname()");
-
-	this->_socket = socket(AF_INET, SOCK_STREAM, proto->p_proto);
-
-	if (this->_socket == -1)
-		throw Error("Failed socket()");
-}
-
-void	Client::_setSockOptReuseAddr(void) const
-{
-	int	reuse = 1;
-
-	if (setsockopt(this->_socket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) == -1)
-	{
-		this->_closeSocket();
-		throw Error("Failed setsockopt()");
-	}
-}
-
-void	Client::_bindSocket(void) const
-{
-	if (bind(this->_socket, reinterpret_cast<const struct sockaddr *>(&this->_sin), sizeof(this->_sin)) == -1)
-	{
-		this->_closeSocket();
-		throw Error("Failed bind()");
-	}
-}
-
-void	Client::_listenSocket(void) const
-{
-	if (listen(this->_socket, MAX_PENDING_CON) == -1)
-	{
-		this->_closeSocket();	
-		throw Error("Failed listen()");
-	}
-}
-
 void	Client::_closeSocket(void) const
 {
 	if (close(this->_socket) == -1)
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(client.socket)" << std::endl;
 }
 
+struct sockaddr_in	Client::getSin(void) const
+{
+	return (this->_sin);
+}
+
 int	Client::getSocket(void) const
 {
 	return (this->_socket);
+}
+
+void	Client::setSocket(int socket)
+{
+	this->_socket = socket;
 }
 
 	/*	START OF EXCEPTIONS	*/

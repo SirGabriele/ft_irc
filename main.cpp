@@ -1,7 +1,10 @@
-#include "Server.hpp"
+#include "ircserv.hpp"
 
 /*	atoi()	*/
 #include <cstdlib>
+
+/*	signal()	*/
+#include <signal.h>
 
 int	isPortValid(std::string &portStr)
 {
@@ -40,59 +43,18 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
+	Server	server;
+
 	try
 	{
-		Server	server(portInt);
+		server.start(portInt);
+		if (launchProgram(server, portInt) == false)
+			return (1);
 	}
 	catch (std::exception &exception)
 	{
 		std::cerr << exception.what() << std::endl;
 		return (1);
 	}
-
-/*	
-	struct sockaddr_in	sinClient;
-	unsigned int		sinClientLen = sizeof(sinClient);
-	
-	sinClient.sin_family = AF_INET;
-	sinClient.sin_port = htons(atoi(portStr.c_str()));
-	sinClient.sin_addr.s_addr = INADDR_ANY;
-
-	socketClient = accept(server.getSocket(), reinterpret_cast<struct sockaddr *>(&sinClient), &sinClientLen);
-	if (socketClient == -1)
-	{
-		errorMsg("Failed accept()");
-		return (1);
-	}
-	while (1)
-	{
-		char	buffer[10];
-		int		howManyBitsRead;
-
-		howManyBitsRead = recv(socketClient, buffer, sizeof(buffer) - 1, 0);
-		buffer[howManyBitsRead - 1] = '\0';
-		if (std::strncmp(buffer, "quit", 5) == 0)
-			break ;
-		else if (howManyBitsRead > 0)
-			std::cout << '[' << buffer << ']' << std::endl;
-		else if (howManyBitsRead == -1)
-		{
-			errorMsg("Failed recv()");
-			break ;
-		}
-	}
-
-	std::cout << "Server is shutting down" << std::endl;
-	if (close(server.getSocket()) == -1)
-	{
-		errorMsg("Failed close(socketServer)");
-		return (1);
-	}
-	else if (close(socketClient) == -1)
-	{
-		errorMsg("Failed closed(socketClient)");
-		return (1);
-	}
-*/
 	return (0);
 }
