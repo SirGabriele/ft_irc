@@ -48,13 +48,13 @@ int	main(int argc, char **argv)
 	try
 	{
 		server.start(portInt);
-		if (launchProgram(server) == false)
-			return (1);
 	}
 	catch (std::exception &exception)
 	{
 		std::cerr << exception.what() << std::endl;
 		return (1);
 	}
+	if (launchProgram(server) == false)
+		return (1);
 	return (0);
 }

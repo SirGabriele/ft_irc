@@ -20,9 +20,11 @@ class	Client
 	public:
 		Client(int);
 		Client(const Client &src);
+		Client	&operator=(const Client &src);
 		~Client(void);
 
 		void	create(int);
+		void	closeSocket(void) const;
 
 		struct sockaddr_in	getSin(void) const;
 		int 				getSocket(void) const;
@@ -32,10 +34,8 @@ class	Client
 	private:
 		Client(void);
 
-		Client	&operator=(const Client &src);
 
 		void	_initSinValues(void);
-		void	_closeSocket(void) const;
 
 		struct sockaddr_in	_sin;
 		int					_socket;

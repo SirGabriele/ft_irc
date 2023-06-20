@@ -17,7 +17,7 @@ Client::Client(const Client &src)
 
 Client::~Client(void)
 {
-	this->_closeSocket();
+
 }
 
 Client	&Client::operator=(const Client &src)
@@ -38,12 +38,13 @@ void	Client::_initSinValues(void)
 	this->_sin.sin_addr.s_addr = INADDR_ANY;
 }
 
-void	Client::_closeSocket(void) const
+void	Client::closeSocket(void) const
 {
 	if (close(this->_socket) == -1)
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(client.socket)" << std::endl;
 }
 
+	/*	START OF GETTERS	*/
 struct sockaddr_in	Client::getSin(void) const
 {
 	return (this->_sin);
@@ -53,11 +54,14 @@ int	Client::getSocket(void) const
 {
 	return (this->_socket);
 }
+	/*	END OF GETTERS	*/
 
+	/*	START OF SETTERS	*/
 void	Client::setSocket(int socket)
 {
 	this->_socket = socket;
 }
+	/*END OF SETTERS	*/
 
 	/*	START OF EXCEPTIONS	*/
 Client::Error::Error(const std::string &str) throw(): _errMsg(str)

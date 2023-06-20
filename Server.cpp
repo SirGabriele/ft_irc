@@ -13,6 +13,12 @@ Server::Server(const Server &src)
 Server::~Server(void)
 {
 	this->_closeSocket();
+	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
+	{
+		this->_allClients[i].closeSocket();
+		this->_allClients.erase(this->_allClients.begin() + i);
+
+	}
 	std::cout << "Server is shutting down" << std::endl;
 }
 
@@ -22,6 +28,7 @@ Server	&Server::operator=(const Server &src)
 	return (*this);
 }
 
+	/*	START OF PUBLIC METHODS	*/
 void	Server::start(int port)
 {
 	this->_port = port;
@@ -45,6 +52,53 @@ void	Server::start(int port)
 	std::cout << B_HI_GREEN << "Your server has been successfully created" << RESET << std::endl;
 }
 
+void	Server::acceptNewClient(void)
+{
+	Client				newClient(this->_port);
+	struct sockaddr_in	clientSin = newClient.getSin();
+	unsigned int		clientSinLength = sizeof(clientSin);
+	int					clientSocket;
+
+	clientSocket = accept(this->_socket, reinterpret_cast<struct sockaddr *>(&clientSin), &clientSinLength);
+	if (this->_socket == -1)
+	{
+		this->_closeSocket();
+		throw Error("Failed accept()");
+	}
+	newClient.setSocket(clientSocket);
+
+	this->_allClients.push_back(newClient);
+
+	FD_SET(clientSocket, &this->_readfds);
+	FD_SET(clientSocket, &this->_writefds);
+	FD_SET(clientSocket, &this->_exceptfds);
+	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
+
+	this->_nbClients++;
+	std::cout << "New client added" << std::endl;
+}
+
+void	Server::disconnectClient(int socket)
+{
+	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
+	{
+		if (this->_allClients[i].getSocket() == socket)
+		{
+			this->_allClients[i].closeSocket();
+			this->_allClients.erase(this->_allClients.begin() + i);
+			FD_CLR(socket, &this->_readfds);
+			FD_CLR(socket, &this->_writefds);
+			FD_CLR(socket, &this->_exceptfds);
+			this->_nbClients--;
+			this->_maxFd = 0;
+			this->_setMaxFd();
+			std::cout << "Client has been disconnected" << std::endl;
+		}
+	}
+}
+	/*	END OF PUBLIC METHODS	*/
+
+	/*	START OF PRIVATE METHODS	*/
 void	Server::_initSinValues(void)
 {
 	this->_sin.sin_family = AF_INET;
@@ -94,37 +148,12 @@ void	Server::_listenSocket(void) const
 	}
 }
 
-void	Server::acceptNewClient(void)
-{
-	Client				newClient(this->_port);
-	struct sockaddr_in	clientSin = newClient.getSin();
-	unsigned int		clientSinLength = sizeof(clientSin);
-	int					clientSocket;
-
-	clientSocket = accept(this->_socket, reinterpret_cast<struct sockaddr *>(&clientSin), &clientSinLength);
-	if (this->_socket == -1)
-	{
-		this->_closeSocket();
-		throw Error("Failed accept()");
-	}
-	newClient.setSocket(clientSocket);
-
-	this->_allClients.push_back(newClient);
-
-	FD_SET(clientSocket, &this->_readfds);
-	FD_SET(clientSocket, &this->_writefds);
-	FD_SET(clientSocket, &this->_exceptfds);
-	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
-
-	this->_nbClients++;
-	std::cout << "New client added" << std::endl;
-}
-
 void	Server::_closeSocket(void) const
 {
 	if (close(this->_socket) == -1)
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(server.socket)" << std::endl;
 }
+	/*	END OF PRIVATE METHODS	*/
 
 	/*	START OF GETTERS	*/
 int	Server::getSocket(void) const
@@ -151,7 +180,24 @@ int	Server::getMaxFd(void) const
 {
 	return (this->_maxFd);
 }
+
+const Client	&Server::getClient(int i) const
+{
+	return (this->_allClients[i]);
+}
 	/*	END OF GETTERS*/
+
+	/*	START OF SETTERS	*/
+void	Server::_setMaxFd(void)
+{
+	if (this->_allClients.size() == 0)
+		this->_maxFd = this->_socket;
+	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
+	{
+		this->_maxFd = (this->_allClients[i].getSocket() > this->_maxFd) ? this->_allClients[i].getSocket() : this->_maxFd;
+	}
+}
+	/*	END OF SETTERS	*/
 
 	/*	START OF EXCEPTIONS	*/
 Server::Error::Error(const std::string &str) throw(): _errMsg(str)

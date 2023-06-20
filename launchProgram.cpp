@@ -40,7 +40,9 @@ bool	launchProgram(Server &server)
 					howManyBitsRead = recv(i, buffer, sizeof(buffer) - 1, 0);
 					buffer[howManyBitsRead - 1] = '\0';
 					if (std::strncmp(buffer, "quit", 5) == 0)
-						break ;
+						server.disconnectClient(i);
+					else if (buffer[0] == 'a')
+						return (true) ;
 					else if (howManyBitsRead > 0)
 						std::cout << '[' << buffer << ']' << std::endl;
 					else if (howManyBitsRead == -1)

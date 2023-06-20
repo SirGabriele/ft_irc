@@ -37,12 +37,15 @@ class	Server
 
 		void	start(int);
 		void	acceptNewClient(void);
+		void	disconnectClient(int);
 
-		int		getSocket(void) const;
-		fd_set	getReadFds(void) const;
-		fd_set	getWriteFds(void) const;
-		fd_set	getExceptFds(void) const;
-		int		getMaxFd(void) const;
+		int				getSocket(void) const;
+		fd_set			getReadFds(void) const;
+		fd_set			getWriteFds(void) const;
+		fd_set			getExceptFds(void) const;
+		int				getMaxFd(void) const;
+		const Client	&getClient(int) const;
+
 
 	private:
 		Server(const Server &src);
@@ -55,6 +58,8 @@ class	Server
 		void	_bindSocket(void) const;
 		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
+
+		void	_setMaxFd(void);
 
 		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;
