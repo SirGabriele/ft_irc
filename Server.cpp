@@ -30,8 +30,13 @@ void	Server::start(int port)
 	this->_createSocket();
 	
 	this->_maxFd = this->_socket;
+
 	FD_ZERO(&this->_readfds);
+	FD_ZERO(&this->_writefds);
+	FD_ZERO(&this->_exceptfds);
 	FD_SET(this->_socket, &this->_readfds);
+	FD_SET(this->_socket, &this->_writefds);
+	FD_SET(this->_socket, &this->_exceptfds);
 	
 	this->_setSockOptReuseAddr(); 
 	this->_bindSocket();
@@ -89,8 +94,9 @@ void	Server::_listenSocket(void) const
 	}
 }
 
-void	Server::acceptNewClient(Client &newClient)
+void	Server::acceptNewClient(void)
 {
+	Client				newClient(this->_port);
 	struct sockaddr_in	clientSin = newClient.getSin();
 	unsigned int		clientSinLength = sizeof(clientSin);
 	int					clientSocket;
@@ -102,7 +108,15 @@ void	Server::acceptNewClient(Client &newClient)
 		throw Error("Failed accept()");
 	}
 	newClient.setSocket(clientSocket);
+
+//	this->_allClients.push_back(newClient);
+
 	FD_SET(clientSocket, &this->_readfds);
+	FD_SET(clientSocket, &this->_writefds);
+	FD_SET(clientSocket, &this->_exceptfds);
+	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
+
+	this->_nbClients++;
 	std::cout << "New client added" << std::endl;
 }
 
@@ -112,20 +126,32 @@ void	Server::_closeSocket(void) const
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(server.socket)" << std::endl;
 }
 
+	/*	START OF GETTERS	*/
 int	Server::getSocket(void) const
 {
 	return (this->_socket);
 }
 
-fd_set	Server::getFds(void) const
+fd_set	Server::getReadFds(void) const
 {
 	return (this->_readfds);
+}
+
+fd_set	Server::getWriteFds(void) const
+{
+	return (this->_writefds);
+}
+
+fd_set	Server::getExceptFds(void) const
+{
+	return (this->_exceptfds);
 }
 
 int	Server::getMaxFd(void) const
 {
 	return (this->_maxFd);
 }
+	/*	END OF GETTERS*/
 
 	/*	START OF EXCEPTIONS	*/
 Server::Error::Error(const std::string &str) throw(): _errMsg(str)

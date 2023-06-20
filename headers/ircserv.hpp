@@ -4,6 +4,6 @@
 # include "Server.hpp"
 # include "Client.hpp"
 
-bool	launchProgram(Server &, int);
+bool	launchProgram(Server &);
 
 #endif /*IRCSERV_HPP*/

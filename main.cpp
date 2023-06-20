@@ -48,7 +48,7 @@ int	main(int argc, char **argv)
 	try
 	{
 		server.start(portInt);
-		if (launchProgram(server, portInt) == false)
+		if (launchProgram(server) == false)
 			return (1);
 	}
 	catch (std::exception &exception)

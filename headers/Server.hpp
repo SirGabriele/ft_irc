@@ -36,12 +36,14 @@ class	Server
 		~Server(void);
 
 		void	start(int);
-		void	acceptNewClient(Client &);
+		void	acceptNewClient(void);
 
-		int		 getSocket(void) const;
-		fd_set	getFds(void) const;
+		int		getSocket(void) const;
+		fd_set	getReadFds(void) const;
+		fd_set	getWriteFds(void) const;
+		fd_set	getExceptFds(void) const;
 		int		getMaxFd(void) const;
-	
+
 	private:
 		Server(const Server &src);
 
@@ -54,9 +56,11 @@ class	Server
 		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
 
-//		std::vector<Client>	_allClients;
+		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;
 		fd_set				_readfds;
+		fd_set				_writefds;
+		fd_set				_exceptfds;
 		int					_socket;
 		int					_port;
 		int					_nbClients;

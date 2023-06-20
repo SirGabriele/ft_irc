@@ -3,38 +3,28 @@
 /*	std::strncmp()	*/
 #include <cstring>
 
-bool	launchProgram(Server &server, int port)
+bool	launchProgram(Server &server)
 {
-	Client	newClient(port);
-
-	try
-	{
-		server.acceptNewClient(newClient);
-	}
-	catch (std::exception &exception)
-	{
-		std::cerr << exception.what() << std::endl;
-		return (false);
-	}
 	while (1)
 	{
-		fd_set	tempfds = server.getFds();
-		int		maxFd = server.getMaxFd();
+		fd_set	readfds = server.getReadFds();
+		fd_set	writefds = server.getWriteFds();
+		fd_set	exceptfds = server.getExceptFds();
 
-		if (select(maxFd, &tempfds, NULL, NULL, NULL) < 0)
+		if (select(server.getMaxFd() + 1, &readfds, &writefds, &exceptfds, NULL) < 0)
 		{
 			std::cerr << "Failed select()" << std::endl;
 			return (false);
 		}
-		for (int i = 0; i < maxFd; i++)
+		for (int i = 0; i < server.getMaxFd() + 1; i++)
 		{
-			if (FD_ISSET(i, &tempfds) == 1)
+			if (FD_ISSET(i, &readfds) == 1)
 			{
 				if (i == server.getSocket()) // new connection
 				{
 					try
 					{
-						server.acceptNewClient(newClient);
+						server.acceptNewClient();
 					}
 					catch (std::exception &exception)
 					{
@@ -47,7 +37,7 @@ bool	launchProgram(Server &server, int port)
 					char    buffer[1024];
 					int     howManyBitsRead;
 					
-					howManyBitsRead = recv(newClient.getSocket(), buffer, sizeof(buffer) - 1, 0);
+					howManyBitsRead = recv(i, buffer, sizeof(buffer) - 1, 0);
 					buffer[howManyBitsRead - 1] = '\0';
 					if (std::strncmp(buffer, "quit", 5) == 0)
 						break ;
@@ -58,7 +48,6 @@ bool	launchProgram(Server &server, int port)
 						std::cerr << "Failed recv()" << std::endl;
 						break ;
 					}
-					FD_CLR(i, &tempfds);
 				}
 			}
 		}
