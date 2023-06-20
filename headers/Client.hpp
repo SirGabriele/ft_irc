@@ -19,6 +19,7 @@ class	Client
 {
 	public:
 		Client(int);
+		Client(const Client &src);
 		~Client(void);
 
 		void	create(int);
@@ -30,7 +31,6 @@ class	Client
 	
 	private:
 		Client(void);
-		Client(const Client &src);
 
 		Client	&operator=(const Client &src);
 

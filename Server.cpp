@@ -109,7 +109,7 @@ void	Server::acceptNewClient(void)
 	}
 	newClient.setSocket(clientSocket);
 
-//	this->_allClients.push_back(newClient);
+	this->_allClients.push_back(newClient);
 
 	FD_SET(clientSocket, &this->_readfds);
 	FD_SET(clientSocket, &this->_writefds);

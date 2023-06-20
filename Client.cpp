@@ -22,7 +22,12 @@ Client::~Client(void)
 
 Client	&Client::operator=(const Client &src)
 {
-	static_cast<void>(src);
+	if (this != &src)
+	{
+		this->_sin = src._sin;
+		this->_socket = src._socket;
+		this->_port = src._port;
+	}
 	return (*this);
 }
 
