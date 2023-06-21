@@ -3,7 +3,7 @@
 
 Server::Server(void): _password(""), _socket(0), _port(0), _nbClients(0), _maxFd(0)
 {
-
+	this->_allCommands = {"JOIN", "PRIVMSG"};
 }
 
 Server::Server(const Server &src)
@@ -166,7 +166,7 @@ bool	Server::_processInput(int socket, const char *buffer)
 	this->_allClients[i].completeInput(buffer);
 	if (isInputFull(this->_allClients[i].getInput()) == true) // execute command
 	{
-		this->_parseInput(this->_allClients[i].getInput());
+		this->_detectCommand(this->_allClients[i].getInput());
 		this->_allClients[i].resetInput();
 	}
 	else // a supprimer

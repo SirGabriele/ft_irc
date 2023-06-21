@@ -63,7 +63,7 @@ class	Server
 		bool	_acceptNewClient(void);
 		bool	_processInput(int, const char *);
 		void	_disconnectClient(int);
-		void	_parseInput(const std::string &) const;
+		void	_detectCommand(const std::string &) const;
 
 		int		_getClientIndex(int) const;
 
@@ -71,6 +71,7 @@ class	Server
 
 		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;
+		std::strin			_allCommands[];
 		std::string			_password;
 		fd_set				_readfds;
 		fd_set				_writefds;
