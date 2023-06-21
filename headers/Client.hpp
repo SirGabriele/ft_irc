@@ -23,10 +23,14 @@ class	Client
 		Client	&operator=(const Client &src);
 		~Client(void);
 
-		void	create(int);
 		void	closeSocket(void) const;
+		void	completeInput(const char *);
+		void	resetInput(void);
 
 		struct sockaddr_in	getSin(void) const;
+		const std::string	&getUsername(void) const;
+		const std::string	&getPassword(void) const;
+		const std::string	&getInput(void);
 		int 				getSocket(void) const;
 
 		void	setSocket(int);
@@ -34,12 +38,19 @@ class	Client
 	private:
 		Client(void);
 
-
 		void	_initSinValues(void);
 
+		void	_setUsername(const std::string &);
+		void	_setPassword(const std::string &);
+		
 		struct sockaddr_in	_sin;
+		std::string			_username;
+		std::string			_password;
+		std::string			_input;
 		int					_socket;
 		int					_port;
+
+		bool				_isInAChannel;
 	
 	/*	START OF EXCEPTIONS	*/
 	class	Error: public std::exception

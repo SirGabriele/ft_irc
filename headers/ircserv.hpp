@@ -4,6 +4,12 @@
 # include "Server.hpp"
 # include "Client.hpp"
 
-bool	launchProgram(Server &);
+class	Server;
+class	Client;
+
+/************/
+/*	UTILS	*/
+/************/
+bool	isInputFull(const std::string &);
 
 #endif /*IRCSERV_HPP*/

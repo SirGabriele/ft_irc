@@ -6,16 +6,19 @@
 #    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/19 15:02:35 by kbrousse         ###   ########.fr        #
+#    Updated: 2023/06/21 13:37:31 by kbrousse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	ircserv
 
-SRCS =	main.cpp			\
+SRC =	main.cpp			\
 		Server.cpp			\
 		Client.cpp			\
-		launchProgram.cpp
+		run.cpp				\
+		parse.cpp
+
+UTILS =	isInputFull.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
@@ -27,6 +30,9 @@ INCLUDE_FOLDER = -I headers/
 OBJS_PATH = objects/
 
 OBJS = $(SRCS:%.cpp=$(OBJS_PATH)%.o)
+
+SRCS =	$(SRC)							\
+		$(addprefix utils/, $(UTILS))	\
 
 CC = c++
 

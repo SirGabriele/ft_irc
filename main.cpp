@@ -6,6 +6,15 @@
 /*	signal()	*/
 #include <signal.h>
 
+int	g_signal = 0;
+
+void	handleSignal(int sig)
+{
+	static_cast<void>(sig);
+	std::cout << '\n';
+	g_signal = 130;
+}
+
 int	isPortValid(std::string &portStr)
 {
 	if (portStr.length() > 5)
@@ -34,7 +43,6 @@ int	main(int argc, char **argv)
 	}
 
 	std::string	portStr = argv[1];
-	std::string	passwordStr = argv[2];	//----------------------------------------a verifier?
 	int	portInt = isPortValid(portStr);
 
 	if (portInt < 1024)
@@ -45,16 +53,18 @@ int	main(int argc, char **argv)
 
 	Server	server;
 
+	signal(SIGINT, handleSignal);
+
 	try
 	{
-		server.start(portInt);
+		server.start(portInt, argv[2]);
 	}
 	catch (std::exception &exception)
 	{
 		std::cerr << exception.what() << std::endl;
 		return (1);
 	}
-	if (launchProgram(server) == false)
+	if (server.run() == false)
 		return (1);
-	return (0);
+	return (g_signal);
 }

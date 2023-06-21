@@ -28,6 +28,9 @@
 # include "Client.hpp"
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
+# define BUFFER_SIZE 1024
+
+extern int	g_signal;
 
 class	Server
 {
@@ -35,17 +38,14 @@ class	Server
 		Server(void);
 		~Server(void);
 
-		void	start(int);
-		void	acceptNewClient(void);
-		void	disconnectClient(int);
+		void	start(int, const char *);
+		bool	run(void);
 
-		int				getSocket(void) const;
-		fd_set			getReadFds(void) const;
-		fd_set			getWriteFds(void) const;
-		fd_set			getExceptFds(void) const;
-		int				getMaxFd(void) const;
-		const Client	&getClient(int) const;
-
+		int		getMaxFd(void) const;
+		int		getSocket(void) const;
+		fd_set	getExceptFds(void) const;
+		fd_set	getReadFds(void) const;
+		fd_set	getWriteFds(void) const;
 
 	private:
 		Server(const Server &src);
@@ -59,10 +59,19 @@ class	Server
 		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
 
+		bool	_receiveData(int);
+		bool	_acceptNewClient(void);
+		bool	_processInput(int, const char *);
+		void	_disconnectClient(int);
+		void	_parseInput(const std::string &) const;
+
+		int		_getClientIndex(int) const;
+
 		void	_setMaxFd(void);
 
 		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;
+		std::string			_password;
 		fd_set				_readfds;
 		fd_set				_writefds;
 		fd_set				_exceptfds;
