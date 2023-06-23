@@ -35,8 +35,8 @@ class	Client
 		int 				getSocket(void) const;
 
 		void	setPassword(bool status);
-		void	setNickname(const std::string &);
-		void	setUsername(const std::string &);
+		void	setNickname(const std::string);
+		void	setUsername(const std::string);
 		void	setSocket(int);
 		
 	

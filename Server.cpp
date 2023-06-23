@@ -24,7 +24,15 @@ Server::~Server(void)
 
 Server	&Server::operator=(const Server &src)
 {
-	static_cast<void>(src);
+	this->_allClients = src._allClients;
+	this->_sin = src._sin;
+	this->_password = src._password;
+	this->_readfds = src._readfds;
+	this->_writefds = src._writefds;
+	this->_socket = src._socket;
+	this->_port = src._port;
+	this->_nbClients = src._nbClients;
+	this->_maxFd = src._maxFd;
 	return (*this);
 }
 
@@ -133,7 +141,7 @@ bool	Server::_acceptNewClient(void)
 	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
 
 	this->_nbClients++;
-	std::cout << "New client added" << std::endl;
+	std::cout << "New client connected" << std::endl;
 	return (true);
 }
 

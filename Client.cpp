@@ -27,6 +27,10 @@ Client	&Client::operator=(const Client &src)
 		this->_sin = src._sin;
 		this->_socket = src._socket;
 		this->_port = src._port;
+		this->_nickname = src._nickname;
+		this->_username = src._username;
+		this->_input = src._input;
+		this->_password = src._password;
 	}
 	return (*this);
 }
@@ -75,9 +79,9 @@ int	Client::getSocket(void) const	{return (this->_socket);}
 	/*	START OF SETTERS	*/
 void	Client::setPassword(bool status)	{this->_password = status;}
 
-void	Client::setNickname(const std::string &nickname)	{this->_nickname = nickname;}
+void	Client::setNickname(const std::string nickname)	{this->_nickname = nickname;}
 
-void	Client::setUsername(const std::string &username)	{this->_username = username;}
+void	Client::setUsername(const std::string username)	{this->_username = username;}
 
 void	Client::setSocket(int socket)	{this->_socket = socket;}
 	/*END OF SETTERS	*/
