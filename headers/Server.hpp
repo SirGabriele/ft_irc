@@ -19,7 +19,7 @@
 
 /*	select()	*/
 # include <sys/select.h>
-
+# include <sstream>
 # include <iostream>
 # include <string>
 # include <vector>
@@ -63,11 +63,17 @@ class	Server
 		bool	_acceptNewClient(void);
 		bool	_processInput(int, const char *);
 		void	_disconnectClient(int);
-		void	_parseInput(const std::string &) const;
 
 		int		_getClientIndex(int) const;
 
 		void	_setMaxFd(void);
+
+		void	_sendMessage(std::stringstream & ss, int indexClient);
+		void	_detectCommand(Client & client);
+		void	_privmsg(std::stringstream & ss);
+		void	_settingPassword(std::stringstream & ss, Client & client);
+		void	_settingNickname(std::stringstream & ss, Client & client);
+		void	_settingUsername(std::stringstream & ss, Client & client);
 
 		std::vector<Client>	_allClients;
 		struct sockaddr_in	_sin;

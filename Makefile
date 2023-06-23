@@ -6,7 +6,7 @@
 #    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/21 13:37:31 by kbrousse         ###   ########.fr        #
+#    Updated: 2023/06/23 11:16:20 by jsauvain         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,19 @@ SRC =	main.cpp			\
 		Server.cpp			\
 		Client.cpp			\
 		run.cpp				\
-		parse.cpp
+
+COMMANDS =	detectCommand.cpp	\
+			privmsg.cpp			\
+			pass.cpp			\
+			nick.cpp			\
+			user.cpp			\
 
 UTILS =	isInputFull.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
 			headers/Client.hpp	\
-			headers/ircserv.hpp
+			headers/ircserv.hpp	\
 
 INCLUDE_FOLDER = -I headers/
 
@@ -33,6 +38,7 @@ OBJS = $(SRCS:%.cpp=$(OBJS_PATH)%.o)
 
 SRCS =	$(SRC)							\
 		$(addprefix utils/, $(UTILS))	\
+		$(addprefix commands/, $(COMMANDS))	\
 
 CC = c++
 
