@@ -45,8 +45,8 @@
 
 /join,[JOIN],➡️rejoindre un channel
 1	<channel à rejoindre>
-2	<channel à rejoindre>
-...
+2	<password> (optionel)
+❌
 
 
 
@@ -73,4 +73,6 @@
 
 
 
-/nick []
+/nick,[NICK],➡️modifie le nickname
+1	<nickname>
+❌

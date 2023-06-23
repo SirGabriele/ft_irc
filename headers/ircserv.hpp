@@ -3,13 +3,6 @@
 
 # include "Server.hpp"
 # include "Client.hpp"
-
-class	Server;
-class	Client;
-
-/************/
-/*	UTILS	*/
-/************/
-bool	isInputFull(const std::string &);
+# include "Channel.hpp"
 
 #endif /*IRCSERV_HPP*/

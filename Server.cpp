@@ -3,7 +3,7 @@
 
 Server::Server(void): _password(""), _socket(0), _port(0), _nbClients(0), _maxFd(0)
 {
-	this->_allCommands = {"JOIN", "PRIVMSG"};
+
 }
 
 Server::Server(const Server &src)
@@ -24,7 +24,19 @@ Server::~Server(void)
 
 Server	&Server::operator=(const Server &src)
 {
-	static_cast<void>(src);
+	if (this != &src)
+	{
+		this->_allChannels = src._allChannels;
+		this->_allClients = src._allClients;
+		this->_sin = src._sin;
+		this->_password = src._password;
+		this->_readfds = src._readfds;
+		this->_writefds = src._writefds;
+		this->_socket = src._socket;
+		this->_port = src._port;
+		this->_nbClients = src._nbClients;
+		this->_maxFd = src._maxFd;
+	}
 	return (*this);
 }
 
@@ -41,10 +53,8 @@ void	Server::start(int port, const char *password)
 
 	FD_ZERO(&this->_readfds);
 	FD_ZERO(&this->_writefds);
-	FD_ZERO(&this->_exceptfds);
 	FD_SET(this->_socket, &this->_readfds);
 	FD_SET(this->_socket, &this->_writefds);
-	FD_SET(this->_socket, &this->_exceptfds);
 	
 	this->_setSockOptReuseAddr(); 
 	this->_bindSocket();
@@ -129,7 +139,6 @@ bool	Server::_acceptNewClient(void)
 
 	FD_SET(clientSocket, &this->_readfds);
 	FD_SET(clientSocket, &this->_writefds);
-	FD_SET(clientSocket, &this->_exceptfds);
 	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
 
 	this->_nbClients++;
@@ -147,13 +156,22 @@ void	Server::_disconnectClient(int socket)
 			this->_allClients.erase(this->_allClients.begin() + i);
 			FD_CLR(socket, &this->_readfds);
 			FD_CLR(socket, &this->_writefds);
-			FD_CLR(socket, &this->_exceptfds);
 			this->_nbClients--;
 			this->_maxFd = 0;
 			this->_setMaxFd();
 			std::cout << "Client has been disconnected" << std::endl;
 		}
 	}
+}
+
+bool	isInputFull(const std::string &input)
+{
+	for (std::string::size_type i = 0; i < input.length(); i++)
+	{
+		if (input[i] == '\n')
+			return (true);
+	}
+	return (false);
 }
 
 bool	Server::_processInput(int socket, const char *buffer)
@@ -166,7 +184,7 @@ bool	Server::_processInput(int socket, const char *buffer)
 	this->_allClients[i].completeInput(buffer);
 	if (isInputFull(this->_allClients[i].getInput()) == true) // execute command
 	{
-		this->_detectCommand(this->_allClients[i].getInput());
+		this->_detectCommand(this->_allClients[i]);
 		this->_allClients[i].resetInput();
 	}
 	else // a supprimer
@@ -174,6 +192,12 @@ bool	Server::_processInput(int socket, const char *buffer)
 		std::cout << "Incomplete command for now. Only have [" << buffer << ']' << std::endl;
 	}
 	return (true);
+}
+
+void	Server::_sendMessageToClient(const Client &client, const std::string &message) const
+{
+	if (send(client.getSocket(), message.c_str(), message.length(), 0) < 0)
+		std::cerr << "Failed send()" << std::endl;
 }
 	/*	END OF PRIVATE METHODS	*/
 
@@ -193,11 +217,6 @@ fd_set	Server::getWriteFds(void) const
 	return (this->_writefds);
 }
 
-fd_set	Server::getExceptFds(void) const
-{
-	return (this->_exceptfds);
-}
-
 int	Server::getMaxFd(void) const
 {
 	return (this->_maxFd);
@@ -212,6 +231,10 @@ int	Server::_getClientIndex(int socket) const
 	}
 	return (-1);
 }
+/*const Channel	&Server::getChannel(const std::string &name) const
+{
+	std::map<std::string, Channel>::iterator	it = this->_allChannels.find(name);
+}*/
 
 	/*	END OF GETTERS*/
 

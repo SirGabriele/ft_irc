@@ -6,7 +6,7 @@
 #    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/21 13:37:31 by kbrousse         ###   ########.fr        #
+#    Updated: 2023/06/23 18:03:16 by kbrousse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,14 +15,18 @@ NAME =	ircserv
 SRC =	main.cpp			\
 		Server.cpp			\
 		Client.cpp			\
+		Channel.cpp			\
 		run.cpp				\
-		parse.cpp
+		detectCommand.cpp
 
-UTILS =	isInputFull.cpp
+COMMANDS =	join.cpp	\
+			nick.cpp	\
+			user.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
 			headers/Client.hpp	\
+			headers/Channel.hpp	\
 			headers/ircserv.hpp
 
 INCLUDE_FOLDER = -I headers/
@@ -31,8 +35,8 @@ OBJS_PATH = objects/
 
 OBJS = $(SRCS:%.cpp=$(OBJS_PATH)%.o)
 
-SRCS =	$(SRC)							\
-		$(addprefix utils/, $(UTILS))	\
+SRCS =	$(SRC)								\
+		$(addprefix commands/, $(COMMANDS))
 
 CC = c++
 

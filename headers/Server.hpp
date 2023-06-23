@@ -23,9 +23,17 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <map>
+# include <sstream>
 
 # include "colours.hpp"
 # include "Client.hpp"
+# include "Channel.hpp"
+
+/*	Hexchat text formatting	*/
+# define HEX_INFO std::string("\x02[INFO]\x0F")
+# define HEX_BOLD std::string("\x02")
+# define HEX_RESET std::string("\x0F")
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
 # define BUFFER_SIZE 1024
@@ -63,23 +71,33 @@ class	Server
 		bool	_acceptNewClient(void);
 		bool	_processInput(int, const char *);
 		void	_disconnectClient(int);
-		void	_detectCommand(const std::string &) const;
+		void	_detectCommand(Client &);
+		void	_sendMessageToClient(const Client &, const std::string &) const;
+		void	_join(std::istringstream &, Client &);
+		void	_createChannel(const std::string &, Client &);
+		void	_createChannel(const std::string &, const std::string &, Client &);
 
-		int		_getClientIndex(int) const;
+		void	_nick(std::istringstream &, Client &);
+		void	_user(std::istringstream &, Client &);
+		bool	_isChannelNameValid(const std::string &);
 
+		int				_getClientIndex(int) const;
+
+		void	_setPassword(const std::stringstream &, Client &);
+		void	_setUsername(const std::stringstream &, Client &);
+		void	_setNickname(const std::stringstream &, Client &);
 		void	_setMaxFd(void);
 
-		std::vector<Client>	_allClients;
-		struct sockaddr_in	_sin;
-		std::strin			_allCommands[];
-		std::string			_password;
-		fd_set				_readfds;
-		fd_set				_writefds;
-		fd_set				_exceptfds;
-		int					_socket;
-		int					_port;
-		int					_nbClients;
-		int					_maxFd;
+		std::map<std::string, Channel>	_allChannels;
+		std::vector<Client>				_allClients;
+		struct sockaddr_in				_sin;
+		std::string						_password;
+		fd_set							_readfds;
+		fd_set							_writefds;
+		int								_socket;
+		int								_port;
+		int								_nbClients;
+		int								_maxFd;
 	
 	/*	START OF EXCEPTIONS	*/
 	class	Error : public std::exception
