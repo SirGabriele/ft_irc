@@ -68,9 +68,9 @@ class	Server
 
 		void	_setMaxFd(void);
 
-		void	_sendMessage(std::stringstream & ss, int indexClient);
+		void	_sendMessage(Client & client, int indexClient);
 		void	_detectCommand(Client & client);
-		void	_privmsg(std::stringstream & ss);
+		void	_privmsg(std::stringstream & ss, Client & client);
 		void	_settingPassword(std::stringstream & ss, Client & client);
 		void	_settingNickname(std::stringstream & ss, Client & client);
 		void	_settingUsername(std::stringstream & ss, Client & client);

@@ -6,25 +6,30 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 08:52:23 by jsauvain          #+#    #+#             */
-/*   Updated: 2023/06/23 17:04:53 by jsauvain         ###   ########.fr       */
+/*   Updated: 2023/06/24 10:02:31 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void	Server::_sendMessage(std::stringstream & ss, int indexClient)
+void	Server::_sendMessage(Client & client, int indexClient)
 {
-		std::string	tokentmp;
-		char		token[BUFFER_SIZE];
-
-		ss >> token;
-		tokentmp = token;
-		if (send(_allClients[indexClient].getSocket(), token, tokentmp.length(), \
-			MSG_DONTWAIT) == -1)
+		std::string	message;
+		size_t		pos = 0;
+		
+		for (int i = 0; i < 2; i++)
+		{
+			pos = client.getInput().find_first_of(" 	", pos);
+			pos = client.getInput().find_first_not_of(" 	", pos);
+		}
+		message = client.getInput().substr(pos);
+		//Mettre une longeur de message max ?
+		if (send(_allClients[indexClient].getSocket(), message.c_str(), \
+			message.length(), MSG_DONTWAIT) == -1)
 			std::cout << "Message could not be sent\n";
 }
 
-void	Server::_privmsg(std::stringstream & ss)
+void	Server::_privmsg(std::stringstream & ss, Client & client)
 {
 		std::vector<Client>::iterator	it;
 		std::string						nickname;
@@ -34,7 +39,7 @@ void	Server::_privmsg(std::stringstream & ss)
 		{
 			if (it->getNickname().compare(nickname) == 0)
 			{
-				_sendMessage(ss, it - _allClients.begin());
+				_sendMessage(client, it - _allClients.begin());
 				return ;
 			}
 		}

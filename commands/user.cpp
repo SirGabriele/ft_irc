@@ -12,6 +12,10 @@ void	Server::_settingUsername(std::stringstream & ss, Client & client)
 		if (pos == std::string::npos)
 		{
 			ss >> username;
+			if (client.getUsername().empty() == true)
+				std::cout << "Your username has been set to '" << username << "'\n";
+			else if (client.getUsername().empty() == false)
+				std::cout << "Your username has been updated to '" << username << "'\n";
 			client.setUsername(username);
 			return ;
 		}

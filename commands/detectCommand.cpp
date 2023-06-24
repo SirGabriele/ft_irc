@@ -19,7 +19,7 @@ void	Server::_detectCommand(Client & client)
 	if (token.compare("USER") == 0)
 		_settingUsername(ss, client);
 	if (token.compare("PRIVMSG") == 0)
-		_privmsg(ss);
+		_privmsg(ss, client);
 	if (token.compare("JOIN") == 0)
 	{
 		//faire fonction join;
