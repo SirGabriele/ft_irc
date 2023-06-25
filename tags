@@ -16,10 +16,10 @@ _getClientIndex	Server.cpp	/^int	Server::_getClientIndex(int socket) const$/
 _initSinValues	Server.cpp	/^void	Server::_initSinValues(void)$/
 _initSinValues	Client.cpp	/^void	Client::_initSinValues(void)$/
 _listenSocket	Server.cpp	/^void	Server::_listenSocket(void) const$/
-_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::stringstream & ss)$/
+_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::stringstream & ss, Clie/
 _processInput	Server.cpp	/^bool	Server::_processInput(int socket, const char /
 _receiveData	run.cpp	/^bool	Server::_receiveData(int socket)$/
-_sendMessage	commands/privmsg.cpp	/^void	Server::_sendMessage(std::stringstream & ss, /
+_sendMessage	commands/privmsg.cpp	/^void	Server::_sendMessage(Client & client, int ind/
 _setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/
 _setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/
 _settingNickname	commands/nick.cpp	/^void	Server::_settingNickname(std::stringstream & /
@@ -46,10 +46,10 @@ operator=	Server.cpp	/^Server	&Server::operator=(const Server &src)$/
 operator=	Client.cpp	/^Client	&Client::operator=(const Client &src)$/
 resetInput	Client.cpp	/^void	Client::resetInput(void)$/
 run	run.cpp	/^bool	Server::run(void)$/
-setNickname	Client.cpp	/^void	Client::setNickname(const std::string &nickna/
+setNickname	Client.cpp	/^void	Client::setNickname(const std::string nicknam/
 setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_pass/
 setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket /
-setUsername	Client.cpp	/^void	Client::setUsername(const std::string &userna/
+setUsername	Client.cpp	/^void	Client::setUsername(const std::string usernam/
 start	Server.cpp	/^void	Server::start(int port, const char *password)/
 what	Server.cpp	/^const char	*Server::Error::what(void) const throw(/
 what	Client.cpp	/^const char	*Client::Error::what(void) const throw(/
