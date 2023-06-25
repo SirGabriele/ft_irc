@@ -3,6 +3,7 @@
 void	Server::_settingUsername(std::stringstream & ss, Client & client)
 {
 	std::string	username;
+	std::string	str;
 	size_t		pos;
 
 	pos = client.getInput().find_first_of(" ");
@@ -13,12 +14,14 @@ void	Server::_settingUsername(std::stringstream & ss, Client & client)
 		{
 			ss >> username;
 			if (client.getUsername().empty() == true)
-				std::cout << "Your username has been set to '" << username << "'\n";
-			else if (client.getUsername().empty() == false)
-				std::cout << "Your username has been updated to '" << username << "'\n";
+				str = "Your username has been set to '" + username + "'\n";
+			else
+				str = "Your username has been updated to '" + username + "'\n";
 			client.setUsername(username);
+			send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 			return ;
 		}
 	}
-	std::cout << "Incorrect command USER\n";
+	str = "Incorrect command USER\n";
+	send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 }

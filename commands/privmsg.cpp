@@ -6,7 +6,7 @@
 /*   By: jsauvain <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 08:52:23 by jsauvain          #+#    #+#             */
-/*   Updated: 2023/06/25 13:50:30 by jsauvain         ###   ########.fr       */
+/*   Updated: 2023/06/25 15:43:16 by jsauvain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,26 @@ void	Server::_sendMessage(Client & client, int indexDestClient)
 				return ;
 			pos = client.getInput().find_first_not_of(" 	", pos);
 		}
-		message = client.getInput().substr(pos);
+		message = "From " + client.getNickname() + ": " + client.getInput().substr(pos);
 		//Mettre une longeur de message max ?
 		if (send(_allClients[indexDestClient].getSocket(), message.c_str(), \
 			message.length(), MSG_DONTWAIT) == -1)
-			std::cout << "Message could not be sent\n";
+		{
+			message = "There was an error sending the message\n";
+			send(client.getSocket(), message.c_str(), message.length(), MSG_DONTWAIT);
+		}
 }
 
 void	Server::_privmsg(std::stringstream & ss, Client & client)
 {
 		std::vector<Client>::iterator	it;
+		std::string						str;
 		std::string						nickname;
 
 		if (client.getNickname().empty() == true)
-			std::cout << "You have to set a nickname\n";
+			str = "You have to set a nickname\n";
 		else if (client.getUsername().empty() == true)
-			std::cout << "You have to set a username\n";
+			str = "You have to set a username\n";
 		else
 		{
 			ss >> nickname;
@@ -52,8 +56,9 @@ void	Server::_privmsg(std::stringstream & ss, Client & client)
 				}
 			}
 			if (nickname.empty() == false)
-				std::cout << "user '" << nickname << "' not found\n";
+				str = "user '" + nickname + "' not found\n";
 			else
-				std::cout << "You must specify who the message is adressed to\n";
+				str = "You must specify who the message is adressed to\n";
 		}
+		send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 }		

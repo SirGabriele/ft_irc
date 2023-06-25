@@ -3,6 +3,7 @@
 void	Server::_settingPassword(std::stringstream & ss, Client & client)
 {
 	std::string	password;
+	std::string	str("Incorrect password\n");
 	size_t		pos;
 
 	pos = client.getInput().find_first_of(" ");
@@ -13,11 +14,11 @@ void	Server::_settingPassword(std::stringstream & ss, Client & client)
 		{
 			ss >> password;
 			if (_password.compare(password) == 0)
+			{
 				client.setPassword(true);
-			else
-				std::cout << "Incorrect password\n";
-			return;
+				return ;
+			}
 		}
 	}
-	std::cout << "Incorrect command PASS\n";
+	send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 }

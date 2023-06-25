@@ -3,6 +3,7 @@
 void	Server::_settingNickname(std::stringstream & ss, Client & client)
 {
 	std::string	nickname;
+	std::string	str;
 	size_t		pos;
 
 	pos = client.getInput().find_first_of(" ");
@@ -13,12 +14,14 @@ void	Server::_settingNickname(std::stringstream & ss, Client & client)
 		{
 			ss >> nickname;
 			if (client.getNickname().empty() == true)
-				std::cout << "Your nickname has been set to '" << nickname << "'\n";
-			else if (client.getNickname().empty() == false)
-				std::cout << "Your nickname has been updated to '" << nickname << "'\n";
+				str = "Your nickname has been set to '" + nickname + "'\n";
+			else
+				str = "Your nickname has been updated to '" + nickname + "'\n";
 			client.setNickname(nickname);
+			send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 			return ;
 		}
 	}
-	std::cout << "Incorrect command NICK\n";
+	str = "Incorrect command NICK\n";
+	send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 }
