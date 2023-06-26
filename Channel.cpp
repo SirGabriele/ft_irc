@@ -54,8 +54,13 @@ bool	Channel::isClientAlreadyMember(const Client &client) const
 	/*	END OF PUBLIC METHODS	*/
 
 	/*	START OF GETTERS	*/
-std::pair<bool, std::string>	Channel::getPassword(void) const
+const std::pair<bool, std::string>	&Channel::getPassword(void) const
 {
 	return (this->_password);
+}
+
+const std::string	&Channel::getName(void) const
+{
+	return (this->_name);
 }
 	/*	END OF GETTERS	*/

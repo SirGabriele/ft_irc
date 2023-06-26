@@ -48,6 +48,7 @@ class	Server
 
 		void	start(int, const char *);
 		bool	run(void);
+		void	displayChannels(Client &) const;
 
 		int		getMaxFd(void) const;
 		int		getSocket(void) const;
@@ -67,21 +68,26 @@ class	Server
 		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
 
-		bool	_receiveData(int);
-		bool	_acceptNewClient(void);
-		bool	_processInput(int, const char *);
+		void	_receiveData(int);
+		void	_acceptNewClient(void);
+		void	_processInput(int, const char *);
 		void	_disconnectClient(int);
 		void	_detectCommand(Client &);
 		void	_sendMessageToClient(const Client &, const std::string &) const;
 		void	_join(std::istringstream &, Client &);
 		void	_createChannel(const std::string &, Client &);
 		void	_createChannel(const std::string &, const std::string &, Client &);
+		void	_displayClient(const std::string &) const;
 
 		void	_nick(std::istringstream &, Client &);
 		void	_user(std::istringstream &, Client &);
+		void	_whois(std::istringstream &, Client &) const;
 		bool	_isChannelNameValid(const std::string &);
+		void	_displayChannels(Client &) const;
 
+		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;
+		int				_getClientIndex(const std::string &) const;
 
 		void	_setPassword(const std::stringstream &, Client &);
 		void	_setUsername(const std::stringstream &, Client &);

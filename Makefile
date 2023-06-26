@@ -6,7 +6,7 @@
 #    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/23 18:03:16 by kbrousse         ###   ########.fr        #
+#    Updated: 2023/06/26 18:14:32 by kbrousse         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,11 @@ SRC =	main.cpp			\
 		run.cpp				\
 		detectCommand.cpp
 
-COMMANDS =	join.cpp	\
-			nick.cpp	\
-			user.cpp
+COMMANDS =	join.cpp			\
+			nick.cpp			\
+			user.cpp			\
+			whois.cpp			\
+			displayChannels.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\

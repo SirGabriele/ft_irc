@@ -5,7 +5,7 @@ Client::Client(void)
 
 }
 
-Client::Client(int port): _username(""), _input(""), _socket(0), _port(port)
+Client::Client(int port): _username(""), _nickname(""), _input(""), _socket(0), _port(port)
 {
 	this->_initSinValues();
 }

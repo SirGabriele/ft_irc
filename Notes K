@@ -1,1 +1,5 @@
 J'ai commencé à remplir server._allCommands[] dans le constructeur. a finir
+
+---------------------------
+
+retirer _port de Client.hpp?

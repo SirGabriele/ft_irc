@@ -17,7 +17,8 @@ class	Channel
 		void	addClient(const Client &);
 		bool	isClientAlreadyMember(const Client &) const;
 
-		std::pair<bool, std::string>	getPassword(void) const;
+		const std::string					&getName(void) const;
+		const std::pair<bool, std::string>	&getPassword(void) const;
 	
 	private:
 		Channel(void);
