@@ -28,6 +28,7 @@ Server	&Server::operator=(const Server &src)
 	{
 		this->_allChannels = src._allChannels;
 		this->_allClients = src._allClients;
+		this->_usernameList = src._usernameList;
 		this->_sin = src._sin;
 		this->_password = src._password;
 		this->_readfds = src._readfds;
@@ -141,37 +142,8 @@ void	Server::_acceptNewClient(void)
 	FD_SET(clientSocket, &this->_readfds);
 	FD_SET(clientSocket, &this->_writefds);
 	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
-
 	this->_nbClients++;
-	std::cout << "New client added" << std::endl;
-}
-
-void	Server::_disconnectClient(int socket)
-{
-	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
-	{
-		if (this->_allClients[i].getSocket() == socket)
-		{
-			this->_allClients[i].closeSocket();
-			this->_allClients.erase(this->_allClients.begin() + i);
-			FD_CLR(socket, &this->_readfds);
-			FD_CLR(socket, &this->_writefds);
-			this->_nbClients--;
-			this->_maxFd = 0;
-			this->_setMaxFd();
-			std::cout << "Client has been disconnected" << std::endl;
-		}
-	}
-}
-
-bool	isInputFull(const std::string &input)
-{
-	for (std::string::size_type i = 0; i < input.length(); i++)
-	{
-		if (input[i] == '\n')
-			return (true);
-	}
-	return (false);
+	std::cout << "New client '" << newClient.getUsername().second << "' added" << std::endl;
 }
 
 void	Server::_processInput(int socket, const char *buffer)
@@ -188,7 +160,8 @@ void	Server::_processInput(int socket, const char *buffer)
 	if (j != std::string::npos) // execute command
 	{
 		this->_detectCommand(this->_allClients[i]);
-		this->_allClients[i].resetInput();
+		if (static_cast<std::vector<Client>::size_type>(i) < this->_allClients.size())
+			this->_allClients[i].resetInput();
 	}
 	else // a supprimer
 	{
@@ -198,11 +171,23 @@ void	Server::_processInput(int socket, const char *buffer)
 
 void	Server::_sendMessageToClient(const Client &client, const std::string &message) const
 {
-	if (send(client.getSocket(), message.c_str(), message.length(), 0) < 0)
+	if (send(client.getSocket(), message.c_str(), message.length(), MSG_NOSIGNAL) < 0)
 		std::cerr << "Failed send()" << std::endl;
 }
 
-void	Server::_displayClient(const std::string &username) const
+void	Server::_sendMessageToChannel(const Channel &channel, const std::string &message) const
+{
+	std::vector<Client>::const_iterator	it = channel.getClients().begin();
+
+	while (it != channel.getClients().end())
+	{
+		if (send(it->getSocket(), message.c_str(), message.length(), 0) < 0)
+			std::cerr << "Failed send()" << std::endl;
+		it++;
+	}
+}
+
+void	Server::_displayClient(const Client &client, const std::string &username) const
 {
 	std::string	message;
 	int i = _getClientIndex(username);
@@ -213,27 +198,23 @@ void	Server::_displayClient(const std::string &username) const
 		return ;
 	}
 
-	Client	client = this->_getClient(i);
+	Client	toFind = this->_getClient(i);
 
-	message = HEX_BOLD + "Username : " + HEX_RESET + client.getUsername() + '\n';
-	if (client.getNickname() != "")
-		message += HEX_BOLD + "Nickname : " + HEX_RESET + client.getNickname() + '\n';
-	_sendMessageToClient(client, message);
+	if (toFind.getUsername().first == true)
+	{
+		message = HEX_BOLD + "Username : " + HEX_RESET + toFind.getUsername().second + '\n';
+		if (toFind.getNickname().first == true)
+			message += HEX_BOLD + "Nickname : " + HEX_RESET + toFind.getNickname().second + '\n';
+		_sendMessageToClient(client, message);
+	}
 }
 
-void	Server::_displayChannels(Client &client) const
+void	Server::_shutdownServer(void)
 {
-	std::map<std::string, Channel>::const_iterator	it = this->_allChannels.begin();
-	std::string										message;
-
-	message = HEX_INFO + HEX_BOLD + " List of all channels currently existing:" + HEX_RESET + '\n';
-
-	while (it != this->_allChannels.end())
+	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
 	{
-		message += "- " + it->second.getName() + '\n';
-		it++;
+		this->_disconnectClient(this->_allClients[i]);
 	}
-	_sendMessageToClient(client, message);
 }
 	/*	END OF PRIVATE METHODS	*/
 
@@ -272,7 +253,7 @@ int	Server::_getClientIndex(const std::string &username) const
 {
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
 	{
-		if (this->_allClients[i].getUsername() == username)
+		if (this->_allClients[i].getUsername().second == username)
 			return (i);
 	}
 	return (-1);

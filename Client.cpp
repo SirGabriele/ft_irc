@@ -5,7 +5,7 @@ Client::Client(void)
 
 }
 
-Client::Client(int port): _username(""), _nickname(""), _input(""), _socket(0), _port(port)
+Client::Client(int port): _username(false, ""), _nickname(false, ""), _input(""), _socket(0), _port(port)
 {
 	this->_initSinValues();
 }
@@ -24,12 +24,13 @@ Client	&Client::operator=(const Client &src)
 {
 	if (this != &src)
 	{
+		this->_allChannels = src._allChannels;
 		this->_sin = src._sin;
+		this->_username = src._username;
+		this->_nickname = src._nickname;
+		this->_input = src._input;
 		this->_socket = src._socket;
 		this->_port = src._port;
-		this->_nickname = src._nickname;
-		this->_username = src._username;
-		this->_input = src._input;
 	}
 	return (*this);
 }
@@ -43,12 +44,17 @@ void	Client::closeSocket(void) const
 
 void	Client::completeInput(const char *toAdd)
 {
-	this->_input += toAdd;
+	this->_input.append(toAdd);
 }
 
 void	Client::resetInput(void)
 {
-	this->_input = "";
+	this->_input.erase(0, std::string::npos);
+}
+
+void	Client::addChannel(const std::string &channel)
+{
+	this->_allChannels.push_back(channel);
 }
 	/*	END OF PUBLIC METHODS	*/
 
@@ -62,11 +68,13 @@ void	Client::_initSinValues(void)
 	/*	END OF PRIVATE METHODS	*/
 
 	/*	START OF GETTERS	*/
+const std::vector<std::string>	&Client::getAllChannels(void) const	{return (this->_allChannels);}
+
 struct sockaddr_in	Client::getSin(void) const	{return (this->_sin);}
 
-const std::string	&Client::getNickname(void) const	{return (this->_nickname);}
+const std::pair<bool, std::string>	&Client::getNickname(void) const	{return (this->_nickname);}
 
-const std::string	&Client::getUsername(void) const	{return (this->_username);}
+const std::pair<bool, std::string>	&Client::getUsername(void) const	{return (this->_username);}
 
 const std::string	&Client::getInput(void)	{return (this->_input);}
 
@@ -74,9 +82,17 @@ int	Client::getSocket(void) const	{return (this->_socket);}
 	/*	END OF GETTERS	*/
 
 	/*	START OF SETTERS	*/
-void	Client::setNickname(const std::string &nickname)	{this->_nickname = nickname;}
+void	Client::setNickname(const std::string &nickname)
+{
+	this->_nickname.first = true;
+	this->_nickname.second = nickname;
+}
 
-void	Client::setUsername(const std::string &username)	{this->_username = username;}
+void	Client::setUsername(const std::string &username)
+{
+	this->_username.first = true;
+	this->_username.second = username;
+}
 
 void	Client::setSocket(int socket)	{this->_socket = socket;}
 	/*END OF SETTERS	*/

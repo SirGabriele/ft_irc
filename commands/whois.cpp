@@ -6,7 +6,7 @@ void	Server::_whois(std::istringstream &ss, Client &client) const
 
 	ss >> id;
 	if (id.compare("me") == 0)
-		_displayClient(client.getUsername());
+		_displayClient(client, client.getUsername().second);
 	else
-		_displayClient(id);
+		_displayClient(client, id);
 }

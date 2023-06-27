@@ -2,7 +2,7 @@
 
 void	Server::_createChannel(const std::string &channel, Client &client)
 {
-	Channel	newChannel(channel);
+	Channel	newChannel(channel, client.getUsername().second);
 
 	newChannel.addClient(client);
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
@@ -10,13 +10,13 @@ void	Server::_createChannel(const std::string &channel, Client &client)
 
 void	Server::_createChannel(const std::string &channel, const std::string &password, Client &client)
 {
-	Channel	newChannel(channel, password);
+	Channel	newChannel(channel, password, client.getUsername().second);
 
 	newChannel.addClient(client);
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
 
-bool	Server::_isChannelNameValid(const std::string &channel)
+bool	Server::_isChannelNameValid(const std::string &channel) const
 {
 	if (channel[0] != '#')
 	{
@@ -63,12 +63,11 @@ void	Server::_join(std::istringstream &ss, Client &client)
 			return ;
 		}
 		if (it->second.getPassword().first == true && password != it->second.getPassword().second)
-			_sendMessageToClient(client, HEX_INFO + "Incorrect password. Can not join this channel\n");
+			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join this channel\n");
 		else
 		{
 			it->second.addClient(client);
-			_sendMessageToClient(client, HEX_INFO + "Channel joined\n");
+			_sendMessageToChannel(it->second, HEX_INFO + ' ' + client.getUsername().second + " joined the channel\n");
 		}
 	}
-
 }

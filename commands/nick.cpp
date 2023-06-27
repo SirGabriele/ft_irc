@@ -7,7 +7,7 @@ void	Server::_nick(std::istringstream &ss, Client &client)
 	std::string	skip;
 
 	ss >> nickname;
-	if (nickname == client.getNickname())
+	if (nickname == client.getNickname().second)
 		_sendMessageToClient(client, HEX_INFO + " This is already your nickname\n");
 	else
 	{
@@ -17,5 +17,6 @@ void	Server::_nick(std::istringstream &ss, Client &client)
 	ss >> skip;
 	if (ss.eof() == true)
 		return;
-	_user(ss, client);
+	else if (skip.compare("USER") == 0)
+		_user(ss, client);
 }

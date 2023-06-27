@@ -12,6 +12,7 @@
 
 # include <iostream>
 # include <string>
+# include <vector>
 
 # include "colours.hpp"
 
@@ -26,12 +27,14 @@ class	Client
 		void	closeSocket(void) const;
 		void	completeInput(const char *);
 		void	resetInput(void);
+		void	addChannel(const std::string &);
 
-		struct sockaddr_in	getSin(void) const;
-		const std::string	&getNickname(void) const;
-		const std::string	&getUsername(void) const;
-		const std::string	&getInput(void);
-		int 				getSocket(void) const;
+		struct sockaddr_in					getSin(void) const;
+		const std::vector<std::string>		&getAllChannels(void) const;
+		const std::pair<bool, std::string>	&getNickname(void) const;
+		const std::pair<bool, std::string>	&getUsername(void) const;
+		const std::string					&getInput(void);
+		int 								getSocket(void) const;
 
 		void	setNickname(const std::string &);
 		void	setUsername(const std::string &);
@@ -42,13 +45,13 @@ class	Client
 
 		void	_initSinValues(void);
 
-		
-		struct sockaddr_in	_sin;
-		std::string			_username;
-		std::string			_nickname;
-		std::string			_input;
-		int					_socket;
-		int					_port;
+		std::vector<std::string>		_allChannels;
+		struct sockaddr_in				_sin;
+		std::pair<bool, std::string>	_username;
+		std::pair<bool, std::string>	_nickname;
+		std::string						_input;
+		int								_socket;
+		int								_port;
 
 	/*	START OF EXCEPTIONS	*/
 	class	Error: public std::exception

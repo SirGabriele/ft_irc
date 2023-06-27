@@ -19,8 +19,6 @@ void	Server::_receiveData(int socket)
 			std::cerr << "Failed recv()" << std::endl;
 			return ;
 		}
-		else if (std::strncmp(buffer, "quit", 5) == 0)
-			_disconnectClient(socket);
 		else if (howManyBitsRead > 0)
 			_processInput(socket, buffer);
 	}
@@ -45,5 +43,6 @@ bool	Server::run(void)
 				_receiveData(i);
 		}
 	}
+	_shutdownServer();
 	return (true);
 }
