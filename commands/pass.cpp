@@ -1,24 +1,29 @@
 #include "Server.hpp"
 
-void	Server::_settingPassword(std::stringstream & ss, Client & client)
+void	Server::_pass(std::istringstream & ss, Client & client)
 {
 	std::string	password;
-	std::string	str("Incorrect password\n");
-	size_t		pos;
+	std::string	word;
 
-	pos = client.getInput().find_first_of(" ");
-	if (pos != std::string::npos)
+	if (client.getPassword() == true)
 	{
-		pos = client.getInput().find_first_of(" ", pos + 1);
-		if (pos == std::string::npos)
-		{
-			ss >> password;
-			if (_password.compare(password) == 0)
-			{
-				client.setPassword(true);
-				return ;
-			}
-		}
+		_sendMessageToClient(client, HEX_INFO + " You already authentificated\n");
+		return ;
 	}
-	send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
+
+	ss >> password;
+	ss >> word;
+	while (ss.eof() != true)
+	{
+		password += ' ';
+		password += word;
+		ss >> word;
+	}
+	if (password == _password)
+	{
+		client.setPassword(true);
+		_sendMessageToClient(client, HEX_INFO + " You successfully authentificated\n");
+	}
+	else
+		_sendMessageToClient(client, HEX_INFO + " Incorrect password\n");
 }

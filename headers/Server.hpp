@@ -77,6 +77,7 @@ class	Server
 		void	_detectCommand(Client &);
 		void	_sendMessageToClient(const Client &, const std::string &) const;
 		void	_sendMessageToChannel(const Channel &, const std::string &) const;
+		void	_sendMessage(Client &, Client &);
 		void	_join(std::istringstream &, Client &);
 		void	_createChannel(const std::string &, Client &);
 		void	_createChannel(const std::string &, const std::string &, Client &);
@@ -88,8 +89,8 @@ class	Server
 		void	_whois(std::istringstream &, Client &) const;
 		bool	_isChannelNameValid(const std::string &) const;
 		void	_displayChannels(Client &) const;
-    void	_privmsg(std::stringstream & ss, Client & client);
-		void	_setPasswordClient(std::stringstream & ss, Client & client);
+		void	_privmsg(std::istringstream & ss, Client & client);
+		void	_pass(std::istringstream & ss, Client & client);
   
 		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;

@@ -4,19 +4,16 @@ SRC =	main.cpp			\
 		Server.cpp			\
 		Client.cpp			\
 		Channel.cpp			\
-		run.cpp				\
-
-COMMANDS =	detectCommand.cpp	\
-			privmsg.cpp			\
-			pass.cpp			\
-			nick.cpp			\
-			user.cpp			\
+		detectCommand.cpp	\
+		run.cpp
 
 COMMANDS =	join.cpp			\
 			nick.cpp			\
 			user.cpp			\
 			whois.cpp			\
 			displayChannels.cpp	\
+			privmsg.cpp			\
+			pass.cpp			\
 			disconnect.cpp
 
 HEADERS =	headers/colours.hpp	\
