@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/27 13:36:05 by kbrousse         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME =	ircserv
 
 SRC =	main.cpp			\
@@ -17,7 +5,12 @@ SRC =	main.cpp			\
 		Client.cpp			\
 		Channel.cpp			\
 		run.cpp				\
-		detectCommand.cpp
+
+COMMANDS =	detectCommand.cpp	\
+			privmsg.cpp			\
+			pass.cpp			\
+			nick.cpp			\
+			user.cpp			\
 
 COMMANDS =	join.cpp			\
 			nick.cpp			\

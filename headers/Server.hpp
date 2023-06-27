@@ -19,7 +19,7 @@
 
 /*	select()	*/
 # include <sys/select.h>
-
+# include <sstream>
 # include <iostream>
 # include <string>
 # include <vector>
@@ -88,7 +88,9 @@ class	Server
 		void	_whois(std::istringstream &, Client &) const;
 		bool	_isChannelNameValid(const std::string &) const;
 		void	_displayChannels(Client &) const;
-
+    void	_privmsg(std::stringstream & ss, Client & client);
+		void	_setPasswordClient(std::stringstream & ss, Client & client);
+  
 		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;
 		int				_getClientIndex(const std::string &) const;

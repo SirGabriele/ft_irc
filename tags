@@ -1,0 +1,59 @@
+Client	Client.cpp	/^Client::Client(void)$/
+Client	Client.cpp	/^Client::Client(const Client &src)$/
+Client::Client	Client.cpp	/^Client::Client(int port): _username(""), _password/
+Client::Error::Error	Client.cpp	/^Client::Error::Error(const std::string &str) throw/
+Mmain.cpp	main.cpp	/^int	main(int argc, char **argv)$/
+Server	Server.cpp	/^Server::Server(const Server &src)$/
+Server::Error::Error	Server.cpp	/^Server::Error::Error(const std::string &str) throw/
+Server::Server	Server.cpp	/^Server::Server(void): _password(""), _socket(0), _/
+_acceptNewClient	Server.cpp	/^bool	Server::_acceptNewClient(void)$/
+_bindSocket	Server.cpp	/^void	Server::_bindSocket(void) const$/
+_closeSocket	Server.cpp	/^void	Server::_closeSocket(void) const$/
+_createSocket	Server.cpp	/^void	Server::_createSocket(void)$/
+_detectCommand	commands/detectCommand.cpp	/^void	Server::_detectCommand(Client & client)$/
+_disconnectClient	Server.cpp	/^void	Server::_disconnectClient(int socket)$/
+_getClientIndex	Server.cpp	/^int	Server::_getClientIndex(int socket) const$/
+_initSinValues	Server.cpp	/^void	Server::_initSinValues(void)$/
+_initSinValues	Client.cpp	/^void	Client::_initSinValues(void)$/
+_listenSocket	Server.cpp	/^void	Server::_listenSocket(void) const$/
+_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::stringstream & ss, Clie/
+_processInput	Server.cpp	/^bool	Server::_processInput(int socket, const char /
+_receiveData	run.cpp	/^bool	Server::_receiveData(int socket)$/
+_sendMessage	commands/privmsg.cpp	/^void	Server::_sendMessage(Client & client, int ind/
+_setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/
+_setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/
+_settingNickname	commands/nick.cpp	/^void	Server::_settingNickname(std::stringstream & /
+_settingPassword	commands/pass.cpp	/^void	Server::_settingPassword(std::stringstream & /
+_settingUsername	commands/user.cpp	/^void	Server::_settingUsername(std::stringstream & /
+closeSocket	Client.cpp	/^void	Client::closeSocket(void) const$/
+completeInput	Client.cpp	/^void	Client::completeInput(const char *toAdd)$/
+g_signal	main.cpp	9
+getExceptFds	Server.cpp	/^fd_set	Server::getExceptFds(void) const$/
+getInput	Client.cpp	/^const std::string	&Client::getInput(void)	{return /
+getMaxFd	Server.cpp	/^int	Server::getMaxFd(void) const$/
+getNickname	Client.cpp	/^const std::string	&Client::getNickname(void) const/
+getPassword	Client.cpp	/^bool				Client::getPassword(void) const	{return (t/
+getReadFds	Server.cpp	/^fd_set	Server::getReadFds(void) const$/
+getSin	Client.cpp	/^struct sockaddr_in	Client::getSin(void) const	{ret/
+getSocket	Server.cpp	/^int	Server::getSocket(void) const$/
+getSocket	Client.cpp	/^int	Client::getSocket(void) const	{return (this->_/
+getUsername	Client.cpp	/^const std::string	&Client::getUsername(void) const/
+getWriteFds	Server.cpp	/^fd_set	Server::getWriteFds(void) const$/
+handleSignal	main.cpp	/^void	handleSignal(int sig)$/
+isInputFull	utils/isInputFull.cpp	/^bool	isInputFull(const std::string &input)$/
+isPortValid	main.cpp	/^int	isPortValid(std::string &portStr)$/
+operator=	Server.cpp	/^Server	&Server::operator=(const Server &src)$/
+operator=	Client.cpp	/^Client	&Client::operator=(const Client &src)$/
+resetInput	Client.cpp	/^void	Client::resetInput(void)$/
+run	run.cpp	/^bool	Server::run(void)$/
+setNickname	Client.cpp	/^void	Client::setNickname(const std::string nicknam/
+setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_pass/
+setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket /
+setUsername	Client.cpp	/^void	Client::setUsername(const std::string usernam/
+start	Server.cpp	/^void	Server::start(int port, const char *password)/
+what	Server.cpp	/^const char	*Server::Error::what(void) const throw(/
+what	Client.cpp	/^const char	*Client::Error::what(void) const throw(/
+~Client	Client.cpp	/^Client::~Client(void)$/
+~Error	Server.cpp	/^Server::Error::~Error(void) throw()$/
+~Error	Client.cpp	/^Client::Error::~Error(void) throw()$/
+~Server	Server.cpp	/^Server::~Server(void)$/

@@ -5,7 +5,7 @@ Client::Client(void)
 
 }
 
-Client::Client(int port): _username(false, ""), _nickname(false, ""), _input(""), _socket(0), _port(port)
+Client::Client(int port): _username(false, ""), _nickname(false, ""), _password(false), _input(""), _socket(0), _port(port)
 {
 	this->_initSinValues();
 }
@@ -31,6 +31,7 @@ Client	&Client::operator=(const Client &src)
 		this->_input = src._input;
 		this->_socket = src._socket;
 		this->_port = src._port;
+		this->_password = src._password;
 	}
 	return (*this);
 }
@@ -72,6 +73,8 @@ const std::vector<std::string>	&Client::getAllChannels(void) const	{return (this
 
 struct sockaddr_in	Client::getSin(void) const	{return (this->_sin);}
 
+bool				Client::getPassword(void) const	{return (this->_password);}
+
 const std::pair<bool, std::string>	&Client::getNickname(void) const	{return (this->_nickname);}
 
 const std::pair<bool, std::string>	&Client::getUsername(void) const	{return (this->_username);}
@@ -82,6 +85,8 @@ int	Client::getSocket(void) const	{return (this->_socket);}
 	/*	END OF GETTERS	*/
 
 	/*	START OF SETTERS	*/
+void	Client::setPassword(bool status)	{this->_password = status;}
+
 void	Client::setNickname(const std::string &nickname)
 {
 	this->_nickname.first = true;
