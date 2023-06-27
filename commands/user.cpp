@@ -1,27 +1,32 @@
 #include "Server.hpp"
 
-void	Server::_settingUsername(std::stringstream & ss, Client & client)
+bool	Server::_isUsernameAlreadyTaken(const std::string &username) const
+{
+	if (_usernameList.size() == 0)
+		return (false);
+	for (std::vector<std::string>::size_type i = 0; i < _usernameList.size(); i++)
+	{
+		if (_usernameList[i] == username)
+			return (true);
+	}
+	return (false);
+}
+
+void	Server::_user(std::istringstream &ss, Client &client)
 {
 	std::string	username;
-	std::string	str;
-	size_t		pos;
 
-	pos = client.getInput().find_first_of(" ");
-	if (pos != std::string::npos)
+	ss >> username;
+	if (ss.eof() == true)
+		return ;
+	else if (username == client.getUsername().second)
+		_sendMessageToClient(client, HEX_INFO + " This is already your username\n");
+	else if (_isUsernameAlreadyTaken(username) == true)
+		_sendMessageToClient(client, HEX_INFO + " This username is already taken\n");
+	else
 	{
-		pos = client.getInput().find_first_of(" ", pos + 1);
-		if (pos == std::string::npos)
-		{
-			ss >> username;
-			if (client.getUsername().empty() == true)
-				str = "Your username has been set to '" + username + "'\n";
-			else
-				str = "Your username has been updated to '" + username + "'\n";
-			client.setUsername(username);
-			send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
-			return ;
-		}
+		client.setUsername(username);
+		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to " + HEX_BOLD + username + HEX_RESET + "\n");
+		_usernameList.push_back(username);
 	}
-	str = "Incorrect command USER\n";
-	send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
 }

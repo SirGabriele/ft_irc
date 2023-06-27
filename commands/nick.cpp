@@ -1,27 +1,22 @@
 #include "Server.hpp"
 
-void	Server::_settingNickname(std::stringstream & ss, Client & client)
+void	Server::_nick(std::istringstream &ss, Client &client)
 {
 	std::string	nickname;
-	std::string	str;
-	size_t		pos;
+	std::string	username;
+	std::string	skip;
 
-	pos = client.getInput().find_first_of(" ");
-	if (pos != std::string::npos)
+	ss >> nickname;
+	if (nickname == client.getNickname().second)
+		_sendMessageToClient(client, HEX_INFO + " This is already your nickname\n");
+	else
 	{
-		pos = client.getInput().find_first_of(" ", pos + 1);
-		if (pos == std::string::npos)
-		{
-			ss >> nickname;
-			if (client.getNickname().empty() == true)
-				str = "Your nickname has been set to '" + nickname + "'\n";
-			else
-				str = "Your nickname has been updated to '" + nickname + "'\n";
-			client.setNickname(nickname);
-			send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
-			return ;
-		}
+		client.setNickname(nickname);
+		_sendMessageToClient(client, HEX_INFO + " Your nickname have been updated to " + HEX_BOLD + nickname + HEX_RESET + "\n");
 	}
-	str = "Incorrect command NICK\n";
-	send(client.getSocket(), str.c_str(), str.length(), MSG_DONTWAIT);
+	ss >> skip;
+	if (ss.eof() == true)
+		return;
+	else if (skip.compare("USER") == 0)
+		_user(ss, client);
 }

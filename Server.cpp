@@ -24,15 +24,20 @@ Server::~Server(void)
 
 Server	&Server::operator=(const Server &src)
 {
-	this->_allClients = src._allClients;
-	this->_sin = src._sin;
-	this->_password = src._password;
-	this->_readfds = src._readfds;
-	this->_writefds = src._writefds;
-	this->_socket = src._socket;
-	this->_port = src._port;
-	this->_nbClients = src._nbClients;
-	this->_maxFd = src._maxFd;
+	if (this != &src)
+	{
+		this->_allChannels = src._allChannels;
+		this->_allClients = src._allClients;
+		this->_usernameList = src._usernameList;
+		this->_sin = src._sin;
+		this->_password = src._password;
+		this->_readfds = src._readfds;
+		this->_writefds = src._writefds;
+		this->_socket = src._socket;
+		this->_port = src._port;
+		this->_nbClients = src._nbClients;
+		this->_maxFd = src._maxFd;
+	}
 	return (*this);
 }
 
@@ -49,10 +54,8 @@ void	Server::start(int port, const char *password)
 
 	FD_ZERO(&this->_readfds);
 	FD_ZERO(&this->_writefds);
-	FD_ZERO(&this->_exceptfds);
 	FD_SET(this->_socket, &this->_readfds);
 	FD_SET(this->_socket, &this->_writefds);
-	FD_SET(this->_socket, &this->_exceptfds);
 	
 	this->_setSockOptReuseAddr(); 
 	this->_bindSocket();
@@ -118,7 +121,7 @@ void	Server::_closeSocket(void) const
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "Failed close(server.socket)" << std::endl;
 }
 
-bool	Server::_acceptNewClient(void)
+void	Server::_acceptNewClient(void)
 {
 	Client				newClient(this->_port);
 	struct sockaddr_in	clientSin = newClient.getSin();
@@ -129,7 +132,8 @@ bool	Server::_acceptNewClient(void)
 	if (this->_socket == -1)
 	{
 		this->_closeSocket();
-		return (false);
+		std::cerr << "Failed accept()" << std::endl;
+		return ;
 	}
 	newClient.setSocket(clientSocket);
 
@@ -137,51 +141,80 @@ bool	Server::_acceptNewClient(void)
 
 	FD_SET(clientSocket, &this->_readfds);
 	FD_SET(clientSocket, &this->_writefds);
-	FD_SET(clientSocket, &this->_exceptfds);
 	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
-
 	this->_nbClients++;
-	std::cout << "New client connected" << std::endl;
-	return (true);
+	std::cout << "New client '" << newClient.getUsername().second << "' added" << std::endl;
 }
 
-void	Server::_disconnectClient(int socket)
-{
-	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
-	{
-		if (this->_allClients[i].getSocket() == socket)
-		{
-			this->_allClients[i].closeSocket();
-			this->_allClients.erase(this->_allClients.begin() + i);
-			FD_CLR(socket, &this->_readfds);
-			FD_CLR(socket, &this->_writefds);
-			FD_CLR(socket, &this->_exceptfds);
-			this->_nbClients--;
-			this->_maxFd = 0;
-			this->_setMaxFd();
-			std::cout << "Client has been disconnected" << std::endl;
-		}
-	}
-}
-
-bool	Server::_processInput(int socket, const char *buffer)
+void	Server::_processInput(int socket, const char *buffer)
 {
 	int	i = this->_getClientIndex(socket);
 	if (i == -1)
 	{
-		return (false);
+		std::cerr << "Failed to get client's index" << std::endl;
+		return ;
 	}
 	this->_allClients[i].completeInput(buffer);
-	if (isInputFull(this->_allClients[i].getInput()) == true) // execute command
+
+	std::string::size_type j = this->_allClients[i].getInput().find_first_of('\n', 0);
+	if (j != std::string::npos) // execute command
 	{
 		this->_detectCommand(this->_allClients[i]);
-		this->_allClients[i].resetInput();
+		if (static_cast<std::vector<Client>::size_type>(i) < this->_allClients.size())
+			this->_allClients[i].resetInput();
 	}
 	else // a supprimer
 	{
 		std::cout << "Incomplete command for now. Only have [" << buffer << ']' << std::endl;
 	}
-	return (true);
+}
+
+void	Server::_sendMessageToClient(const Client &client, const std::string &message) const
+{
+	if (send(client.getSocket(), message.c_str(), message.length(), MSG_NOSIGNAL) < 0)
+		std::cerr << "Failed send()" << std::endl;
+}
+
+void	Server::_sendMessageToChannel(const Channel &channel, const std::string &message) const
+{
+	std::vector<Client>::const_iterator	it = channel.getClients().begin();
+
+	while (it != channel.getClients().end())
+	{
+		if (send(it->getSocket(), message.c_str(), message.length(), 0) < 0)
+			std::cerr << "Failed send()" << std::endl;
+		it++;
+	}
+}
+
+void	Server::_displayClient(const Client &client, const std::string &username) const
+{
+	std::string	message;
+	int i = _getClientIndex(username);
+
+	if (i == -1)
+	{
+		std::cerr << "Failed to get client's index" << std::endl;
+		return ;
+	}
+
+	Client	toFind = this->_getClient(i);
+
+	if (toFind.getUsername().first == true)
+	{
+		message = HEX_BOLD + "Username : " + HEX_RESET + toFind.getUsername().second + '\n';
+		if (toFind.getNickname().first == true)
+			message += HEX_BOLD + "Nickname : " + HEX_RESET + toFind.getNickname().second + '\n';
+		_sendMessageToClient(client, message);
+	}
+}
+
+void	Server::_shutdownServer(void)
+{
+	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
+	{
+		this->_disconnectClient(this->_allClients[i]);
+	}
 }
 	/*	END OF PRIVATE METHODS	*/
 
@@ -201,11 +234,6 @@ fd_set	Server::getWriteFds(void) const
 	return (this->_writefds);
 }
 
-fd_set	Server::getExceptFds(void) const
-{
-	return (this->_exceptfds);
-}
-
 int	Server::getMaxFd(void) const
 {
 	return (this->_maxFd);
@@ -220,6 +248,25 @@ int	Server::_getClientIndex(int socket) const
 	}
 	return (-1);
 }
+
+int	Server::_getClientIndex(const std::string &username) const
+{
+	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
+	{
+		if (this->_allClients[i].getUsername().second == username)
+			return (i);
+	}
+	return (-1);
+}
+
+const Client	&Server::_getClient(int index) const
+{
+	return (this->_allClients[index]);
+}
+/*const Channel	&Server::getChannel(const std::string &name) const
+{
+	std::map<std::string, Channel>::iterator	it = this->_allChannels.find(name);
+}*/
 
 	/*	END OF GETTERS*/
 

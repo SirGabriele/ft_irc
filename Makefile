@@ -1,20 +1,9 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: kbrousse <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/14 16:23:17 by kbrousse          #+#    #+#              #
-#    Updated: 2023/06/23 16:43:56 by jsauvain         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME =	ircserv
 
 SRC =	main.cpp			\
 		Server.cpp			\
 		Client.cpp			\
+		Channel.cpp			\
 		run.cpp				\
 
 COMMANDS =	detectCommand.cpp	\
@@ -23,12 +12,18 @@ COMMANDS =	detectCommand.cpp	\
 			nick.cpp			\
 			user.cpp			\
 
-UTILS =	isInputFull.cpp
+COMMANDS =	join.cpp			\
+			nick.cpp			\
+			user.cpp			\
+			whois.cpp			\
+			displayChannels.cpp	\
+			disconnect.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
 			headers/Client.hpp	\
-			headers/ircserv.hpp	\
+			headers/Channel.hpp	\
+			headers/ircserv.hpp
 
 INCLUDE_FOLDER = -I headers/
 
@@ -36,9 +31,8 @@ OBJS_PATH = objects/
 
 OBJS = $(SRCS:%.cpp=$(OBJS_PATH)%.o)
 
-SRCS =	$(SRC)							\
-		$(addprefix utils/, $(UTILS))	\
-		$(addprefix commands/, $(COMMANDS))	\
+SRCS =	$(SRC)								\
+		$(addprefix commands/, $(COMMANDS))
 
 CC = c++
 

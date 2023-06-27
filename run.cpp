@@ -3,13 +3,10 @@
 /*	std::strncmp()	*/
 #include <cstring>
 
-bool	Server::_receiveData(int socket)
+void	Server::_receiveData(int socket)
 {
 	if (socket == this->_socket) // new connection
-	{
-		if (_acceptNewClient() == false)
-			return (false);
-	}
+		_acceptNewClient();
 	else // fd is ready to be used
 	{
 		char    buffer[BUFFER_SIZE];
@@ -20,17 +17,11 @@ bool	Server::_receiveData(int socket)
 		if (howManyBitsRead == -1)
 		{
 			std::cerr << "Failed recv()" << std::endl;
-			return (false) ;
+			return ;
 		}
-		else if (std::strncmp(buffer, "quit", 5) == 0)
-			_disconnectClient(socket);
 		else if (howManyBitsRead > 0)
-		{
-			if (_processInput(socket, buffer) == false)
-				return (false);
-		}
+			_processInput(socket, buffer);
 	}
-	return (true);
 }
 
 bool	Server::run(void)
@@ -39,9 +30,8 @@ bool	Server::run(void)
 	{
 		fd_set	readfds = _readfds;
 		fd_set	writefds = _writefds;
-		fd_set	exceptfds = _exceptfds;
 
-		if (select(_maxFd + 1, &readfds, &writefds, &exceptfds, NULL) < 0)
+		if (select(_maxFd + 1, &readfds, &writefds, NULL, NULL) < 0)
 		{
 			if (g_signal != 130)
 				std::cerr << "Failed select()" << std::endl;
@@ -50,11 +40,9 @@ bool	Server::run(void)
 		for (int i = 0; i <_maxFd + 1; i++)
 		{
 			if (FD_ISSET(i, &readfds) == 1)
-			{
-				if (_receiveData(i) == false)
-					return (false);
-			}
+				_receiveData(i);
 		}
 	}
+	_shutdownServer();
 	return (true);
 }

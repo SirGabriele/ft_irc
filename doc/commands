@@ -1,0 +1,82 @@
+/nomCommandeDansHexchat,[tokenQueRecoitLeServeur],➡️ceQueFaitLaCommande
+1	<param1>
+2	<param2>
+3	<param3>
+...	<quantité indéterminée de paramètres>
+❌	(fin des paramètres)
+
+						GENERAL RULES
+---------------------------------------------------------------------
+|																	|
+|	- Les noms de channels commencent toujours par un #				|
+|	- Vérifier si les paramètres acceptent de commencer par un #	|
+|																	|
+---------------------------------------------------------------------
+
+
+/channels,[channels],➡️afficher tous les channels
+❌
+
+
+
+
+
+/kick,[KICK],➡️kick un utilisateur d'un channel ou plusieurs
+1	<network de l'utilisateur>	(à ignorer)
+2	<username de l'utilisateur à kick>
+3	:	<raison du kick en autant de mots que voulu>
+...
+
+
+
+
+/quit,[QUIT],➡️deconnecte du serveur entier(donc de chaque channels rejoints)
+1	:	Leaving	(à ignorer)
+❌
+
+
+
+/invite,[INVITE],➡️invite un utilisateur à rejoindre un channel
+1	<username de l'utilisateur>
+2	<channel à rejoindre>
+❌
+
+
+
+/join,[JOIN],➡️rejoindre un channel
+1	<channel à rejoindre>
+2	<password> (optionel)
+❌
+
+
+
+/mode	à voir pour la gestion des modes de channels
+
+
+
+/msg,[PRIVMSG],➡️envoyer un message
+1	<username || channel> (username = message privé. channel = message sur un channel)
+2	<message en autant de mot que voulu, pouvant commancer par un #>
+...
+
+
+
+/topic
+
+
+
+/modify <parametre à modifier> <nouvelle valeur>
+
+
+
+/leave || /part <#channel à quitter>
+
+
+
+/nick,[NICK],➡️modifie le nickname
+1	<nickname>
+❌
+
+/whois,[whois],➡️affiche les informations du user
+1	<username>
+❌

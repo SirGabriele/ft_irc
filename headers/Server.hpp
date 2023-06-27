@@ -23,9 +23,17 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <map>
+# include <sstream>
 
 # include "colours.hpp"
 # include "Client.hpp"
+# include "Channel.hpp"
+
+/*	Hexchat text formatting	*/
+# define HEX_INFO std::string("\x02[INFO]\x0F")
+# define HEX_BOLD std::string("\x02")
+# define HEX_RESET std::string("\x0F")
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
 # define BUFFER_SIZE 1024
@@ -40,6 +48,7 @@ class	Server
 
 		void	start(int, const char *);
 		bool	run(void);
+		void	displayChannels(Client &) const;
 
 		int		getMaxFd(void) const;
 		int		getSocket(void) const;
@@ -58,33 +67,50 @@ class	Server
 		void	_bindSocket(void) const;
 		void	_listenSocket(void) const;
 		void	_closeSocket(void) const;
+		void	_shutdownServer(void);
 
-		bool	_receiveData(int);
-		bool	_acceptNewClient(void);
-		bool	_processInput(int, const char *);
-		void	_disconnectClient(int);
+		void	_receiveData(int);
+		void	_acceptNewClient(void);
+		void	_processInput(int, const char *);
+		void	_disconnectClient(Client &client);
+		void	_disconnectFromAllChannels(const std::vector<std::string> &, const std::string &);
+		void	_detectCommand(Client &);
+		void	_sendMessageToClient(const Client &, const std::string &) const;
+		void	_sendMessageToChannel(const Channel &, const std::string &) const;
+		void	_join(std::istringstream &, Client &);
+		void	_createChannel(const std::string &, Client &);
+		void	_createChannel(const std::string &, const std::string &, Client &);
+		void	_displayClient(const Client &, const std::string &) const;
 
-		int		_getClientIndex(int) const;
+		void	_nick(std::istringstream &, Client &);
+		void	_user(std::istringstream &, Client &);
+		bool	_isUsernameAlreadyTaken(const std::string &) const;
+		void	_whois(std::istringstream &, Client &) const;
+		bool	_isChannelNameValid(const std::string &) const;
+		void	_displayChannels(Client &) const;
+    void	_privmsg(std::stringstream & ss, Client & client);
+		void	_setPasswordClient(std::stringstream & ss, Client & client);
+  
+		const Client	&_getClient(int) const;
+		int				_getClientIndex(int) const;
+		int				_getClientIndex(const std::string &) const;
 
+		void	_setPassword(const std::stringstream &, Client &);
+		void	_setUsername(const std::stringstream &, Client &);
+		void	_setNickname(const std::stringstream &, Client &);
 		void	_setMaxFd(void);
 
-		void	_sendMessage(Client & client, int indexClient);
-		void	_detectCommand(Client & client);
-		void	_privmsg(std::stringstream & ss, Client & client);
-		void	_settingPassword(std::stringstream & ss, Client & client);
-		void	_settingNickname(std::stringstream & ss, Client & client);
-		void	_settingUsername(std::stringstream & ss, Client & client);
-
-		std::vector<Client>	_allClients;
-		struct sockaddr_in	_sin;
-		std::string			_password;
-		fd_set				_readfds;
-		fd_set				_writefds;
-		fd_set				_exceptfds;
-		int					_socket;
-		int					_port;
-		int					_nbClients;
-		int					_maxFd;
+		std::map<std::string, Channel>	_allChannels;
+		std::vector<Client>				_allClients;
+		std::vector<std::string>		_usernameList;
+		struct sockaddr_in				_sin;
+		std::string						_password;
+		fd_set							_readfds;
+		fd_set							_writefds;
+		int								_socket;
+		int								_port;
+		int								_nbClients;
+		int								_maxFd;
 	
 	/*	START OF EXCEPTIONS	*/
 	class	Error : public std::exception

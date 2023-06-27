@@ -1,0 +1,13 @@
+J'ai commencé à remplir server._allCommands[] dans le constructeur. a finir
+
+---------------------------
+
+retirer _port de Client.hpp?
+
+-----------------------------
+
+send flag MSG_NOSIGNAL
+
+-------------------------------
+
+faire liste de username et empecher double prise de nom sinon ca va poser des soucis pour les msg, quit etc
