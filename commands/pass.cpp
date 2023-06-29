@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-void	Server::_pass(std::istringstream & ss, Client & client)
+void	Server::_pass(std::istringstream & iss, Client & client)
 {
 	std::string	password;
 	std::string	word;
@@ -11,13 +11,13 @@ void	Server::_pass(std::istringstream & ss, Client & client)
 		return ;
 	}
 
-	ss >> password;
-	ss >> word;
-	while (ss.eof() != true)
+	iss >> password;
+	iss >> word;
+	while (iss.eof() != true)
 	{
 		password += ' ';
 		password += word;
-		ss >> word;
+		iss >> word;
 	}
 	if (password == _password)
 		client.setPassword(true);

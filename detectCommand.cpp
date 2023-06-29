@@ -45,12 +45,20 @@ bool	Server::_authentification(std::string token, std::istringstream & ss, Clien
 
 void	Server::_detectCommand(Client &client)
 {
-	std::istringstream	ss(client.getInput());
+	std::istringstream	iss(client.getInput());
 	std::string			token;
 	
-	std::cout << "--------Detect command--------" <<std::endl;
-	ss >> token;
+	std::cout << "--------Detect command--------" <<std::endl; // A VIRER----------------------
+	iss >> token;
 	std::cout << client.getInput() << std::endl;
+	if (token.compare("CAP") == 0)
+		return ;
+	else if (token.compare("NICK") == 0)
+		_nick(iss, client);
+	else if (token.compare("user") == 0 || token.compare("USER") == 0)
+		_user(iss, client);
+	else if (token.compare("pass") == 0 || token.compare("PASS") == 0)
+		_pass(iss, client);
 	if (_authentification(token, ss, client) == true)
 		return ;
 	if (client.getAuthentification() == false)
@@ -59,13 +67,17 @@ void	Server::_detectCommand(Client &client)
 	else if (token.compare("PRIVMSG") == 0)
 		_privmsg(ss, client);
 	else if (token.compare("JOIN") == 0)
-		_join(ss, client);
+		_join(iss, client);
 	else if (token.compare("whois") == 0 || token.compare("WHOIS") == 0)
-		_whois(ss, client);
+		_whois(iss, client);
 	else if (token.compare("channels") == 0 || token.compare("CHANNELS") == 0)
-		_displayChannels(client);
+		_displayChannels(iss, client);
 	else if (token.compare("QUIT") == 0)
-		_disconnectClient(client);
+		_quit(client);
+	else if(token.compare("PART") == 0)
+		_part(iss, client);
+	else if (token.compare("KICK") == 0)
+		_kick(iss, client);
 	else
 	{
 		token = "Unknown command " + token + "\n";

@@ -1,21 +1,24 @@
 #include "Server.hpp"
 
-void	Server::_displayChannels(Client &client) const
+void	Server::_displayChannels(std::istringstream &iss, const Client &client) const
 {
 	std::map<std::string, Channel>::const_iterator	it = this->_allChannels.begin();
 	std::string										message;
+	std::string										garbage;
 
-	if (it == this->_allChannels.end())
-		message = HEX_INFO + " There is currently no existing channel" + HEX_RESET + '\n';
+	iss >> garbage;
+	if (iss.eof() != true)
+		_sendMessageToClient(client, HEX_INFO + " Usage: /channels\n");
+	else if (it == this->_allChannels.end())
+		_sendMessageToClient(client, HEX_INFO + " There is currently no existing channel\n");
 	else
 	{
 		message = HEX_INFO + " List of all channels currently existing :" + '\n';
-
 		while (it != this->_allChannels.end())
 		{
 			message += "- " + it->first + " | Op : " + it->second.getOp() + '\n';
 			it++;
 		}
+		_sendMessageToClient(client, message);
 	}
-	_sendMessageToClient(client, message);
 }

@@ -1,7 +1,7 @@
 #include "Server.hpp"
 # include "ircserv.hpp"
 
-Server::Server(void): _password(""), _socket(0), _port(0), _nbClients(0), _maxFd(0)
+Server::Server(void): _password(""), _socket(0), _port(0), _maxFd(0)
 {
 
 }
@@ -19,7 +19,7 @@ Server::~Server(void)
 		this->_allClients[i].closeSocket();
 		this->_allClients.erase(this->_allClients.begin() + i);
 	}
-	std::cout << "Server is shutting down" << std::endl;
+	std::cout << "Server has shut down" << std::endl;
 }
 
 Server	&Server::operator=(const Server &src)
@@ -28,14 +28,12 @@ Server	&Server::operator=(const Server &src)
 	{
 		this->_allChannels = src._allChannels;
 		this->_allClients = src._allClients;
-		this->_usernameList = src._usernameList;
 		this->_sin = src._sin;
 		this->_password = src._password;
 		this->_readfds = src._readfds;
 		this->_writefds = src._writefds;
 		this->_socket = src._socket;
 		this->_port = src._port;
-		this->_nbClients = src._nbClients;
 		this->_maxFd = src._maxFd;
 	}
 	return (*this);
@@ -123,7 +121,7 @@ void	Server::_closeSocket(void) const
 
 void	Server::_acceptNewClient(void)
 {
-	Client				newClient(this->_port);
+	Client				newClient;
 	struct sockaddr_in	clientSin = newClient.getSin();
 	unsigned int		clientSinLength = sizeof(clientSin);
 	int					clientSocket;
@@ -142,8 +140,7 @@ void	Server::_acceptNewClient(void)
 	FD_SET(clientSocket, &this->_readfds);
 	FD_SET(clientSocket, &this->_writefds);
 	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
-	this->_nbClients++;
-	std::cout << "New client '" << newClient.getUsername().second << "' added" << std::endl;
+	std::cout << "New client added" << std::endl;
 }
 
 void	Server::_processInput(int socket, const char *buffer)
@@ -157,15 +154,11 @@ void	Server::_processInput(int socket, const char *buffer)
 	this->_allClients[i].completeInput(buffer);
 
 	std::string::size_type j = this->_allClients[i].getInput().find_first_of('\n', 0);
-	if (j != std::string::npos) // execute command
+	if (j != std::string::npos) // command has a '\n' thus can be executed
 	{
 		this->_detectCommand(this->_allClients[i]);
-		if (static_cast<std::vector<Client>::size_type>(i) < this->_allClients.size())
+		if (static_cast<std::vector<Client>::size_type>(i) < this->_allClients.size() && this->_allClients[i].getSocket() == socket)
 			this->_allClients[i].resetInput();
-	}
-	else // a supprimer
-	{
-		std::cout << "Incomplete command for now. Only have [" << buffer << ']' << std::endl;
 	}
 }
 
@@ -177,13 +170,23 @@ void	Server::_sendMessageToClient(const Client &client, const std::string &messa
 
 void	Server::_sendMessageToChannel(const Channel &channel, const std::string &message) const
 {
-	std::vector<Client>::const_iterator	it = channel.getClients().begin();
+/*
+	std::vector<std::string>::const_iterator	it = channel.getMemberNames().begin();
 
-	while (it != channel.getClients().end())
+	while (it != channel.getMemberNames().end())
 	{
-		if (send(it->getSocket(), message.c_str(), message.length(), 0) < 0)
+		if (send(it->second, message.c_str(), message.length(), 0) < 0)
 			std::cerr << "Failed send()" << std::endl;
 		it++;
+	}
+*/
+	for (std::vector<Client>::size_type i = 0; i < _allClients.size(); i++)
+	{
+		if (_allClients[i].isInChannel(channel.getName()) == true)
+		{
+			if (send(_allClients[i].getSocket(), message.c_str(), message.length(), MSG_NOSIGNAL) < 0)
+				std::cerr << "Failed send()" << std::endl;
+		}	
 	}
 }
 
@@ -195,6 +198,7 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 	if (i == -1)
 	{
 		std::cerr << "Failed to get client's index" << std::endl;
+		_sendMessageToClient(client, HEX_INFO + " User '" + username + "' does not exist\n");
 		return ;
 	}
 
@@ -213,7 +217,7 @@ void	Server::_shutdownServer(void)
 {
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
 	{
-		this->_disconnectClient(this->_allClients[i]);
+		this->_quit(this->_allClients[i]);
 	}
 }
 	/*	END OF PRIVATE METHODS	*/
@@ -224,6 +228,7 @@ int	Server::getSocket(void) const
 	return (this->_socket);
 }
 
+/*
 fd_set	Server::getReadFds(void) const
 {
 	return (this->_readfds);
@@ -238,7 +243,7 @@ int	Server::getMaxFd(void) const
 {
 	return (this->_maxFd);
 }
-
+*/
 int	Server::_getClientIndex(int socket) const
 {
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)

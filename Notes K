@@ -10,4 +10,20 @@ send flag MSG_NOSIGNAL
 
 -------------------------------
 
-faire liste de username et empecher double prise de nom sinon ca va poser des soucis pour les msg, quit etc
+supprimer nameList et parcourir tous les Clients à la place
+
+----------------------------
+
+virer le fait que les channels ont un vecteur de client, segfault lorsque operator leave
+
+------------------------
+
+deplacer join/kick/part/mode/topic/invite
+
+------------------------
+
+lorsque join un channel, send message to channel
+
+-------------------------
+
+supprimer le member des Clients et des Channels lorsqu'il se deconnecte. A voir si exceptfds est à remettre pour détecter la déco et forcer un _disconnect

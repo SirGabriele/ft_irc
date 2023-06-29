@@ -1,13 +1,6 @@
 #include "Client.hpp"
 
-Client::Client(void)
-{
-
-}
-
-Client::Client(int port):
-		_username(false, ""), _nickname(false, ""), _password(false),
-		_authentification(false), _input(""), _socket(0), _port(port)
+Client::Client(void): _username(false, ""), _nickname(false, ""), _password(false), _authentification(false), _input(""), _socket(0)
 {
 	this->_initSinValues();
 }
@@ -26,13 +19,12 @@ Client	&Client::operator=(const Client &src)
 {
 	if (this != &src)
 	{
-		this->_allChannels = src._allChannels;
+		this->_joinedChannelsNames = src._joinedChannelsNames;
 		this->_sin = src._sin;
 		this->_username = src._username;
 		this->_nickname = src._nickname;
 		this->_input = src._input;
 		this->_socket = src._socket;
-		this->_port = src._port;
 		this->_password = src._password;
 		this->_authentification = src._authentification;
 	}
@@ -56,9 +48,33 @@ void	Client::resetInput(void)
 	this->_input.erase(0, std::string::npos);
 }
 
-void	Client::addChannel(const std::string &channel)
+void	Client::addJoinedChannelName(const std::string &channel)
 {
-	this->_allChannels.push_back(channel);
+	this->_joinedChannelsNames.push_back(channel);
+}
+
+void	Client::leaveChannel(const std::string &channel)
+{
+	for (std::vector<std::string>::size_type i = 0; i < _joinedChannelsNames.size(); i++)
+	{
+		if (_joinedChannelsNames[i] == channel)
+			_joinedChannelsNames.erase(_joinedChannelsNames.begin() + i);
+	}
+}
+
+bool	Client::isInChannel(const std::string &name) const
+{
+	for (std::vector<std::string>::size_type i = 0; _joinedChannelsNames.size(); i++)
+	{
+		if (_joinedChannelsNames[i] == name)
+			return (true);
+	}
+	return (false);
+}
+
+void	Client::clearJoinedChannelsNames(void)
+{
+	this->_joinedChannelsNames.clear();
 }
 	/*	END OF PUBLIC METHODS	*/
 
@@ -66,13 +82,13 @@ void	Client::addChannel(const std::string &channel)
 void	Client::_initSinValues(void)
 {
 	this->_sin.sin_family = AF_INET;
-	this->_sin.sin_port = htons(this->_port);
+//	this->_sin.sin_port = htons(this->_port);// a voir si necessaire, port a ete supprime de Client
 	this->_sin.sin_addr.s_addr = INADDR_ANY;
 }
 	/*	END OF PRIVATE METHODS	*/
 
 	/*	START OF GETTERS	*/
-const std::vector<std::string>	&Client::getAllChannels(void) const	{return (this->_allChannels);}
+const std::vector<std::string>	&Client::getJoinedChannelsNames(void) const	{return (this->_joinedChannelsNames);}
 
 struct sockaddr_in	Client::getSin(void) const	{return (this->_sin);}
 
@@ -82,7 +98,7 @@ const std::pair<bool, std::string>	&Client::getNickname(void) const	{return (thi
 
 const std::pair<bool, std::string>	&Client::getUsername(void) const	{return (this->_username);}
 
-const std::string	&Client::getInput(void)	{return (this->_input);}
+const std::string	&Client::getInput(void)	const	{return (this->_input);}
 
 bool				Client::getAuthentification(void) const { return (this->_authentification); }
 
