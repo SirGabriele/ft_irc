@@ -26,7 +26,8 @@ void	Server::_user(std::istringstream &ss, Client &client)
 	else
 	{
 		client.setUsername(username);
-		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to " + HEX_BOLD + username + HEX_RESET + "\n");
+		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to " \
+			+ HEX_BOLD + username + HEX_RESET + "\n");
 		_usernameList.push_back(username);
 	}
 }

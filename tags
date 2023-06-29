@@ -1,58 +1,92 @@
+Channel	Channel.cpp	/^Channel::Channel(void)$/
+Channel	Channel.cpp	/^Channel::Channel(const Channel &src)$/
+Channel::Channel	Channel.cpp	/^Channel::Channel(const std::string &name, const st/
+Channel::Channel	Channel.cpp	/^Channel::Channel(const std::string &name, const st/
 Client	Client.cpp	/^Client::Client(void)$/
 Client	Client.cpp	/^Client::Client(const Client &src)$/
-Client::Client	Client.cpp	/^Client::Client(int port): _username(""), _password/
+Client::Client	Client.cpp	/^Client::Client(int port):$/
 Client::Error::Error	Client.cpp	/^Client::Error::Error(const std::string &str) throw/
 Mmain.cpp	main.cpp	/^int	main(int argc, char **argv)$/
 Server	Server.cpp	/^Server::Server(const Server &src)$/
 Server::Error::Error	Server.cpp	/^Server::Error::Error(const std::string &str) throw/
 Server::Server	Server.cpp	/^Server::Server(void): _password(""), _socket(0), _/
-_acceptNewClient	Server.cpp	/^bool	Server::_acceptNewClient(void)$/
+_acceptNewClient	Server.cpp	/^void	Server::_acceptNewClient(void)$/
+_authentification	detectCommand.cpp	/^bool	Server::_authentification(std::string token, /
 _bindSocket	Server.cpp	/^void	Server::_bindSocket(void) const$/
 _closeSocket	Server.cpp	/^void	Server::_closeSocket(void) const$/
+_createChannel	commands/join.cpp	/^void	Server::_createChannel(const std::string &cha/
+_createChannel	commands/join.cpp	/^void	Server::_createChannel(const std::string &cha/
 _createSocket	Server.cpp	/^void	Server::_createSocket(void)$/
-_detectCommand	commands/detectCommand.cpp	/^void	Server::_detectCommand(Client & client)$/
-_disconnectClient	Server.cpp	/^void	Server::_disconnectClient(int socket)$/
+_detectCommand	detectCommand.cpp	/^void	Server::_detectCommand(Client &client)$/
+_disconnectClient	commands/disconnect.cpp	/^void	Server::_disconnectClient(Client &client)$/
+_disconnectFromAllChannels	commands/disconnect.cpp	/^void	Server::_disconnectFromAllChannels(const std:/
+_displayChannels	commands/displayChannels.cpp	/^void	Server::_displayChannels(Client &client) cons/
+_displayClient	Server.cpp	/^void	Server::_displayClient(const Client &client, /
+_getChannel	commands/privmsg.cpp	/^Channel*	Server::_getChannel(std::string channel)$/
+_getClient	Server.cpp	/^const Client	&Server::_getClient(int index) const$/
 _getClientIndex	Server.cpp	/^int	Server::_getClientIndex(int socket) const$/
+_getClientIndex	Server.cpp	/^int	Server::_getClientIndex(const std::string &use/
+_getRecipient	commands/privmsg.cpp	/^Client *	Server::_getRecipient(std::string usernam/
 _initSinValues	Server.cpp	/^void	Server::_initSinValues(void)$/
 _initSinValues	Client.cpp	/^void	Client::_initSinValues(void)$/
+_isChannelNameValid	commands/join.cpp	/^bool	Server::_isChannelNameValid(const std::string/
+_isUsernameAlreadyTaken	commands/user.cpp	/^bool	Server::_isUsernameAlreadyTaken(const std::st/
+_join	commands/join.cpp	/^void	Server::_join(std::istringstream &ss, Client /
 _listenSocket	Server.cpp	/^void	Server::_listenSocket(void) const$/
-_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::stringstream & ss, Clie/
-_processInput	Server.cpp	/^bool	Server::_processInput(int socket, const char /
-_receiveData	run.cpp	/^bool	Server::_receiveData(int socket)$/
-_sendMessage	commands/privmsg.cpp	/^void	Server::_sendMessage(Client & client, int ind/
+_nick	commands/nick.cpp	/^void	Server::_nick(std::istringstream &ss, Client /
+_pass	commands/pass.cpp	/^void	Server::_pass(std::istringstream & ss, Client/
+_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::istringstream & ss, Cli/
+_processInput	Server.cpp	/^void	Server::_processInput(int socket, const char /
+_receiveData	run.cpp	/^void	Server::_receiveData(int socket)$/
+_sendMessage	commands/privmsg.cpp	/^void	Server::_sendMessage(Client & client, Client /
+_sendMessageToChannel	Server.cpp	/^void	Server::_sendMessageToChannel(const Channel &/
+_sendMessageToClient	Server.cpp	/^void	Server::_sendMessageToClient(const Client &cl/
+_sendToChannel	commands/privmsg.cpp	/^void	Server::_sendToChannel(std::string channel, C/
+_sendToClient	commands/privmsg.cpp	/^void	Server::_sendToClient(std::string username, C/
 _setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/
 _setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/
-_settingNickname	commands/nick.cpp	/^void	Server::_settingNickname(std::stringstream & /
-_settingPassword	commands/pass.cpp	/^void	Server::_settingPassword(std::stringstream & /
-_settingUsername	commands/user.cpp	/^void	Server::_settingUsername(std::stringstream & /
+_shutdownServer	Server.cpp	/^void	Server::_shutdownServer(void)$/
+_user	commands/user.cpp	/^void	Server::_user(std::istringstream &ss, Client /
+_whois	commands/whois.cpp	/^void	Server::_whois(std::istringstream &ss, Client/
+addChannel	Client.cpp	/^void	Client::addChannel(const std::string &channel/
+addClient	Channel.cpp	/^void	Channel::addClient(Client &client)$/
 closeSocket	Client.cpp	/^void	Client::closeSocket(void) const$/
 completeInput	Client.cpp	/^void	Client::completeInput(const char *toAdd)$/
+disconnect	Channel.cpp	/^void	Channel::disconnect(const std::string &userna/
 g_signal	main.cpp	9
-getExceptFds	Server.cpp	/^fd_set	Server::getExceptFds(void) const$/
+getAllChannels	Client.cpp	/^const std::vector<std::string>	&Client::getAllChan/
+getAuthentification	Client.cpp	/^bool				Client::getAuthentification(void) const { /
+getClients	Channel.cpp	/^const std::vector<Client>	&Channel::getClients(voi/
 getInput	Client.cpp	/^const std::string	&Client::getInput(void)	{return /
 getMaxFd	Server.cpp	/^int	Server::getMaxFd(void) const$/
-getNickname	Client.cpp	/^const std::string	&Client::getNickname(void) const/
+getName	Channel.cpp	/^const std::string	&Channel::getName(void) const	{r/
+getNickname	Client.cpp	/^const std::pair<bool, std::string>	&Client::getNic/
+getOp	Channel.cpp	/^const std::string	&Channel::getOp(void) const	{ret/
 getPassword	Client.cpp	/^bool				Client::getPassword(void) const	{return (t/
+getPassword	Channel.cpp	/^const std::pair<bool, std::string>	&Channel::getPa/
 getReadFds	Server.cpp	/^fd_set	Server::getReadFds(void) const$/
 getSin	Client.cpp	/^struct sockaddr_in	Client::getSin(void) const	{ret/
 getSocket	Server.cpp	/^int	Server::getSocket(void) const$/
 getSocket	Client.cpp	/^int	Client::getSocket(void) const	{return (this->_/
-getUsername	Client.cpp	/^const std::string	&Client::getUsername(void) const/
+getUsername	Client.cpp	/^const std::pair<bool, std::string>	&Client::getUse/
 getWriteFds	Server.cpp	/^fd_set	Server::getWriteFds(void) const$/
 handleSignal	main.cpp	/^void	handleSignal(int sig)$/
-isInputFull	utils/isInputFull.cpp	/^bool	isInputFull(const std::string &input)$/
+isClientAlreadyMember	Channel.cpp	/^bool	Channel::isClientAlreadyMember(const Client &/
 isPortValid	main.cpp	/^int	isPortValid(std::string &portStr)$/
 operator=	Server.cpp	/^Server	&Server::operator=(const Server &src)$/
 operator=	Client.cpp	/^Client	&Client::operator=(const Client &src)$/
+operator=	Channel.cpp	/^Channel	&Channel::operator=(const Channel &src)$/
 resetInput	Client.cpp	/^void	Client::resetInput(void)$/
 run	run.cpp	/^bool	Server::run(void)$/
-setNickname	Client.cpp	/^void	Client::setNickname(const std::string nicknam/
+setAuthentification	Client.cpp	/^void	Client::setAuthentification(bool status)$/
+setNickname	Client.cpp	/^void	Client::setNickname(const std::string &nickna/
 setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_pass/
 setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket /
-setUsername	Client.cpp	/^void	Client::setUsername(const std::string usernam/
+setUsername	Client.cpp	/^void	Client::setUsername(const std::string &userna/
 start	Server.cpp	/^void	Server::start(int port, const char *password)/
 what	Server.cpp	/^const char	*Server::Error::what(void) const throw(/
 what	Client.cpp	/^const char	*Client::Error::what(void) const throw(/
+~Channel	Channel.cpp	/^Channel::~Channel(void)$/
 ~Client	Client.cpp	/^Client::~Client(void)$/
 ~Error	Server.cpp	/^Server::Error::~Error(void) throw()$/
 ~Error	Client.cpp	/^Client::Error::~Error(void) throw()$/

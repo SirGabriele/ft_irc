@@ -33,14 +33,16 @@ class	Client
 		const std::vector<std::string>		&getAllChannels(void) const;
 		const std::pair<bool, std::string>	&getNickname(void) const;
 		const std::pair<bool, std::string>	&getUsername(void) const;
-    bool                                getPassword(void) const;
+    	bool                                getPassword(void) const;
 
 		const std::string					&getInput(void);
 		int 								getSocket(void) const;
+		bool								getAuthentification(void) const;
 
 		void	setNickname(const std::string &);
 		void	setUsername(const std::string &);
 		void	setPassword(bool status);
+		void	setAuthentification(bool status);
 		void	setSocket(int);
 
 	private:
@@ -52,7 +54,8 @@ class	Client
 		struct sockaddr_in				_sin;
 		std::pair<bool, std::string>	_username;
 		std::pair<bool, std::string>	_nickname;
-    bool                          _password;
+    	bool                          	_password;
+		bool							_authentification;
 		std::string						_input;
 		int								_socket;
 		int								_port;

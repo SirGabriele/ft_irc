@@ -12,7 +12,8 @@ void	Server::_nick(std::istringstream &ss, Client &client)
 	else
 	{
 		client.setNickname(nickname);
-		_sendMessageToClient(client, HEX_INFO + " Your nickname have been updated to " + HEX_BOLD + nickname + HEX_RESET + "\n");
+		_sendMessageToClient(client, HEX_INFO + " Your nickname have been updated to " + \
+			HEX_BOLD + nickname + HEX_RESET + "\n");
 	}
 	ss >> skip;
 	if (ss.eof() == true)

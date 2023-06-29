@@ -61,45 +61,52 @@ class	Server
 
 		Server	&operator=(const Server &src);
 
-		void	_initSinValues(void);
-		void	_createSocket(void);
-		void	_setSockOptReuseAddr(void) const;
-		void	_bindSocket(void) const;
-		void	_listenSocket(void) const;
-		void	_closeSocket(void) const;
-		void	_shutdownServer(void);
+		void							_initSinValues(void);
+		void							_createSocket(void);
+		void							_setSockOptReuseAddr(void) const;
+		void							_bindSocket(void) const;
+		void							_listenSocket(void) const;
+		void							_closeSocket(void) const;
+		void							_shutdownServer(void);
 
-		void	_receiveData(int);
-		void	_acceptNewClient(void);
-		void	_processInput(int, const char *);
-		void	_disconnectClient(Client &client);
-		void	_disconnectFromAllChannels(const std::vector<std::string> &, const std::string &);
-		void	_detectCommand(Client &);
-		void	_sendMessageToClient(const Client &, const std::string &) const;
-		void	_sendMessageToChannel(const Channel &, const std::string &) const;
-		void	_sendMessage(Client &, Client &);
-		void	_join(std::istringstream &, Client &);
-		void	_createChannel(const std::string &, Client &);
-		void	_createChannel(const std::string &, const std::string &, Client &);
-		void	_displayClient(const Client &, const std::string &) const;
+		void							_receiveData(int);
+		void							_acceptNewClient(void);
+		void							_processInput(int, const char *);
+		void							_disconnectClient(Client &client);
+		void							_disconnectFromAllChannels(const std::vector<std::string> &, \
+											const std::string &);
+		bool							_authentification(std::string token, std::istringstream & ss, \
+											Client & client);
+		void							_detectCommand(Client &);
+		void							_sendMessageToClient(const Client &, const std::string &) const;
+		void							_sendMessageToChannel(const Channel &, const std::string &) const;
+		void							_sendToClient(std::string, Client &);
+		void							_sendToChannel(std::string, Client &);
+		Client *						_getRecipient(std::string);
+		Channel	*						_getChannel(std::string);
+		void							_sendMessage(Client &, Client const &, std::string);
+		void							_join(std::istringstream &, Client &);
+		void							_createChannel(const std::string &, Client &);
+		void							_createChannel(const std::string &, const std::string &, Client &);
+		void							_displayClient(const Client &, const std::string &) const;
 
-		void	_nick(std::istringstream &, Client &);
-		void	_user(std::istringstream &, Client &);
-		bool	_isUsernameAlreadyTaken(const std::string &) const;
-		void	_whois(std::istringstream &, Client &) const;
-		bool	_isChannelNameValid(const std::string &) const;
-		void	_displayChannels(Client &) const;
-		void	_privmsg(std::istringstream & ss, Client & client);
-		void	_pass(std::istringstream & ss, Client & client);
+		void							_nick(std::istringstream &, Client &);
+		void							_user(std::istringstream &, Client &);
+		bool							_isUsernameAlreadyTaken(const std::string &) const;
+		void							_whois(std::istringstream &, Client &) const;
+		bool							_isChannelNameValid(const std::string &) const;
+		void							_displayChannels(Client &) const;
+		void							_privmsg(std::istringstream & ss, Client & client);
+		void							_pass(std::istringstream & ss, Client & client);
   
-		const Client	&_getClient(int) const;
-		int				_getClientIndex(int) const;
-		int				_getClientIndex(const std::string &) const;
+		const Client					&_getClient(int) const;
+		int								_getClientIndex(int) const;
+		int								_getClientIndex(const std::string &) const;
 
-		void	_setPassword(const std::stringstream &, Client &);
-		void	_setUsername(const std::stringstream &, Client &);
-		void	_setNickname(const std::stringstream &, Client &);
-		void	_setMaxFd(void);
+		void							_setPassword(const std::stringstream &, Client &);
+		void							_setUsername(const std::stringstream &, Client &);
+		void							_setNickname(const std::stringstream &, Client &);
+		void							_setMaxFd(void);
 
 		std::map<std::string, Channel>	_allChannels;
 		std::vector<Client>				_allClients;
