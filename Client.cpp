@@ -1,6 +1,6 @@
 #include "Client.hpp"
 
-Client::Client(void): _username(false, ""), _nickname(false, ""), _password(false), _input(""), _socket(0)
+Client::Client(void): _username(false, ""), _nickname(false, ""), _password(false), _authentification(false), _input(""), _socket(0)
 {
 	this->_initSinValues();
 }
@@ -26,6 +26,7 @@ Client	&Client::operator=(const Client &src)
 		this->_input = src._input;
 		this->_socket = src._socket;
 		this->_password = src._password;
+		this->_authentification = src._authentification;
 	}
 	return (*this);
 }
@@ -99,6 +100,8 @@ const std::pair<bool, std::string>	&Client::getUsername(void) const	{return (thi
 
 const std::string	&Client::getInput(void)	const	{return (this->_input);}
 
+bool				Client::getAuthentification(void) const { return (this->_authentification); }
+
 int	Client::getSocket(void) const	{return (this->_socket);}
 	/*	END OF GETTERS	*/
 
@@ -118,6 +121,11 @@ void	Client::setUsername(const std::string &username)
 }
 
 void	Client::setSocket(int socket)	{this->_socket = socket;}
+
+void	Client::setAuthentification(bool status)
+{
+	_authentification = status;
+}
 	/*END OF SETTERS	*/
 
 	/*	START OF EXCEPTIONS	*/

@@ -20,10 +20,7 @@ void	Server::_pass(std::istringstream & iss, Client & client)
 		iss >> word;
 	}
 	if (password == _password)
-	{
 		client.setPassword(true);
-		_sendMessageToClient(client, HEX_INFO + " You successfully authentificated\n");
-	}
 	else
 		_sendMessageToClient(client, HEX_INFO + " Incorrect password\n");
 }

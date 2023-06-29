@@ -79,6 +79,7 @@ class	Server
 		void	_createChannel(const std::string &, Client &);
 		void	_createChannel(const std::string &, const std::string &, Client &);
 		void	_displayClient(const Client &, const std::string &) const;
+		bool	_authentification(std::string token, std::istringstream & iss, Client & client);
 
 		void	_nick(std::istringstream &, Client &);
 		void	_user(std::istringstream &, Client &);
@@ -108,6 +109,9 @@ class	Server
 		void	_setUsername(const std::stringstream &, Client &);
 		void	_setNickname(const std::stringstream &, Client &);
 		void	_setMaxFd(void);
+
+		Client *						_getRecipient(std::string);
+		Channel	*						_getChannel(std::string);
 
 		std::map<std::string, Channel>	_allChannels;
 		std::vector<Client>				_allClients;
