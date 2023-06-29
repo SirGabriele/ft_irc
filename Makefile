@@ -14,7 +14,9 @@ COMMANDS =	join.cpp			\
 			displayChannels.cpp	\
 			privmsg.cpp			\
 			pass.cpp			\
-			disconnect.cpp
+			quit.cpp			\
+			part.cpp			\
+			kick.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\

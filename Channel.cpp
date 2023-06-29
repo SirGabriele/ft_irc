@@ -29,7 +29,7 @@ Channel	&Channel::operator=(const Channel &src)
 {
 	if (this != &src)
 	{
-		this->_allClients = src._allClients;
+		this->_memberNames= src._memberNames;
 		this->_name = src._name;
 		this->_password = src._password;
 		this->_op = src._op;
@@ -38,29 +38,28 @@ Channel	&Channel::operator=(const Channel &src)
 }
 
 	/*	START OF PUBLIC METHODS	*/
-void	Channel::addClient(Client &client)
+void	Channel::addNewUsername(const std::string &username)
 {
-	this->_allClients.push_back(client);
-	client.addChannel(this->_name);
+	this->_memberNames.push_back(username);
 }
 
-bool	Channel::isClientAlreadyMember(const Client &client) const
+bool	Channel::isClientMember(const std::string &username) const
 {
-	for (std::vector<Client>::const_iterator it = this->_allClients.begin(); it != this->_allClients.end(); it++)
+	for (std::vector<std::pair<std::string, int> >::size_type i = 0; i < _memberNames.size(); i++)
 	{
-		if (it->getUsername() == client.getUsername())
+		if (_memberNames[i] == username)
 			return (true);
 	}
 	return (false);
 }
 
-void	Channel::disconnect(const std::string &username)
+void	Channel::deleteUsername(const std::string &username)
 {
-	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
+	for (std::vector<std::pair<std::string, int> >::size_type i = 0; i < this->_memberNames.size(); i++)
 	{
-		if (this->_allClients[i].getUsername().second == username)
+		if (this->_memberNames[i] == username)
 		{
-			this->_allClients.erase(this->_allClients.begin() + i);
+			this->_memberNames.erase(this->_memberNames.begin() + i);
 			return ;
 		}
 	}
@@ -74,5 +73,5 @@ const std::string	&Channel::getName(void) const	{return (this->_name);}
 
 const std::string	&Channel::getOp(void) const	{return (this->_op);}
 
-const std::vector<Client>	&Channel::getClients(void) const	{return (this->_allClients);}
+const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (this->_memberNames);}
 	/*	END OF GETTERS	*/

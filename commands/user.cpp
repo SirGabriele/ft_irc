@@ -2,23 +2,39 @@
 
 bool	Server::_isUsernameAlreadyTaken(const std::string &username) const
 {
-	if (_usernameList.size() == 0)
-		return (false);
-	for (std::vector<std::string>::size_type i = 0; i < _usernameList.size(); i++)
+	for (std::vector<Client>::size_type i = 0; i < _allClients.size(); i++)
 	{
-		if (_usernameList[i] == username)
+		if (_allClients[i].getUsername().second == username)
 			return (true);
 	}
 	return (false);
 }
 
-void	Server::_user(std::istringstream &ss, Client &client)
+void	Server::_userHexchat(std::istringstream &iss, Client &client)
 {
 	std::string	username;
+	
+	iss >> username;
+	if (username == client.getUsername().second)
+		_sendMessageToClient(client, HEX_INFO + " This is already your username\n");
+	else if (_isUsernameAlreadyTaken(username) == true)
+		_sendMessageToClient(client, HEX_INFO + " This username is already taken\n");
+	else
+	{
+		client.setUsername(username);
+		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to '" + username + "'\n");
+	}
+}
 
-	ss >> username;
-	if (ss.eof() == true)
-		return ;
+void	Server::_user(std::istringstream &iss, Client &client)
+{
+	std::string	username;
+	std::string	garbage;
+
+	iss >> username;
+	iss >> garbage;
+	if (iss.eof() == false)
+		_sendMessageToClient(client, HEX_INFO + " Usage: /user <username>\n");
 	else if (username == client.getUsername().second)
 		_sendMessageToClient(client, HEX_INFO + " This is already your username\n");
 	else if (_isUsernameAlreadyTaken(username) == true)
@@ -26,7 +42,6 @@ void	Server::_user(std::istringstream &ss, Client &client)
 	else
 	{
 		client.setUsername(username);
-		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to " + HEX_BOLD + username + HEX_RESET + "\n");
-		_usernameList.push_back(username);
+		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to '" + username + "'\n");
 	}
 }

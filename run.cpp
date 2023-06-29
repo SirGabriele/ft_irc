@@ -7,12 +7,12 @@ void	Server::_receiveData(int socket)
 {
 	if (socket == this->_socket) // new connection
 		_acceptNewClient();
-	else // fd is ready to be used
+	else // fd has sent information 
 	{
 		char    buffer[BUFFER_SIZE];
 		int     howManyBitsRead;
 		
-		std::memset(buffer, '\0', sizeof(buffer));
+//		std::memset(buffer, '\0', sizeof(buffer));
 		howManyBitsRead = recv(socket, buffer, BUFFER_SIZE, 0);
 		if (howManyBitsRead == -1)
 		{
@@ -20,7 +20,10 @@ void	Server::_receiveData(int socket)
 			return ;
 		}
 		else if (howManyBitsRead > 0)
+		{
+			buffer[howManyBitsRead] = '\0';
 			_processInput(socket, buffer);
+		}
 	}
 }
 

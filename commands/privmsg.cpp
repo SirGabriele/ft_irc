@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-void	Server::_sendMessage(Client & client, Client & recipient)
+void	Server::_sendMessage(const Client & client, const Client & recipient)
 {
 		size_t		pos = 0;
 		
@@ -15,7 +15,7 @@ void	Server::_sendMessage(Client & client, Client & recipient)
 		_sendMessageToClient(recipient, "From " + client.getNickname().second + ": " + client.getInput().substr(pos));
 }
 
-void	Server::_privmsg(std::istringstream & ss, Client & client)
+void	Server::_privmsg(std::istringstream & iss, const Client & client)
 {
 		std::vector<Client>::iterator	it;
 		std::string						str;
@@ -27,7 +27,7 @@ void	Server::_privmsg(std::istringstream & ss, Client & client)
 			str = "You have to set a username\n";
 		else
 		{
-			ss >> nickname;
+			iss >> nickname;
 			for (it = _allClients.begin(); it < _allClients.end(); it++)
 			{
 				if (it->getNickname().second.compare(nickname) == 0)
