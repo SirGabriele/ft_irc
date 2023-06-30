@@ -64,6 +64,11 @@ void	Channel::deleteUsername(const std::string &username)
 		}
 	}
 }
+
+void	Channel::clearMemberNames(void)
+{
+	this->_memberNames.clear();
+}
 	/*	END OF PUBLIC METHODS	*/
 
 	/*	START OF GETTERS	*/

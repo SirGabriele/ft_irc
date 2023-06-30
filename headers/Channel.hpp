@@ -18,6 +18,7 @@ class	Channel
 		void	addNewUsername(const std::string &);
 		void	deleteUsername(const std::string &);
 		bool	isClientMember(const std::string &) const;
+		void	clearMemberNames(void);
 
 		const std::string					&getName(void) const;
 		const std::pair<bool, std::string>	&getPassword(void) const;

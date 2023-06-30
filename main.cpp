@@ -42,22 +42,35 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	std::string	portStr = argv[1];
-	int	portInt = isPortValid(portStr);
+	std::string			portStr = argv[1];
+	int					portInt;
 
+	portInt = isPortValid(portStr);
 	if (portInt < 1024)
 	{
 		std::cerr << B_HI_RED << "Error:\n" << RESET << "<port> must be an numeric value between 1024 and 65535" << std::endl;
 		return (1);
 	}
 
-	Server	server;
+	std::string			password;
+	std::string			garbabe;
+	std::istringstream	iss(argv[2]);
+
+	iss >> password;
+	iss >> garbabe;
+	if (garbabe.empty() == false)
+	{
+		std::cerr << B_HI_RED << "Error:\n" << RESET << "<password> must contain only one word" << std::endl;
+		return (1);
+	}
+
+	Server		server;
 
 	signal(SIGINT, handleSignal);
 
 	try
 	{
-		server.start(portInt, argv[2]);
+		server.start(portInt, password);
 	}
 	catch (std::exception &exception)
 	{

@@ -8,14 +8,20 @@ KICK localhost #channel :user reason reason reason reason
 KICK IRC #channel :username reason oui non peut-etre
 */
 
-void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::string &reason) const
+void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::string &reason)
 {
 	std::string	message;
+
 	message = HEX_INFO + " You have been kicked from the channel '" + channel.getName() + "'";
 	if (reason.length() > 0)
 		message += " for the following reason: " + reason + '\n';
 	else
 		message += '\n';
+	if (kicked.getUsername().second == channel.getOp()) // op kicked themself
+	{
+		_shutdownChannel(channel.getName());
+		return ;
+	}
 	kicked.leaveChannel(channel.getName());
 	channel.deleteUsername(kicked.getUsername().second);
 	_sendMessageToClient(kicked, message);
@@ -25,14 +31,6 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 	else
 		message += '\n';
 	_sendMessageToChannel(channel, message);
-}
-
-std::string	Server::_extractReason(std::istringstream &iss) const
-{
-	std::string	extractedReason;
-
-	std::getline(iss, extractedReason);
-	return (extractedReason);
 }
 
 bool	Server::_isUserOp(const Client &client, const std::string &channelName)
@@ -55,7 +53,7 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 	iss.ignore(std::numeric_limits<std::streamsize>::max(), '#'); // no '#' detected
 	if (iss.eof() == true)
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> <username> <reason>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> :<username> <reason>\n");
 		return ;
 	}
 	iss >> channelName;
@@ -67,7 +65,7 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 	iss.ignore(std::numeric_limits<std::streamsize>::max(), ':'); // no ':' detected
 	if (iss.eof() == true)
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> <username> <reason>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> :<username> <reason>\n");
 		return ;
 	}
 	iss >> username;
@@ -78,7 +76,7 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 		return ;
 	}
 	iss.ignore(1); // jumps the space after username
-	reason = _extractReason(iss);
+	reason = _extractString(iss);
 	clientIndex = _getClientIndex(username);
 	_kickUserFromChannel(_allClients[clientIndex], _allChannels[channelName], reason);
 }

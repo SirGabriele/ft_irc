@@ -5,6 +5,7 @@ void	Server::_createChannel(const std::string &channel, Client &client)
 	Channel	newChannel(channel, client.getUsername().second);
 
 	newChannel.addNewUsername(client.getUsername().second);
+	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
 
@@ -13,6 +14,7 @@ void	Server::_createChannel(const std::string &channel, const std::string &passw
 	Channel	newChannel(channel, password, client.getUsername().second);
 
 	newChannel.addNewUsername(client.getUsername().second);
+	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
 
@@ -53,8 +55,8 @@ void	Server::_join(std::istringstream &iss, Client &client)
 			_createChannel(channel, password, client);
 		else // this channel is public
 			_createChannel(channel, client);
-		_allChannels[channel].addNewUsername(client.getUsername().second);
-		client.addJoinedChannelName(_allChannels[channel].getName());
+//		_allChannels[channel].addNewUsername(client.getUsername().second);
+//		client.addJoinedChannelName(_allChannels[channel].getName());
 		_sendMessageToClient(client, HEX_INFO + " You created the channel '" + HEX_BOLD + channel + HEX_RESET + "'\n");
 	}
 	else // this channel name exists. Must join it

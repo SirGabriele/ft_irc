@@ -46,7 +46,7 @@ class	Server
 		Server(void);
 		~Server(void);
 
-		void	start(int, const char *);
+		void	start(int, std::string &);
 		bool	run(void);
 		void	displayChannels(Client &) const;
 
@@ -79,13 +79,13 @@ class	Server
 		void	_createChannel(const std::string &, Client &);
 		void	_createChannel(const std::string &, const std::string &, Client &);
 		void	_displayClient(const Client &, const std::string &) const;
-		bool	_authentification(std::string token, std::istringstream & iss, Client & client);
 
 		void	_nick(std::istringstream &, Client &);
 
 		void	_user(std::istringstream &, Client &);
 		void	_userHexchat(std::istringstream &, Client &);
 		bool	_isUsernameAlreadyTaken(const std::string &) const;
+
 		void	_pass(std::istringstream &, Client & client);
 
 		void	_whois(std::istringstream &, const Client &) const;
@@ -96,18 +96,17 @@ class	Server
 		void		_privmsg(std::istringstream &, const Client & client) const;
 		void		_sendToClient(std::istringstream &, const std::string &, const Client &) const;
 		void		_sendToChannel(std::istringstream &, const std::string &, const Client &) const;
-		std::string	_extractMessage(std::istringstream &) const;
+		std::string	_extractString(std::istringstream &) const;
 
 		void	_quit(Client &client);
 		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
 		void		_part(std::istringstream &, Client &);
 		bool		_doesChannelExist(const Client &, const std::string &) const;
 		void		_removeClientFromChannel(Client &, Channel &);
-		void		_shutdownChannel(Channel &);
+		void		_shutdownChannel(const std::string &);
 		void		_kick(std::istringstream &, Client &);
-		std::string	_extractReason(std::istringstream &) const;
 		bool		_isUserOp(const Client &, const std::string &);
-		void		_kickUserFromChannel(Client &, Channel &, const std::string &) const;
+		void		_kickUserFromChannel(Client &, Channel &, const std::string &);
 
 		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;
@@ -123,7 +122,6 @@ class	Server
 		struct sockaddr_in				_sin;
 		std::string						_password;
 		fd_set							_readfds;
-		fd_set							_writefds;
 		int								_socket;
 		int								_port;
 		int								_maxFd;

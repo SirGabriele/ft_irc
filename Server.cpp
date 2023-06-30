@@ -19,7 +19,7 @@ Server::~Server(void)
 		this->_allClients[i].closeSocket();
 		this->_allClients.erase(this->_allClients.begin() + i);
 	}
-	std::cout << "Server has shut down" << std::endl;
+	std::cout << "Server has been turned off" << std::endl;
 }
 
 Server	&Server::operator=(const Server &src)
@@ -31,7 +31,6 @@ Server	&Server::operator=(const Server &src)
 		this->_sin = src._sin;
 		this->_password = src._password;
 		this->_readfds = src._readfds;
-		this->_writefds = src._writefds;
 		this->_socket = src._socket;
 		this->_port = src._port;
 		this->_maxFd = src._maxFd;
@@ -40,7 +39,7 @@ Server	&Server::operator=(const Server &src)
 }
 
 	/*	START OF PUBLIC METHODS	*/
-void	Server::start(int port, const char *password)
+void	Server::start(int port, std::string &password)
 {
 	this->_port = port;
 	this->_password = password;
@@ -51,9 +50,7 @@ void	Server::start(int port, const char *password)
 	this->_maxFd = this->_socket;
 
 	FD_ZERO(&this->_readfds);
-	FD_ZERO(&this->_writefds);
 	FD_SET(this->_socket, &this->_readfds);
-	FD_SET(this->_socket, &this->_writefds);
 	
 	this->_setSockOptReuseAddr(); 
 	this->_bindSocket();
@@ -138,7 +135,6 @@ void	Server::_acceptNewClient(void)
 	this->_allClients.push_back(newClient);
 
 	FD_SET(clientSocket, &this->_readfds);
-	FD_SET(clientSocket, &this->_writefds);
 	this->_maxFd = (clientSocket > this->_maxFd) ? clientSocket : this->_maxFd;
 	std::cout << "New client added" << std::endl;
 }
@@ -170,16 +166,6 @@ void	Server::_sendMessageToClient(const Client &client, const std::string &messa
 
 void	Server::_sendMessageToChannel(const Channel &channel, const std::string &message) const
 {
-/*
-	std::vector<std::string>::const_iterator	it = channel.getMemberNames().begin();
-
-	while (it != channel.getMemberNames().end())
-	{
-		if (send(it->second, message.c_str(), message.length(), 0) < 0)
-			std::cerr << "Failed send()" << std::endl;
-		it++;
-	}
-*/
 	for (std::vector<Client>::size_type i = 0; i < _allClients.size(); i++)
 	{
 		if (_allClients[i].isInChannel(channel.getName()) == true)
@@ -192,6 +178,7 @@ void	Server::_sendMessageToChannel(const Channel &channel, const std::string &me
 
 void	Server::_displayClient(const Client &client, const std::string &username) const
 {
+	const std::vector<std::string>	joinedChannels = client.getJoinedChannelsNames();
 	std::string	message;
 	int i = _getClientIndex(username);
 
@@ -206,11 +193,36 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 
 	if (toFind.getUsername().first == true)
 	{
-		message = HEX_BOLD + "Username : " + HEX_RESET + toFind.getUsername().second + '\n';
+		message = HEX_BOLD + "Username: " + HEX_RESET + toFind.getUsername().second + '\n';
 		if (toFind.getNickname().first == true)
-			message += HEX_BOLD + "Nickname : " + HEX_RESET + toFind.getNickname().second + '\n';
+			message += HEX_BOLD + "Nickname: " + HEX_RESET + toFind.getNickname().second + '\n';
+		if (joinedChannels.size() != 0)
+		{
+			message += HEX_BOLD + "Channels joined: " + HEX_RESET + joinedChannels[0];
+			for (std::vector<std::string>::size_type i = 1; i < joinedChannels.size(); i++)
+			{
+				message += ", " + joinedChannels[i];
+			}
+			message += '\n';
+		}
 		_sendMessageToClient(client, message);
 	}
+}
+
+void	Server::_shutdownChannel(const std::string &channelName)
+{
+	std::string	name = channelName;
+
+	_allChannels.erase(channelName);
+	for (std::vector<Client>::size_type i = 0; i < _allClients.size(); i++)
+	{
+		if (_allClients[i].isInChannel(channelName) == true)
+		{
+			_allClients[i].leaveChannel(channelName);
+			_sendMessageToClient(_allClients[i], HEX_INFO + " The operator of the channel '" + name + "' left so the channel has shutdown\n");
+		}
+	}
+//	_allChannels[channelName].clearMemberNames();
 }
 
 void	Server::_shutdownServer(void)
