@@ -56,7 +56,7 @@ class	Client
 		struct sockaddr_in				_sin;
 		std::pair<bool, std::string>	_username;
 		std::pair<bool, std::string>	_nickname;
-    bool                          	_password;
+    	bool                          	_password;
 		bool							_authentification;
 		std::string						_input;
 		int								_socket;

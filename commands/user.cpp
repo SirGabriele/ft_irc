@@ -31,6 +31,17 @@ void	Server::_user(std::istringstream &iss, Client &client)
 	std::string	username;
 	std::string	garbage;
 
+	if (client.getPassword() != true)
+	{
+		_sendMessageToClient(client, HEX_INFO + " You must enter the server's password\n");
+		return ;
+	}
+	else if (client.getNickname().first != true)
+	{
+		_sendMessageToClient(client, HEX_INFO + " You must choose a nickname\n");
+		return ;
+	}
+
 	iss >> username;
 	iss >> garbage;
 	if (iss.eof() == false)
@@ -44,4 +55,5 @@ void	Server::_user(std::istringstream &iss, Client &client)
 		client.setUsername(username);
 		_sendMessageToClient(client, HEX_INFO + " Your username have been updated to '" + username + "'\n");
 	}
+	client.setAuthentification(true);
 }

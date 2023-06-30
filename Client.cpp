@@ -64,7 +64,7 @@ void	Client::leaveChannel(const std::string &channel)
 
 bool	Client::isInChannel(const std::string &name) const
 {
-	for (std::vector<std::string>::size_type i = 0; _joinedChannelsNames.size(); i++)
+	for (std::vector<std::string>::size_type i = 0; i < _joinedChannelsNames.size(); i++)
 	{
 		if (_joinedChannelsNames[i] == name)
 			return (true);

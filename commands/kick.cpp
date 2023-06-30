@@ -4,6 +4,8 @@
 /*
 Hexchat sends:
 KICK localhost #channel :user reason reason reason reason
+
+KICK IRC #channel :username reason oui non peut-etre
 */
 
 void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::string &reason) const

@@ -7,6 +7,11 @@ void	Server::_nick(std::istringstream &iss, Client &client)
 	std::string	skip;
 	bool		carriageFound = false;
 
+	if (client.getPassword() != true)
+	{
+		_sendMessageToClient(client, HEX_INFO + " You must enter the server's password\n");
+		return ;
+	}
 	iss >> nickname;
 	if (iss.peek() == '\r')
 	{

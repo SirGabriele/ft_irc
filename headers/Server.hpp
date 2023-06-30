@@ -74,7 +74,7 @@ class	Server
 		void	_detectCommand(Client &);
 		void	_sendMessageToClient(const Client &, const std::string &) const;
 		void	_sendMessageToChannel(const Channel &, const std::string &) const;
-		void	_sendMessage(const Client &, const Client &);
+		void	_sendMessage(const Client &, const Client &, const std::string &) const;
 		void	_join(std::istringstream &, Client &);
 		void	_createChannel(const std::string &, Client &);
 		void	_createChannel(const std::string &, const std::string &, Client &);
@@ -82,14 +82,22 @@ class	Server
 		bool	_authentification(std::string token, std::istringstream & iss, Client & client);
 
 		void	_nick(std::istringstream &, Client &);
+
 		void	_user(std::istringstream &, Client &);
 		void	_userHexchat(std::istringstream &, Client &);
-		void	_pass(std::istringstream &, Client & client);
 		bool	_isUsernameAlreadyTaken(const std::string &) const;
+		void	_pass(std::istringstream &, Client & client);
+
 		void	_whois(std::istringstream &, const Client &) const;
-		bool	_isChannelNameValid(const std::string &, const Client &) const;
+
 		void	_displayChannels(std::istringstream &, const Client &) const;
-		void	_privmsg(std::istringstream &, const Client & client);
+		bool	_isChannelNameValid(const std::string &, const Client &) const;
+
+		void		_privmsg(std::istringstream &, const Client & client) const;
+		void		_sendToClient(std::istringstream &, const std::string &, const Client &) const;
+		void		_sendToChannel(std::istringstream &, const std::string &, const Client &) const;
+		std::string	_extractMessage(std::istringstream &) const;
+
 		void	_quit(Client &client);
 		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
 		void		_part(std::istringstream &, Client &);
@@ -109,9 +117,6 @@ class	Server
 		void	_setUsername(const std::stringstream &, Client &);
 		void	_setNickname(const std::stringstream &, Client &);
 		void	_setMaxFd(void);
-
-		Client *						_getRecipient(std::string);
-		Channel	*						_getChannel(std::string);
 
 		std::map<std::string, Channel>	_allChannels;
 		std::vector<Client>				_allClients;

@@ -27,3 +27,7 @@ lorsque join un channel, send message to channel
 -------------------------
 
 supprimer le member des Clients et des Channels lorsqu'il se deconnecte. A voir si exceptfds est à remettre pour détecter la déco et forcer un _disconnect
+
+----------------------
+
+gerer un op qui se self kick
