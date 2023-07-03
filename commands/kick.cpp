@@ -27,14 +27,6 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 	_sendMessageToChannel(channel, message);
 }
 
-std::string	Server::_extractReason(std::istringstream &iss) const
-{
-	std::string	extractedReason;
-
-	std::getline(iss, extractedReason);
-	return (extractedReason);
-}
-
 bool	Server::_isUserOp(const Client &client, const std::string &channelName)
 {
 	if (client.getUsername().second != _allChannels[channelName].getOp())
@@ -78,7 +70,7 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 		return ;
 	}
 	iss.ignore(1); // jumps the space after username
-	reason = _extractReason(iss);
+	reason = _extractString(iss);
 	clientIndex = _getClientIndex(username);
 	_kickUserFromChannel(_allClients[clientIndex], _allChannels[channelName], reason);
 }

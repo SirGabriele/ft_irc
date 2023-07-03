@@ -96,7 +96,7 @@ class	Server
 		void		_privmsg(std::istringstream &, const Client & client) const;
 		void		_sendToClient(std::istringstream &, const std::string &, const Client &) const;
 		void		_sendToChannel(std::istringstream &, const std::string &, const Client &) const;
-		std::string	_extractMessage(std::istringstream &) const;
+		std::string	_extractString(std::istringstream &) const;
 
 		void	_quit(Client &client);
 		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
@@ -105,18 +105,28 @@ class	Server
 		void		_removeClientFromChannel(Client &, Channel &);
 		void		_shutdownChannel(Channel &);
 		void		_kick(std::istringstream &, Client &);
-		std::string	_extractReason(std::istringstream &) const;
 		bool		_isUserOp(const Client &, const std::string &);
 		void		_kickUserFromChannel(Client &, Channel &, const std::string &) const;
+		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, \
+			  			std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_setPasswordChannel(std::istringstream & iss, \
+						std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_setUserLimitChannel(std::istringstream & iss, \
+						std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, std::string & option, \
+			  			std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_manageOption(std::istringstream & iss, std::map<std::string, \
+						Channel>::iterator & it, Client const & client);
+		void		_mode(std::istringstream & iss, Client const & client);
 
 		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;
 		int				_getClientIndex(const std::string &) const;
 
-		void	_setPassword(const std::stringstream &, Client &);
-		void	_setUsername(const std::stringstream &, Client &);
-		void	_setNickname(const std::stringstream &, Client &);
-		void	_setMaxFd(void);
+		void			_setPassword(const std::stringstream &, Client &);
+		void			_setUsername(const std::stringstream &, Client &);
+		void			_setNickname(const std::stringstream &, Client &);
+		void			_setMaxFd(void);
 
 		std::map<std::string, Channel>	_allChannels;
 		std::vector<Client>				_allClients;

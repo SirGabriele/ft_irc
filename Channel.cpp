@@ -5,12 +5,12 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name, const std::string &op): _name(name), _password(false, ""), _op(op)
+Channel::Channel(const std::string &name, const std::string &op): _name(name), _password(""), _op(op), _modes(NO_OPTIONS)
 {
 
 }
 
-Channel::Channel(const std::string &name, const std::string &password, const std::string &op): _name(name), _password(true, password), _op(op)
+Channel::Channel(const std::string &name, const std::string &password, const std::string &op): _name(name), _password(password), _op(op), _modes(NO_OPTIONS)
 {
 
 }
@@ -33,6 +33,7 @@ Channel	&Channel::operator=(const Channel &src)
 		this->_name = src._name;
 		this->_password = src._password;
 		this->_op = src._op;
+		this->_modes = src._modes;
 	}
 	return (*this);
 }
@@ -67,11 +68,35 @@ void	Channel::deleteUsername(const std::string &username)
 	/*	END OF PUBLIC METHODS	*/
 
 	/*	START OF GETTERS	*/
-const std::pair<bool, std::string>	&Channel::getPassword(void) const	{return (this->_password);}
+const std::string	&Channel::getPassword(void) const	{return (this->_password);}
 
 const std::string	&Channel::getName(void) const	{return (this->_name);}
 
 const std::string	&Channel::getOp(void) const	{return (this->_op);}
 
 const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (this->_memberNames);}
+
+const int	&Channel::getModes(void) const	{return (_modes);}
+
+const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
+
+void	Channel::setPassword(std::string password)
+{
+	_password = password;
+}
+
+void	Channel::setModes(t_modes option)
+{
+	_modes = _modes | option;
+}
+
+void	Channel::setUserLimit(int limit)
+{
+	_userLimit = limit;
+}
+
+void	Channel::unsetModes(t_modes option)
+{
+	_modes = _modes ^ option;
+}

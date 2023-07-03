@@ -8,7 +8,7 @@ PRIVMSG #channel :1 2 3 4 5 6 7 8 9 10
 PRIVMSG username :1 2 3 4 5 6 7 8 9 10
 */
 
-std::string	Server::_extractMessage(std::istringstream &iss) const
+std::string	Server::_extractString(std::istringstream &iss) const
 {
 	std::string	extractedMessage;
 
@@ -36,7 +36,7 @@ void	Server::_sendToClient(std::istringstream &iss, const std::string &username,
 		_sendMessageToClient(client, HEX_INFO + " This user does not exist\n");
 		return ;
 	}
-	message += _extractMessage(iss);
+	message += _extractString(iss);
 	message += '\n';
 	_sendMessageToClient(_allClients[recipientIndex], HEX_BOLD + "From " + HEX_RESET + client.getUsername().second + ": " + message);
 	_sendMessageToClient(client, HEX_BOLD + "To " + HEX_RESET + username + ": " + message);
@@ -64,7 +64,7 @@ void	Server::_sendToChannel(std::istringstream &iss, const std::string &channelN
 		_sendMessageToClient(client, HEX_INFO + " You are not a member of this channel\n");
 		return ;
 	}
-	message += _extractMessage(iss);
+	message += _extractString(iss);
 	message += '\n';
 	_sendMessageToChannel(it->second, HEX_BOLD + '[' + it->first + "] " + HEX_RESET + client.getUsername().second + ": " + message);
 }

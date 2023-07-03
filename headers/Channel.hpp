@@ -6,6 +6,16 @@
 
 # include "Client.hpp"
 
+typedef enum e_modes
+{
+	NO_OPTIONS = 0,
+	INVITE = 1,
+	TOPIC = 2,
+	PASSWORD = 4,
+	OPERATOR = 8,
+	USER_LIMIT = 16,
+}	t_modes;
+
 class	Channel
 {
 	public:
@@ -20,16 +30,25 @@ class	Channel
 		bool	isClientMember(const std::string &) const;
 
 		const std::string					&getName(void) const;
-		const std::pair<bool, std::string>	&getPassword(void) const;
+		const std::string					&getPassword(void) const;
 		const std::string					&getOp(void) const;
 		const std::vector<std::string>		&getMemberNames(void) const;
+		const int							&getModes(void) const;
+		const int							&getUserLimit(void) const;
+
+		void								setPassword(std::string password);
+		void								setModes(t_modes option);
+		void								setUserLimit(int limit);
+		void								unsetModes(t_modes option);
 
 	private:
 		Channel							&operator=(const Channel &src);
 		std::vector<std::string>		_memberNames;
 		std::string						_name;
-		std::pair<bool, std::string>	_password;
+		std::string						_password;
 		std::string						_op;
+		int								_modes;
+		int								_userLimit;
 };
 
 #endif /*CHANNEL_HPP*/

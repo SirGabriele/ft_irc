@@ -5,24 +5,27 @@ SRC =	main.cpp			\
 		Client.cpp			\
 		Channel.cpp			\
 		detectCommand.cpp	\
-		run.cpp
+		run.cpp				\
 
-COMMANDS =	join.cpp			\
-			nick.cpp			\
-			user.cpp			\
-			whois.cpp			\
-			displayChannels.cpp	\
-			privmsg.cpp			\
-			pass.cpp			\
-			quit.cpp			\
-			part.cpp			\
-			kick.cpp
+COMMANDS =	join.cpp					\
+			nick.cpp					\
+			user.cpp					\
+			whois.cpp					\
+			displayChannels.cpp			\
+			privmsg.cpp					\
+			pass.cpp					\
+			quit.cpp					\
+			part.cpp					\
+			kick.cpp					\
+			mode.cpp					\
+			addOptionToChannel.cpp		\
+			deleteOptionFromChannel.cpp	\
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
 			headers/Client.hpp	\
 			headers/Channel.hpp	\
-			headers/ircserv.hpp
+			headers/ircserv.hpp	\
 
 INCLUDE_FOLDER = -I headers/
 
