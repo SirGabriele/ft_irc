@@ -14,3 +14,7 @@ supprimer le member des Clients et des Channels lorsqu'il se deconnecte. A voir 
 -----------------------------
 
 changer join pour regarder si invite mode on et si client est invite + changer join pour checker si userLimit est atteinte + lorsque join reussit, envoyer le topic s'il est on
+
+-------------------
+
+faire commande invite

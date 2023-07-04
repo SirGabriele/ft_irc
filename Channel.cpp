@@ -5,12 +5,12 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name): _name(name), _password(""), _modes(0)
+Channel::Channel(const std::string &name): _name(name), _password(""), _topic(""), _modes(0)
 {
 
 }
 
-Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _modes(0)
+Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _topic(""), _modes(0)
 {
 
 }
@@ -30,9 +30,11 @@ Channel	&Channel::operator=(const Channel &src)
 	if (this != &src)
 	{
 		this->_memberNames= src._memberNames;
+		this->_inviteList = src._inviteList;
 		this->_allOps = src._allOps;
 		this->_name = src._name;
 		this->_password = src._password;
+		this->_topic = src._topic;
 		this->_modes = src._modes;
 	}
 	return (*this);
@@ -100,7 +102,7 @@ bool	Channel::isBitSet(t_modes option) const
 	return (_modes >> option & 1);
 }
 
-void	Channel::manageOption(std::istringstream & iss, Channel & channel, Client const & client)
+void	Channel::manageOption(std::istringstream & iss, Client const & client)
 {
 	std::string	option;
 
@@ -112,9 +114,9 @@ void	Channel::manageOption(std::istringstream & iss, Channel & channel, Client c
 	}
 
 	if (option[0] == '+')
-		_addOptionToChannel(iss, option, channel, client);
+		_addOptionToChannel(iss, option, client);
 	else if (option[0] == '-')
-		_deleteOptionFromChannel(iss, option, channel, client);
+		_deleteOptionFromChannel(iss, option, client);
 	else
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
 }
@@ -140,11 +142,11 @@ const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
 
 	/*	START OF SETTERS	*/
-void	Channel::setPassword(const std::string &password)	{_password = password;}
+void	Channel::_setPassword(const std::string &password)	{_password = password;}
 
-void	Channel::setModes(t_modes option)	{_modes |= 1 << option;}
+void	Channel::_setModes(t_modes option)	{_modes |= 1 << option;}
 
-void	Channel::setUserLimit(int limit)	{_userLimit = limit;}
+void	Channel::_setUserLimit(int limit)	{_userLimit = limit;}
 
-void	Channel::unsetModes(t_modes option)	{_modes &= 0 << option;}
+void	Channel::_unsetModes(t_modes option)	{_modes &= 0 << option;}
 	/*	END OF SETTERS	*/

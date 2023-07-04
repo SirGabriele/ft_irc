@@ -23,6 +23,6 @@ void	Server::_mode(std::istringstream & iss, Client const & client)
 		if (it->second.isClientOp(client.getUsername().second) == false)
 			_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to execute this command\n");
 		else
-			it->second.manageOption(iss, it->second, client);
+			it->second.manageOption(iss, client);
 	}
 }
