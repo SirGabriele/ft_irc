@@ -105,8 +105,14 @@ class	Server
 		void		_removeClientFromChannel(Client &, Channel &);
 		void		_shutdownChannel(const std::string &);
 		void		_kick(std::istringstream &, Client &);
-		bool		_isUserOp(const Client &, const std::string &);
 		void		_kickUserFromChannel(Client &, Channel &, const std::string &);
+
+		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_setPasswordChannel(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_setUserLimitChannel(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, std::string & option, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_manageOption(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_mode(std::istringstream & iss, Client const & client);
 
 		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;

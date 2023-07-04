@@ -16,7 +16,7 @@ void	Server::_displayChannels(std::istringstream &iss, const Client &client) con
 		message = HEX_INFO + " List of all channels currently existing :" + '\n';
 		while (it != this->_allChannels.end())
 		{
-			message += "- " + it->first + " | Op : " + it->second.getOp() + '\n';
+			message += "- " + it->first + '\n';
 			it++;
 		}
 		_sendMessageToClient(client, message);

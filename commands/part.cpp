@@ -5,7 +5,7 @@ void	Server::_removeClientFromChannel(Client &client, Channel &channel)
 	std::string	channelName	= channel.getName();
 
 	std::string	clientUsername = client.getUsername().second;
-	if (client.getUsername().second == _allChannels[channelName].getOp()) //operator left the channel
+	if (channel.getOps().size() == 1) //last operator left the channel
 		_shutdownChannel(channelName);
 	else //regular user left the channel
 	{	

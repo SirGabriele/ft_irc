@@ -4,7 +4,7 @@ void	Server::_disconnectClientFromAllChannels(const std::vector<std::string> &jo
 {
 	while (joinedChannelsNames.size() != 0)
 	{
-		if (_allChannels[joinedChannelsNames[0]].getOp() == username) // user was op on this channel
+		if (_allChannels[joinedChannelsNames[0]].isClientOp(username) == true) // user was op on this channel
 			_shutdownChannel(joinedChannelsNames[0]);
 		else // user was a regular member of this channel
 		{

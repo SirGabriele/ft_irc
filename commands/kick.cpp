@@ -17,7 +17,7 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 		message += " for the following reason: " + reason + '\n';
 	else
 		message += '\n';
-	if (kicked.getUsername().second == channel.getOp()) // op kicked themself
+	if (channel.getOps().size() == 1)
 	{
 		_shutdownChannel(channel.getName());
 		return ;
@@ -31,16 +31,6 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 	else
 		message += '\n';
 	_sendMessageToChannel(channel, message);
-}
-
-bool	Server::_isUserOp(const Client &client, const std::string &channelName)
-{
-	if (client.getUsername().second != _allChannels[channelName].getOp())
-	{
-		_sendMessageToClient(client, HEX_INFO + " You are not operator of this channel\n");
-		return (false);
-	}
-	return (true);
 }
 
 void	Server::_kick(std::istringstream &iss, Client &client)
@@ -59,7 +49,7 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 	iss >> channelName;
 	channelName.insert(0, 1, '#');
 	
-	if (_doesChannelExist(client, channelName) == false || _isUserOp(client, channelName) == false)
+	if (_doesChannelExist(client, channelName) == false || _allChannels[channelName].isClientOp(client.getUsername().second) == false)
 		return ;
 
 	iss.ignore(std::numeric_limits<std::streamsize>::max(), ':'); // no ':' detected
