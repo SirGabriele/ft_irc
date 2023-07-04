@@ -50,6 +50,7 @@ _sendMessageToClient	Channel.cpp	/^void	Channel::_sendMessageToClient(const Clie
 _sendToChannel	commands/privmsg.cpp	/^void	Server::_sendToChannel(std::istringstream &is/
 _sendToClient	commands/privmsg.cpp	/^void	Server::_sendToClient(std::istringstream &iss/
 _setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/
+_setOperatorChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setOperatorChannel(std::istringstre/
 _setPasswordChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setPasswordChannel(std::istringstre/
 _setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/
 _setUserLimitChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setUserLimitChannel(std::istringstr/
@@ -59,7 +60,7 @@ _userHexchat	commands/user.cpp	/^void	Server::_userHexchat(std::istringstream &i
 _whois	commands/whois.cpp	/^void	Server::_whois(std::istringstream &iss, const/
 addJoinedChannelName	Client.cpp	/^void	Client::addJoinedChannelName(const std::strin/
 addNewUsername	Channel.cpp	/^void	Channel::addNewUsername(const std::string &us/
-addOp	Channel.cpp	/^void	Channel::addOp(const std::string &username)$/
+addOp	Channel.cpp	/^void	Channel::addOp(Client const & client)$/
 clearJoinedChannelsNames	Client.cpp	/^void	Client::clearJoinedChannelsNames(void)$/
 clearMemberNames	Channel.cpp	/^void	Channel::clearMemberNames(void)$/
 closeSocket	Client.cpp	/^void	Client::closeSocket(void) const$/
@@ -96,15 +97,11 @@ passwordGenerator	passwordGenerator.cpp	/^std::string	passwordGenerator(void)$/
 resetInput	Client.cpp	/^void	Client::resetInput(void)$/
 run	run.cpp	/^bool	Server::run(void)$/
 setAuthentification	Client.cpp	/^void	Client::setAuthentification(bool status)$/
-setModes	Channel.cpp	/^void	Channel::setModes(t_modes option)	{_modes |= /
 setNickname	Client.cpp	/^void	Client::setNickname(const std::string &nickna/
 setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_pass/
-setPassword	Channel.cpp	/^void	Channel::setPassword(std::string password)	{_/
 setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket /
-setUserLimit	Channel.cpp	/^void	Channel::setUserLimit(int limit)	{_userLimit /
 setUsername	Client.cpp	/^void	Client::setUsername(const std::string &userna/
 start	Server.cpp	/^void	Server::start(int port, std::string &password/
-unsetModes	Channel.cpp	/^void	Channel::unsetModes(t_modes option)	{_modes &/
 what	Server.cpp	/^const char	*Server::Error::what(void) const throw(/
 what	Client.cpp	/^const char	*Client::Error::what(void) const throw(/
 ~Channel	Channel.cpp	/^Channel::~Channel(void)$/

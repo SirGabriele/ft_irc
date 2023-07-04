@@ -5,7 +5,7 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name): _name(name), _password(""), _modes(0)
+Channel::Channel(const std::string &name): _name(name), _password(""), _modes(0), _topic("")
 {
 
 }
@@ -76,18 +76,27 @@ void	Channel::deleteUsername(const std::string &username)
 	}
 }
 
-void	Channel::addOp(const std::string &username)
+void	Channel::addOp(Client const & client)
 {
-	this->_allOps.push_back(username);
+	std::string	username = client.getUsername().second;
+
+	if (isClientMember(username) == true)
+		this->_allOps.push_back(username);
+	else if (isClientOp(username) == false)
+		_sendMessageToClient(client, "<" + username + "> does not belong to this channel\n");
 }
 
-void	Channel::deleteOp(const std::string &username)
+void	Channel::deleteOp(Client const & client)
 {
 	for (std::vector<std::string>::size_type i = 0; i < this->_allOps.size(); i++)
 	{
-		if (_allOps[i] == username)
+		if (_allOps[i] == client.getUsername().second)
+		{
 			_allOps.erase(_allOps.begin() + i);
+			return ;
+		}
 	}
+	_sendMessageToClient(client, "This client is not an operator of this channel\n");
 }
 
 void	Channel::clearMemberNames(void)
@@ -100,7 +109,7 @@ bool	Channel::isBitSet(t_modes option) const
 	return (_modes >> option & 1);
 }
 
-void	Channel::manageOption(std::istringstream & iss, Channel & channel, Client const & client)
+void	Channel::manageOption(std::istringstream & iss, Client const & client)
 {
 	std::string	option;
 
@@ -112,9 +121,9 @@ void	Channel::manageOption(std::istringstream & iss, Channel & channel, Client c
 	}
 
 	if (option[0] == '+')
-		_addOptionToChannel(iss, option, channel, client);
+		_addOptionToChannel(iss, option, client);
 	else if (option[0] == '-')
-		_deleteOptionFromChannel(iss, option, channel, client);
+		_deleteOptionFromChannel(iss, option, client);
 	else
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
 }
@@ -132,19 +141,11 @@ const std::string	&Channel::getPassword(void) const	{return (this->_password);}
 
 const std::string	&Channel::getName(void) const	{return (this->_name);}
 
+int	Channel::getNbMembers(void) const	{return (_memberNames.size());}
+
 const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (this->_memberNames);}
 
 const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}
 
 const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
-
-	/*	START OF SETTERS	*/
-void	Channel::setPassword(const std::string &password)	{_password = password;}
-
-void	Channel::setModes(t_modes option)	{_modes |= 1 << option;}
-
-void	Channel::setUserLimit(int limit)	{_userLimit = limit;}
-
-void	Channel::unsetModes(t_modes option)	{_modes &= 0 << option;}
-	/*	END OF SETTERS	*/

@@ -14,8 +14,7 @@ typedef enum e_modes
 	INVITE = 0,
 	TOPIC = 1,
 	PASSWORD = 2,
-	OPERATOR = 3,
-	USER_LIMIT = 4,
+	USER_LIMIT = 3,
 }	t_modes;
 
 class	Channel
@@ -29,25 +28,21 @@ class	Channel
 
 		void	addNewUsername(const std::string &);
 		void	deleteUsername(const std::string &);
-		void	addOp(const std::string &);
-		void	deleteOp(const std::string &);
+		void	addOp(Client const & client);
+		void	deleteOp(Client const & client);
 		bool	isClientMember(const std::string &) const;
 		bool	isClientOp(const std::string &) const;
 		void	clearMemberNames(void);
 		bool	isBitSet(t_modes option) const;
-		void	manageOption(std::istringstream & iss, Channel & channel, Client const & client);
+		void	manageOption(std::istringstream & iss, Client const & client);
 
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
 		const std::string					&getOp(void) const;
 		const std::vector<std::string>		&getMemberNames(void) const;
+		int									getNbMembers(void) const;
 		const std::vector<std::string>		&getOps(void) const;
 		const int							&getUserLimit(void) const;
-
-		void								setPassword(const std::string &password);
-		void								setModes(t_modes option);
-		void								setUserLimit(int limit);
-		void								unsetModes(t_modes option);
 
 	private:
 		Channel							&operator=(const Channel &src);
@@ -57,12 +52,14 @@ class	Channel
 		std::string						_password;
 		int								_modes;
 		int								_userLimit;
+		std::string						_topic;
 
-		void		_setPasswordChannel(std::istringstream & iss, Channel & channel, Client const & client);
-		void		_setUserLimitChannel(std::istringstream & iss, Channel & channel, Client const & client);
-		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Channel & channel, Client const & client);
-		void		_unsetOperatorChannel(std::istringstream & iss, Channel & channel, Client const & client);
-		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
+		void		_setPasswordChannel(std::istringstream & iss, Client const & client);
+		void		_setOperatorChannel(std::istringstream & iss, Client const & client);
+		void		_setUserLimitChannel(std::istringstream & iss, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Client const & client);
+		void		_unsetOperatorChannel(std::istringstream & iss, Client const & client);
+		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Client const & client);
 		void		_sendMessageToClient(const Client &, const std::string &) const;
 };
 

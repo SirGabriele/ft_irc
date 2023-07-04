@@ -1,38 +1,43 @@
 #include "Channel.hpp"
 
-void	Channel::_unsetOperatorChannel(std::istringstream & iss, Channel & channel, Client const & client)
+void	Channel::_unsetOperatorChannel(std::istringstream & iss, Client const & client)
 {
 	std::string	user;
+	std::string	garbage;
 
+	iss >> user;
 	if (iss.eof())
-		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+		_sendMessageToClient(client, "Usage: MODE <#channel> [-o] <user>\n");
 	else
 	{
-		iss >> user;
-		channel.deleteOp(user);
-		channel.unsetModes(OPERATOR);
+		iss >> garbage;
+		if (iss.eof() == false)
+			_sendMessageToClient(client, "Usage: MODE <#channel> [-o] <user>\n");
+		deleteOp(client);
 	}
 }
 
-void	Channel::_deleteOptionFromChannel(std::istringstream & iss, std::string & option, \
-			  Channel & channel, Client const & client)
+void	Channel::_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Client const & client)
 {
-	if (option.find_first_not_of("itkol", 1) != std::string::npos)
+    std::string garbage;
+
+	if (option.find_first_not_of("itkol", 1) != std::string::npos || option.length() > 2)
 		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
-	else if (option.find('o') != std::string::npos
-	  	&& option.length() == 2 && channel.isBitSet(INVITE) == true)
-		_unsetOperatorChannel(iss, channel, client);
+	else if (option[1] == 'o')
+		_unsetOperatorChannel(iss, client);
+	else if (option[1] == 'k')
+		_modes &= 0 << PASSWORD;
+	else if (option[1] == 'l')
+		_modes &= 0 << USER_LIMIT;
 	else
 	{
-		if (option.find('i') != std::string::npos && channel.isBitSet(INVITE) == true)
-			channel.unsetModes(INVITE);
-		if (option.find('t') != std::string::npos && channel.isBitSet(TOPIC) == true)
-			channel.unsetModes(TOPIC);
-		if (option.find('k') != std::string::npos && channel.isBitSet(PASSWORD) == true)
-			channel.unsetModes(PASSWORD);
-		if (option.find('l') != std::string::npos && channel.isBitSet(USER_LIMIT) == true)
-			channel.unsetModes(USER_LIMIT);
-		return ;
+        iss >> garbage;
+
+        if (iss.eof() == false)
+            _sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[-]i|t\n");
+		else if (option[1] == 'i')
+			 _modes &= 0 << INVITE;
+		else
+			 _modes &= 0 << TOPIC;
 	}
-	_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
 }
