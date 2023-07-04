@@ -21,18 +21,23 @@ class	Channel
 	public:
 		Channel(void);
 		Channel(const Channel &src);
+		Channel(const std::string &);
 		Channel(const std::string &, const std::string &);
-		Channel(const std::string &, const std::string &, const std::string &);
 		~Channel(void);
 
 		void	addNewUsername(const std::string &);
 		void	deleteUsername(const std::string &);
+		void	addOp(const std::string &);
+		void	deleteOp(const std::string &);
 		bool	isClientMember(const std::string &) const;
+		bool	isClientOp(const std::string &) const;
+		void	clearMemberNames(void);
 
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
 		const std::string					&getOp(void) const;
 		const std::vector<std::string>		&getMemberNames(void) const;
+		const std::vector<std::string>		&getOps(void) const;
 		const int							&getModes(void) const;
 		const int							&getUserLimit(void) const;
 
@@ -44,9 +49,9 @@ class	Channel
 	private:
 		Channel							&operator=(const Channel &src);
 		std::vector<std::string>		_memberNames;
+		std::vector<std::string>		_allOps;
 		std::string						_name;
 		std::string						_password;
-		std::string						_op;
 		int								_modes;
 		int								_userLimit;
 };

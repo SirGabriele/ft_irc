@@ -27,8 +27,8 @@ void	Server::_detectCommand(Client &client)
 		_whois(iss, client);
 	else if (token.compare("channels") == 0 || token.compare("CHANNELS") == 0)
 		_displayChannels(iss, client);
-	else if (token.compare("QUIT") == 0)
-		_quit(client);
+//	else if (token.compare("QUIT") == 0)
+//		_quit(client);
 	else if(token.compare("PART") == 0)
 		_part(iss, client);
 	else if (token.compare("KICK") == 0)

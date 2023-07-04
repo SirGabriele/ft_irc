@@ -1,33 +1,12 @@
-J'ai commencé à remplir server._allCommands[] dans le constructeur. a finir
-
----------------------------
-
-retirer _port de Client.hpp?
-
------------------------------
-
-send flag MSG_NOSIGNAL
-
--------------------------------
-
-supprimer nameList et parcourir tous les Clients à la place
-
-----------------------------
-
-virer le fait que les channels ont un vecteur de client, segfault lorsque operator leave
+gerer un op qui se self kick
 
 ------------------------
 
-deplacer join/kick/part/mode/topic/invite
+implémenter la reason pour /part
 
-------------------------
+-----------------------
 
-lorsque join un channel, send message to channel
-
--------------------------
+2 users join des chans. Op /quit
+select fail. ajouter exceptfd
 
 supprimer le member des Clients et des Channels lorsqu'il se deconnecte. A voir si exceptfds est à remettre pour détecter la déco et forcer un _disconnect
-
-----------------------
-
-gerer un op qui se self kick

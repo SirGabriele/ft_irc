@@ -1,7 +1,7 @@
 #include "Server.hpp"
 
-void	Server::_manageOption(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, \
-			Client const & client)
+void	Server::_manageOption(std::istringstream & iss, std::map<std::string,
+	Channel>::iterator & it, Client const & client)
 {
 	std::string	option;
 

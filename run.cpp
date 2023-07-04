@@ -32,9 +32,8 @@ bool	Server::run(void)
 	while (g_signal == 0)
 	{
 		fd_set	readfds = _readfds;
-		fd_set	writefds = _writefds;
 
-		if (select(_maxFd + 1, &readfds, &writefds, NULL, NULL) < 0)
+		if (select(_maxFd + 1, &readfds, NULL, NULL, NULL) < 0)
 		{
 			if (g_signal != 130)
 				std::cerr << "Failed select()" << std::endl;

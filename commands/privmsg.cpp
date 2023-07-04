@@ -25,7 +25,7 @@ void	Server::_sendToClient(std::istringstream &iss, const std::string &username,
 	iss >> message;
 	if (iss.eof() == true)
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> <message>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> :<message>\n");
 		return ;
 	}
 
@@ -51,7 +51,7 @@ void	Server::_sendToChannel(std::istringstream &iss, const std::string &channelN
 	iss >> message;
 	if (iss.eof() == true)
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> <message>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> :<message>\n");
 		return ;
 	}
 	if (it == _allChannels.end())
@@ -75,7 +75,7 @@ void	Server::_privmsg(std::istringstream & iss, const Client & client) const
 
 		iss >> id;
 		if (iss.eof() == true) // command sent is '/msg'
-			_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> <message>\n");
+			_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> :<message>\n");
 		else if (id[0] == '#')
 			_sendToChannel(iss, id, client);
 		else

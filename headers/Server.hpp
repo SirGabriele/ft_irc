@@ -46,7 +46,7 @@ class	Server
 		Server(void);
 		~Server(void);
 
-		void	start(int, const char *);
+		void	start(int, std::string &);
 		bool	run(void);
 		void	displayChannels(Client &) const;
 
@@ -79,13 +79,13 @@ class	Server
 		void	_createChannel(const std::string &, Client &);
 		void	_createChannel(const std::string &, const std::string &, Client &);
 		void	_displayClient(const Client &, const std::string &) const;
-		bool	_authentification(std::string token, std::istringstream & iss, Client & client);
 
 		void	_nick(std::istringstream &, Client &);
 
 		void	_user(std::istringstream &, Client &);
 		void	_userHexchat(std::istringstream &, Client &);
 		bool	_isUsernameAlreadyTaken(const std::string &) const;
+
 		void	_pass(std::istringstream &, Client & client);
 
 		void	_whois(std::istringstream &, const Client &) const;
@@ -100,23 +100,20 @@ class	Server
 
 		void	_quit(Client &client);
 		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
+
 		void		_part(std::istringstream &, Client &);
 		bool		_doesChannelExist(const Client &, const std::string &) const;
 		void		_removeClientFromChannel(Client &, Channel &);
-		void		_shutdownChannel(Channel &);
+		void		_shutdownChannel(const std::string &);
 		void		_kick(std::istringstream &, Client &);
-		bool		_isUserOp(const Client &, const std::string &);
-		void		_kickUserFromChannel(Client &, Channel &, const std::string &) const;
-		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, \
-			  			std::map<std::string, Channel>::iterator & it, Client const & client);
-		void		_setPasswordChannel(std::istringstream & iss, \
-						std::map<std::string, Channel>::iterator & it, Client const & client);
-		void		_setUserLimitChannel(std::istringstream & iss, \
-						std::map<std::string, Channel>::iterator & it, Client const & client);
-		void		_addOptionToChannel(std::istringstream & iss, std::string & option, \
-			  			std::map<std::string, Channel>::iterator & it, Client const & client);
-		void		_manageOption(std::istringstream & iss, std::map<std::string, \
-						Channel>::iterator & it, Client const & client);
+
+		void		_kickUserFromChannel(Client &, Channel &, const std::string &);
+
+		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_setPasswordChannel(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_setUserLimitChannel(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, std::string & option, std::map<std::string, Channel>::iterator & it, Client const & client);
+		void		_manageOption(std::istringstream & iss, std::map<std::string, Channel>::iterator & it, Client const & client);
 		void		_mode(std::istringstream & iss, Client const & client);
 
 		const Client	&_getClient(int) const;
@@ -133,7 +130,6 @@ class	Server
 		struct sockaddr_in				_sin;
 		std::string						_password;
 		fd_set							_readfds;
-		fd_set							_writefds;
 		int								_socket;
 		int								_port;
 		int								_maxFd;

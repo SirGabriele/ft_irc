@@ -2,17 +2,21 @@
 
 void	Server::_createChannel(const std::string &channel, Client &client)
 {
-	Channel	newChannel(channel, client.getUsername().second);
+	Channel	newChannel(channel);
 
 	newChannel.addNewUsername(client.getUsername().second);
+	newChannel.addOp(client.getUsername().second);
+	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
 
 void	Server::_createChannel(const std::string &channel, const std::string &password, Client &client)
 {
-	Channel	newChannel(channel, password, client.getUsername().second);
+	Channel	newChannel(channel, password);
 
 	newChannel.addNewUsername(client.getUsername().second);
+	newChannel.addOp(client.getUsername().second);
+	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
 

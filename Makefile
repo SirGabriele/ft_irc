@@ -5,7 +5,7 @@ SRC =	main.cpp			\
 		Client.cpp			\
 		Channel.cpp			\
 		detectCommand.cpp	\
-		run.cpp				\
+		run.cpp
 
 COMMANDS =	join.cpp					\
 			nick.cpp					\
@@ -19,7 +19,7 @@ COMMANDS =	join.cpp					\
 			kick.cpp					\
 			mode.cpp					\
 			addOptionToChannel.cpp		\
-			deleteOptionFromChannel.cpp	\
+			deleteOptionFromChannel.cpp
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
