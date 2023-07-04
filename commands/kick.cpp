@@ -17,11 +17,6 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 		message += " for the following reason: " + reason + '\n';
 	else
 		message += '\n';
-	if (channel.getOps().size() == 1)
-	{
-		_shutdownChannel(channel.getName());
-		return ;
-	}
 	kicked.leaveChannel(channel.getName());
 	channel.deleteUsername(kicked.getUsername().second);
 	_sendMessageToClient(kicked, message);

@@ -5,15 +5,17 @@
 # include <vector>
 
 # include "Client.hpp"
+# include "Server.hpp"
+
+class Server;
 
 typedef enum e_modes
 {
-	NO_OPTIONS = 0,
-	INVITE = 1,
-	TOPIC = 2,
-	PASSWORD = 4,
-	OPERATOR = 8,
-	USER_LIMIT = 16,
+	INVITE = 0,
+	TOPIC = 1,
+	PASSWORD = 2,
+	OPERATOR = 3,
+	USER_LIMIT = 4,
 }	t_modes;
 
 class	Channel
@@ -32,13 +34,14 @@ class	Channel
 		bool	isClientMember(const std::string &) const;
 		bool	isClientOp(const std::string &) const;
 		void	clearMemberNames(void);
+		bool	isBitSet(t_modes option) const;
+		void	manageOption(std::istringstream & iss, Channel & channel, Client const & client);
 
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
 		const std::string					&getOp(void) const;
 		const std::vector<std::string>		&getMemberNames(void) const;
 		const std::vector<std::string>		&getOps(void) const;
-		const int							&getModes(void) const;
 		const int							&getUserLimit(void) const;
 
 		void								setPassword(std::string password);
@@ -54,6 +57,13 @@ class	Channel
 		std::string						_password;
 		int								_modes;
 		int								_userLimit;
+
+		void		_setPasswordChannel(std::istringstream & iss, Channel & channel, Client const & client);
+		void		_setUserLimitChannel(std::istringstream & iss, Channel & channel, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
+		void		_unsetOperatorChannel(std::istringstream & iss, Channel & channel, Client const & client);
+		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
+		void		_sendMessageToClient(const Client &, const std::string &) const;
 };
 
 #endif /*CHANNEL_HPP*/

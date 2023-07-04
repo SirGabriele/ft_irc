@@ -65,11 +65,11 @@ void	Server::_join(std::istringstream &iss, Client &client)
 	{
 		if (it->second.isClientMember(client.getUsername().second) == true)
 			_sendMessageToClient(client, HEX_INFO + " You are already member of the channel " + HEX_BOLD + channel + HEX_RESET + "\n");
-		else if ((it->second.getModes() >> PASSWORD & 1) == 0 && password.length() != 0)
+		else if (it->second.isBitSet(PASSWORD) == false && password.length() != 0)
 			_sendMessageToClient(client, HEX_INFO + " This is a public channel, you must not provide a password to join it\n");
-		else if ((it->second.getModes() >> PASSWORD & 1) == 1 && password.length() == 0)
+		else if (it->second.isBitSet(PASSWORD) == true && password.length() == 0)
 			_sendMessageToClient(client, HEX_INFO + " This is a private channel that requires the correct password to join\n");
-		else if ((it->second.getModes() >> PASSWORD & 1) == 1 && password != it->second.getPassword())
+		else if (it->second.isBitSet(PASSWORD) == true && password != it->second.getPassword())
 			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join this channel\n");
 		else
 		{

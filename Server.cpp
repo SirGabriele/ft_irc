@@ -226,14 +226,14 @@ void	Server::_shutdownChannel(const std::string &channelName)
 //	_allChannels[channelName].clearMemberNames();
 }
 */
-
+/*
 void	Server::_shutdownServer(void)
 {
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
 	{
 		this->_quit(this->_allClients[i]);
 	}
-}
+}*/
 	/*	END OF PRIVATE METHODS	*/
 
 	/*	START OF GETTERS	*/

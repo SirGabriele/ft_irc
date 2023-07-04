@@ -5,12 +5,12 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name): _name(name), _password(""), _modes(NO_OPTIONS)
+Channel::Channel(const std::string &name): _name(name), _password(""), _modes(0)
 {
 
 }
 
-Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _modes(NO_OPTIONS)
+Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _modes(0)
 {
 
 }
@@ -94,6 +94,36 @@ void	Channel::clearMemberNames(void)
 {
 	this->_memberNames.clear();
 }
+
+bool	Channel::isBitSet(t_modes option) const
+{
+	return (_modes >> option & 1);
+}
+
+void	Channel::manageOption(std::istringstream & iss, Channel & channel, Client const & client)
+{
+	std::string	option;
+
+	if (iss.eof())
+		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+	else
+	{
+		iss >> option;
+		if (option[0] == '+')
+			_addOptionToChannel(iss, option, channel, client);
+		else if (option[0] == '-')
+			_deleteOptionFromChannel(iss, option, channel, client);
+		else
+			_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+	}
+}
+
+void	Channel::_sendMessageToClient(const Client &client, const std::string &message) const
+{
+	if (send(client.getSocket(), message.c_str(), message.length(), MSG_NOSIGNAL) < 0)
+		std::cerr << "Failed send()" << std::endl;
+}
+
 	/*	END OF PUBLIC METHODS	*/
 
 	/*	START OF GETTERS	*/
@@ -105,17 +135,15 @@ const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (thi
 
 const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}
 
-const int	&Channel::getModes(void) const	{return (_modes);}
-
 const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
 
 	/*	START OF SETTERS	*/
 void	Channel::setPassword(std::string password)	{_password = password;}
 
-void	Channel::setModes(t_modes option)	{_modes = _modes | option;}
+void	Channel::setModes(t_modes option)	{_modes |= 1 << option;}
 
 void	Channel::setUserLimit(int limit)	{_userLimit = limit;}
 
-void	Channel::unsetModes(t_modes option)	{_modes = _modes ^ option;}
+void	Channel::unsetModes(t_modes option)	{_modes &= 0 << option;}
 	/*	END OF SETTERS	*/
