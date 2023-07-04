@@ -25,7 +25,7 @@ HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\
 			headers/Client.hpp	\
 			headers/Channel.hpp	\
-			headers/ircserv.hpp
+			headers/ircserv.hpp	\
 
 INCLUDE_FOLDER = -I headers/
 

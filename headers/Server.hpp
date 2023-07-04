@@ -100,11 +100,13 @@ class	Server
 
 		void	_quit(Client &client);
 		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
+
 		void		_part(std::istringstream &, Client &);
 		bool		_doesChannelExist(const Client &, const std::string &) const;
 		void		_removeClientFromChannel(Client &, Channel &);
 		void		_shutdownChannel(const std::string &);
 		void		_kick(std::istringstream &, Client &);
+
 		void		_kickUserFromChannel(Client &, Channel &, const std::string &);
 
 		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, std::map<std::string, Channel>::iterator & it, Client const & client);
@@ -118,10 +120,10 @@ class	Server
 		int				_getClientIndex(int) const;
 		int				_getClientIndex(const std::string &) const;
 
-		void	_setPassword(const std::stringstream &, Client &);
-		void	_setUsername(const std::stringstream &, Client &);
-		void	_setNickname(const std::stringstream &, Client &);
-		void	_setMaxFd(void);
+		void			_setPassword(const std::stringstream &, Client &);
+		void			_setUsername(const std::stringstream &, Client &);
+		void			_setNickname(const std::stringstream &, Client &);
+		void			_setMaxFd(void);
 
 		std::map<std::string, Channel>	_allChannels;
 		std::vector<Client>				_allClients;
