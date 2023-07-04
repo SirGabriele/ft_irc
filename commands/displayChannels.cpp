@@ -16,7 +16,11 @@ void	Server::_displayChannels(std::istringstream &iss, const Client &client) con
 		message = HEX_INFO + " List of all channels currently existing :" + '\n';
 		while (it != this->_allChannels.end())
 		{
-			message += "- " + it->first + '\n';
+			message += "- " + it->first;
+			if (it->second.isBitSet(PASSWORD) == true)
+				message += " (private)\n";
+			else
+				message += " (public)\n";
 			it++;
 		}
 		_sendMessageToClient(client, message);

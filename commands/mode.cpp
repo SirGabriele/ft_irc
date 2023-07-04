@@ -5,22 +5,24 @@ void	Server::_mode(std::istringstream & iss, Client const & client)
 	std::map<std::string, Channel>::iterator	it;
 	std::string									channel;
 
+	iss >> channel;
 	if (iss.eof())
-		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+		return ;
+	}
+
+	if (_isChannelNameValid(channel, client) == false)
+		return ;
+
+	it = _allChannels.find(channel);
+	if (it == _allChannels.end())
+		_sendMessageToClient(client, HEX_INFO + " This channel does not exist\n");
 	else
 	{
-		iss >> channel;
-		it = _allChannels.find(channel);
-		if (_isChannelNameValid(channel, client) == false)
-			_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
-		else if (it != _allChannels.end())
-		{
-			if (it->second.isClientOp(client.getUsername().second) == false)
-				_sendMessageToClient(client, "You must be operator of the channel to execute this command\n");
-			else
-				it->second.manageOption(iss, it->second, client);
-		}
+		if (it->second.isClientOp(client.getUsername().second) == false)
+			_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to execute this command\n");
 		else
-			_sendMessageToClient(client, "Error: could not find channel <" + channel + ">\n");
+			it->second.manageOption(iss, it->second, client);
 	}
 }

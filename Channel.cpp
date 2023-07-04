@@ -104,18 +104,19 @@ void	Channel::manageOption(std::istringstream & iss, Channel & channel, Client c
 {
 	std::string	option;
 
-	if (iss.eof())
-		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
-	else
+	iss >> option;
+	if (iss.eof() == true)
 	{
-		iss >> option;
-		if (option[0] == '+')
-			_addOptionToChannel(iss, option, channel, client);
-		else if (option[0] == '-')
-			_deleteOptionFromChannel(iss, option, channel, client);
-		else
-			_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
+		return ;
 	}
+
+	if (option[0] == '+')
+		_addOptionToChannel(iss, option, channel, client);
+	else if (option[0] == '-')
+		_deleteOptionFromChannel(iss, option, channel, client);
+	else
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
 }
 
 void	Channel::_sendMessageToClient(const Client &client, const std::string &message) const
@@ -139,7 +140,7 @@ const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
 
 	/*	START OF SETTERS	*/
-void	Channel::setPassword(std::string password)	{_password = password;}
+void	Channel::setPassword(const std::string &password)	{_password = password;}
 
 void	Channel::setModes(t_modes option)	{_modes |= 1 << option;}
 

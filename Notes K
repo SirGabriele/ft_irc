@@ -10,3 +10,7 @@ implémenter la reason pour /part
 select fail. ajouter exceptfd
 
 supprimer le member des Clients et des Channels lorsqu'il se deconnecte. A voir si exceptfds est à remettre pour détecter la déco et forcer un _disconnect
+
+-----------------------------
+
+changer join pour regarder si invite mode on et si client est invite + changer join pour checker si userLimit est atteinte + lorsque join reussit, envoyer le topic s'il est on

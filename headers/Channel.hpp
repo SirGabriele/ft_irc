@@ -44,7 +44,7 @@ class	Channel
 		const std::vector<std::string>		&getOps(void) const;
 		const int							&getUserLimit(void) const;
 
-		void								setPassword(std::string password);
+		void								setPassword(const std::string &password);
 		void								setModes(t_modes option);
 		void								setUserLimit(int limit);
 		void								unsetModes(t_modes option);
@@ -60,7 +60,7 @@ class	Channel
 
 		void		_setPasswordChannel(std::istringstream & iss, Channel & channel, Client const & client);
 		void		_setUserLimitChannel(std::istringstream & iss, Channel & channel, Client const & client);
-		void		_addOptionToChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Channel & channel, Client const & client);
 		void		_unsetOperatorChannel(std::istringstream & iss, Channel & channel, Client const & client);
 		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
 		void		_sendMessageToClient(const Client &, const std::string &) const;

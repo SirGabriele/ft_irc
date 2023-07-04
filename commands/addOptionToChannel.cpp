@@ -4,12 +4,23 @@
 void	Channel::_setPasswordChannel(std::istringstream & iss, Channel & channel, Client const & client)
 {
 	std::string password;
+	std::string	garbage;
 
-	if (iss.eof())
-		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+	iss >> password;
+	if (iss.eof() == true)
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> <+k> <password>\n");
+		return ;
+	}
+
+	iss >> garbage;
+	if (iss.eof() == false)
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> <+k> <password>\n");
+		return ;
+	}
 	else
 	{
-		iss >> password;
 		channel.setModes(PASSWORD);
 		channel.setPassword(password);
 	}
@@ -35,11 +46,15 @@ void	Channel::_setUserLimitChannel(std::istringstream & iss, Channel & channel, 
 	}
 }
 
-void	Channel::_addOptionToChannel(std::istringstream & iss, std::string & option, \
+void	Channel::_addOptionToChannel(std::istringstream & iss, const std::string & option, \
 			  Channel & channel, Client const & client)
 {
-	if (option.find_first_not_of("itkol", 1) != std::string::npos)
-		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+	if (option.length() > 3 || option.find_first_not_of("itkol", 1) != std::string::npos)
+	{
+		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
+		return ;
+	}
+
 	if (option.length() == 2 && option.find("it") == std::string::npos)
 	{
 		if (option[1] == 'k')
@@ -55,7 +70,5 @@ void	Channel::_addOptionToChannel(std::istringstream & iss, std::string & option
 		 	channel.setModes(INVITE);
 		if (option.find('t') != std::string::npos)
 			channel.setModes(TOPIC);
-		return ;
 	}
-	_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
 }
