@@ -14,7 +14,6 @@ COMMANDS =	join.cpp					\
 			displayChannels.cpp			\
 			privmsg.cpp					\
 			pass.cpp					\
-			quit.cpp					\
 			part.cpp					\
 			kick.cpp					\
 			mode.cpp					\

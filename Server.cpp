@@ -209,6 +209,7 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 	}
 }
 
+/*
 void	Server::_shutdownChannel(const std::string &channelName)
 {
 	std::string	name = channelName;
@@ -224,6 +225,7 @@ void	Server::_shutdownChannel(const std::string &channelName)
 	}
 //	_allChannels[channelName].clearMemberNames();
 }
+*/
 
 void	Server::_shutdownServer(void)
 {

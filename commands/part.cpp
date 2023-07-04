@@ -3,17 +3,12 @@
 void	Server::_removeClientFromChannel(Client &client, Channel &channel)
 {
 	std::string	channelName	= channel.getName();
-
 	std::string	clientUsername = client.getUsername().second;
-	if (channel.getOps().size() == 1) //last operator left the channel
-		_shutdownChannel(channelName);
-	else //regular user left the channel
-	{	
-		client.leaveChannel(channelName);
-		channel.deleteUsername(clientUsername);
-		_sendMessageToChannel(_allChannels[channelName], HEX_INFO + " User '" + clientUsername + "' left the channel '" + channelName + "'\n");
-		_sendMessageToClient(client, HEX_INFO + " You left the channel '" + channelName + "'\n");
-	}
+
+	client.leaveChannel(channelName);
+	channel.deleteUsername(clientUsername);
+	_sendMessageToChannel(channel, HEX_INFO + " User '" + clientUsername + "' left the channel '" + channelName + "'\n");
+	_sendMessageToClient(client, HEX_INFO + " You left the channel '" + channelName + "'\n");
 }
 
 bool	Server::_doesChannelExist(const Client &client, const std::string &channelName) const

@@ -98,13 +98,9 @@ class	Server
 		void		_sendToChannel(std::istringstream &, const std::string &, const Client &) const;
 		std::string	_extractString(std::istringstream &) const;
 
-		void	_quit(Client &client);
-		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
-
 		void		_part(std::istringstream &, Client &);
 		bool		_doesChannelExist(const Client &, const std::string &) const;
 		void		_removeClientFromChannel(Client &, Channel &);
-		void		_shutdownChannel(const std::string &);
 		void		_kick(std::istringstream &, Client &);
 
 		void		_kickUserFromChannel(Client &, Channel &, const std::string &);
