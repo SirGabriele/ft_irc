@@ -41,7 +41,6 @@ class	Channel
 
 		const std::vector<std::string>		&getMemberNames(void) const;
 		const std::vector<std::string>		&getOps(void) const;
-		const std::vector<std::string>		&getOps(void) const;
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
 		const std::string					&getTopic(void) const;

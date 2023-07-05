@@ -17,12 +17,14 @@ void	Server::_displayChannels(std::istringstream &iss, const Client &client) con
 		while (it != this->_allChannels.end())
 		{
 			message += "- " + it->first;
-			if (it->second.isBitSet(PASSWORD) == true)
-				message += " - protected";
-			else
-				message += " - public";
 			if (it->second.isBitSet(INVITE) == true)
 				message += " - invite only";
+			if (it->second.isBitSet(TOPIC) == true)
+				message += " - topic";
+			if (it->second.isBitSet(USER_LIMIT) == true)
+				message += " - user limit";
+			if (it->second.isBitSet(PASSWORD) == true)
+				message += " - protected";
 			message += '\n';
 			it++;
 		}

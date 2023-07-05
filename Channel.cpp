@@ -197,9 +197,5 @@ const std::string	&Channel::getTopic(void) const	{return (this->_topic);}
 
 int	Channel::getNbMembers(void) const	{return (_memberNames.size());}
 
-const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (this->_memberNames);}
-
-const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}
-
 int	Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
