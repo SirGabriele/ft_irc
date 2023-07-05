@@ -5,7 +5,7 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name, const std::string &creator): _name(name), _password(""), _topic(""), _modes(0)
+Channel::Channel(const std::string &name, const std::string &creator): _name(name), _password(""), _topic(""), _modes(0), _userLimit(0)
 {
 	this->_allOps.push_back(creator);
 	this->_memberNames.push_back(creator);
@@ -32,6 +32,7 @@ Channel	&Channel::operator=(const Channel &src)
 		this->_password = src._password;
 		this->_topic = src._topic;
 		this->_modes = src._modes;
+		this->_userLimit = src._userLimit;
 	}
 	return (*this);
 }

@@ -177,7 +177,6 @@ void	Server::_sendMessageToChannel(const Channel &channel, const std::string &me
 
 void	Server::_displayClient(const Client &client, const std::string &username) const
 {
-	const std::vector<std::string>	joinedChannels = client.getJoinedChannelsNames();
 	std::string	message;
 	int i = _getClientIndex(username);
 
@@ -189,6 +188,7 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 	}
 
 	Client	toFind = this->_allClients[i];
+	const std::vector<std::string>	joinedChannels = toFind.getJoinedChannelsNames();
 
 	if (toFind.getUsername().first == true)
 	{
