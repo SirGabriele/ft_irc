@@ -80,7 +80,7 @@ void	Server::_join(std::istringstream &iss, Client &client)
 			client.addJoinedChannelName(it->first);
 			_sendMessageToChannel(it->second, HEX_INFO + ' ' + clientUsername + " joined the channel '" + channel + "'\n");
 			if (it->second.isBitSet(TOPIC) == true)
-				_sendMessageToClient(client, HEX_INFO + " The topic of the channel '" + channel + "' is: " + it->second.getTopic());
+				_sendMessageToClient(client, HEX_INFO + " The topic of the channel '" + channel + "' is: " + it->second.getTopic() + '\n');
 			if (it->second.isBitSet(INVITE) == true)
 				it->second.deleteInvitedUser(clientUsername);
 		}

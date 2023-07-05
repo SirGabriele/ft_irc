@@ -30,6 +30,8 @@ void	Server::_invite(std::istringstream &iss, Client &client)
 		_sendMessageToClient(client, HEX_INFO + " You can only invite someone in a channel you are in\n");
 	else if (_allChannels[channel].isClientOp(client.getUsername().second) == false)
 		_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to execute this command\n");
+	else if (_allChannels[channel].isBitSet(INVITE) == false)
+		_sendMessageToClient(client, HEX_INFO + " You can only invite people to join a channel that is on invite mode only\n");
 	else if (_isUsernameAlreadyTaken(username) == false)
 		_sendMessageToClient(client, HEX_INFO + " Unknown username\n");
 	else if (_allChannels[channel].isClientMember(username) == true)
