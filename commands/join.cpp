@@ -5,7 +5,7 @@ void	Server::_createChannel(const std::string &channel, Client &client)
 	Channel	newChannel(channel);
 
 	newChannel.addNewUsername(client.getUsername().second);
-	newChannel.addOp(client.getUsername().second);
+	newChannel.addOp(client);
 	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
@@ -15,7 +15,7 @@ void	Server::_createChannel(const std::string &channel, const std::string &passw
 	Channel	newChannel(channel, password);
 
 	newChannel.addNewUsername(client.getUsername().second);
-	newChannel.addOp(client.getUsername().second);
+	newChannel.addOp(client);
 	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
@@ -47,7 +47,6 @@ void	Server::_join(std::istringstream &iss, Client &client)
 	iss >> channel;
 	if (_isChannelNameValid(channel, client) == false)
 		return ;
-
 	iss >> password;
 
 	it = _allChannels.find(channel);
@@ -73,9 +72,16 @@ void	Server::_join(std::istringstream &iss, Client &client)
 			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join this channel\n");
 		else
 		{
-			it->second.addNewUsername(client.getUsername().second);
-			client.addJoinedChannelName(it->first);
-			_sendMessageToChannel(it->second, HEX_INFO + ' ' + client.getUsername().second + " joined the channel\n");
+			if ((it->second.getNbMembers() < it->second.getUserLimit() && it->second.isBitSet(USER_LIMIT) == true)
+					|| it->second.isBitSet(USER_LIMIT) == false)
+			{
+				it->second.addNewUsername(client.getUsername().second);
+				client.addJoinedChannelName(it->first);
+				_sendMessageToChannel(it->second, HEX_INFO + ' ' + client.getUsername().second + \
+					" joined the channel\n");
+			}
+			else
+				_sendMessageToClient(client, "This channel is full\n");
 		}
 	}
 }

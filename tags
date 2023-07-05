@@ -18,7 +18,7 @@ _createChannel	commands/join.cpp	/^void	Server::_createChannel(const std::string
 _createChannel	commands/join.cpp	/^void	Server::_createChannel(const std::string &cha/
 _createSocket	Server.cpp	/^void	Server::_createSocket(void)$/
 _deleteOptionFromChannel	commands/deleteOptionFromChannel.cpp	/^void	Channel::_deleteOptionFromChannel(std::istrin/
-_detectCommand	detectCommand.cpp	/^void	Server::_detectCommand(Client &client)$/
+_detectCommand	detectCommand.cpp	/^void	Server::_detectCommand(Client & client)$/
 _disconnectClientFromAllChannels	commands/SUPPRIMEquit.cpp	/^void	Server::_disconnectClientFromAllChannels(cons/
 _displayChannels	commands/displayChannels.cpp	/^void	Server::_displayChannels(std::istringstream &/
 _displayClient	Server.cpp	/^void	Server::_displayClient(const Client &client, /
@@ -50,21 +50,23 @@ _sendMessageToClient	Channel.cpp	/^void	Channel::_sendMessageToClient(const Clie
 _sendToChannel	commands/privmsg.cpp	/^void	Server::_sendToChannel(std::istringstream &is/
 _sendToClient	commands/privmsg.cpp	/^void	Server::_sendToClient(std::istringstream &iss/
 _setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/
+_setOperatorChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setOperatorChannel(std::istringstre/
 _setPasswordChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setPasswordChannel(std::istringstre/
 _setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/
 _setUserLimitChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setUserLimitChannel(std::istringstr/
+_topic	commands/topic.cpp	/^void	Server::_topic(std::istringstream & iss, Clie/
 _unsetOperatorChannel	commands/deleteOptionFromChannel.cpp	/^void	Channel::_unsetOperatorChannel(std::istringst/
 _user	commands/user.cpp	/^void	Server::_user(std::istringstream &iss, Client/
 _userHexchat	commands/user.cpp	/^void	Server::_userHexchat(std::istringstream &iss,/
 _whois	commands/whois.cpp	/^void	Server::_whois(std::istringstream &iss, const/
 addJoinedChannelName	Client.cpp	/^void	Client::addJoinedChannelName(const std::strin/
 addNewUsername	Channel.cpp	/^void	Channel::addNewUsername(const std::string &us/
-addOp	Channel.cpp	/^void	Channel::addOp(const std::string &username)$/
+addOp	Channel.cpp	/^void	Channel::addOp(Client const & client)$/
 clearJoinedChannelsNames	Client.cpp	/^void	Client::clearJoinedChannelsNames(void)$/
 clearMemberNames	Channel.cpp	/^void	Channel::clearMemberNames(void)$/
 closeSocket	Client.cpp	/^void	Client::closeSocket(void) const$/
 completeInput	Client.cpp	/^void	Client::completeInput(const char *toAdd)$/
-deleteOp	Channel.cpp	/^void	Channel::deleteOp(const std::string &username/
+deleteOp	Channel.cpp	/^void	Channel::deleteOp(Client const & client)$/
 deleteUsername	Channel.cpp	/^void	Channel::deleteUsername(const std::string &us/
 g_signal	main.cpp	9
 getAuthentification	Client.cpp	/^bool				Client::getAuthentification(void) const { /
@@ -72,6 +74,7 @@ getInput	Client.cpp	/^const std::string	&Client::getInput(void)	const	{r/
 getJoinedChannelsNames	Client.cpp	/^const std::vector<std::string>	&Client::getJoinedC/
 getMemberNames	Channel.cpp	/^const std::vector<std::string>	&Channel::getMember/
 getName	Channel.cpp	/^const std::string	&Channel::getName(void) const	{r/
+getNbMembers	Channel.cpp	/^int	Channel::getNbMembers(void) const	{return (_me/
 getNickname	Client.cpp	/^const std::pair<bool, std::string>	&Client::getNic/
 getOps	Channel.cpp	/^const std::vector<std::string>	&Channel::getOps(vo/
 getPassword	Client.cpp	/^bool				Client::getPassword(void) const	{return (t/
@@ -89,6 +92,7 @@ isInChannel	Client.cpp	/^bool	Client::isInChannel(const std::string &name) /
 isPortValid	main.cpp	/^int	isPortValid(std::string &portStr)$/
 leaveChannel	Client.cpp	/^void	Client::leaveChannel(const std::string &chann/
 manageOption	Channel.cpp	/^void	Channel::manageOption(std::istringstream & is/
+manageTopicChannel	Channel.cpp	/^void	Channel::manageTopicChannel(std::istringstrea/
 operator=	Server.cpp	/^Server	&Server::operator=(const Server &src)$/
 operator=	Client.cpp	/^Client	&Client::operator=(const Client &src)$/
 operator=	Channel.cpp	/^Channel	&Channel::operator=(const Channel &src)$/
@@ -96,15 +100,11 @@ passwordGenerator	passwordGenerator.cpp	/^std::string	passwordGenerator(void)$/
 resetInput	Client.cpp	/^void	Client::resetInput(void)$/
 run	run.cpp	/^bool	Server::run(void)$/
 setAuthentification	Client.cpp	/^void	Client::setAuthentification(bool status)$/
-setModes	Channel.cpp	/^void	Channel::setModes(t_modes option)	{_modes |= /
 setNickname	Client.cpp	/^void	Client::setNickname(const std::string &nickna/
 setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_pass/
-setPassword	Channel.cpp	/^void	Channel::setPassword(std::string password)	{_/
 setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket /
-setUserLimit	Channel.cpp	/^void	Channel::setUserLimit(int limit)	{_userLimit /
 setUsername	Client.cpp	/^void	Client::setUsername(const std::string &userna/
 start	Server.cpp	/^void	Server::start(int port, std::string &password/
-unsetModes	Channel.cpp	/^void	Channel::unsetModes(t_modes option)	{_modes &/
 what	Server.cpp	/^const char	*Server::Error::what(void) const throw(/
 what	Client.cpp	/^const char	*Client::Error::what(void) const throw(/
 ~Channel	Channel.cpp	/^Channel::~Channel(void)$/

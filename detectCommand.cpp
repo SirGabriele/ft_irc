@@ -1,6 +1,6 @@
 #include "Server.hpp"
 
-void	Server::_detectCommand(Client &client)
+void	Server::_detectCommand(Client & client)
 {
 	std::istringstream	iss(client.getInput());
 	std::string			token;
@@ -39,6 +39,8 @@ void	Server::_detectCommand(Client &client)
 		//topic command*/
 	else if (token.compare("MODE") == 0)
 		_mode(iss, client);
+	else if (token.compare("TOPIC") == 0)
+		_topic(iss, client);
 	else
 	{
 		token = "Unknown command " + token + "\n";

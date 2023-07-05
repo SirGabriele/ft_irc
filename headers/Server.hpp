@@ -113,6 +113,7 @@ class	Server
 		void		_setUserLimitChannel(std::istringstream & iss, Channel & channel, Client const & client);
 		void		_addOptionToChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
 		void		_mode(std::istringstream & iss, Client const & client);
+		void		_topic(std::istringstream & iss, Client const & client);
 
 		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;

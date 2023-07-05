@@ -12,32 +12,70 @@ void	Channel::_setPasswordChannel(std::istringstream & iss, Client const & clien
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+k] <password>\n");
 		return ;
 	}
-
 	iss >> garbage;
 	if (iss.eof() == false)
-	{
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+k] <password>\n");
-		return ;
-	}
 	else
 	{
-		_setModes(PASSWORD);
-		_setPassword(password);
-		_sendMessageToClient(client, HEX_INFO + " You successfully changed the password of this channel");
+		_password = password;
+		_modes |= 1 << PASSWORD;
 	}
+}
+
+void	Channel::_setOperatorChannel(std::istringstream & iss, Client const & client)
+{
+	std::string	user;
+	std::string	garbage;
+
+	iss >> user;
+	if (iss.eof())
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <user>\n");
+	else
+	{
+		iss >> garbage;
+		if (iss.eof() == false)
+			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <user>\n");
+		addOp(client);
+	}
+}
+
+bool	Channel::_isLimitNumeric(std::string const & limitStr)
+{
+	for (size_t i = 0; i < limitStr.length(); i++)
+	{
+		if (std::isdigit(limitStr[i]) == 0)
+			return (false);
+	}
+	return (true);
 }
 
 void	Channel::_setUserLimitChannel(std::istringstream & iss, Client const & client)
 {
-	std::string	limit;
+	std::string	limitStr;
+	std::string	garbage;
+	int			limitInt;
 
+	iss >> limitStr;
 	if (iss.eof())
-		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+l] <limit>\n");
+		return ;
+	}
+	iss >> limitStr;
+	if (iss.eof() == false)
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+l] <limit>\n");
+	else if (_isLimitNumeric(limitStr) == false)
+		_sendMessageToClient(client, HEX_INFO + " The limit must be numeric\n");
 	else
 	{
-		iss >> limit;
-		_setModes(USER_LIMIT);
-		_setUserLimit(std::atoi(limit.c_str()));
+		limitInt = std::atoi(limitStr.c_str());
+		if (limitInt > 50 || limitStr.length() > 2)
+			_sendMessageToClient(client, HEX_INFO + " The limit cannot exceed 50\n");
+		else
+		{
+			_modes |= 1 << USER_LIMIT;
+			_userLimit = limitInt; 
+		}
 	}
 }
 
@@ -49,19 +87,18 @@ void	Channel::_addOptionToChannel(std::istringstream & iss, const std::string & 
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
 	else if (option[1] == 'k')
 		_setPasswordChannel(iss, client);
-	/*else if (option[1] == 'o')
-		_unsetOperatorChannel();*/
+	else if (option[1] == 'o')
+		_setOperatorChannel(iss, client);
 	else if (option[1] == 'l')
 		_setUserLimitChannel(iss, client);
 	else if (option[1] == 'i' || option[1] == 't')
 	{
 		iss >> garbage;
-
 		if (iss.eof() == false)
 			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+]i|t}\n");
 		else if (option[1] == 'i')
-	 		_setModes(INVITE);
+			_modes |= 1 << INVITE;
 		else
-			_setModes(TOPIC);
+			_modes |= 1 << TOPIC;
 	}
 }
