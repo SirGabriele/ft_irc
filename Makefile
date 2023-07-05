@@ -17,6 +17,7 @@ COMMANDS =	join.cpp					\
 			part.cpp					\
 			kick.cpp					\
 			mode.cpp					\
+			invite.cpp					\
 			addOptionToChannel.cpp		\
 			topic.cpp					\
 			deleteOptionFromChannel.cpp	\

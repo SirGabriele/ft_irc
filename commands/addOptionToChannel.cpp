@@ -97,7 +97,10 @@ void	Channel::_addOptionToChannel(std::istringstream & iss, const std::string & 
 		if (iss.eof() == false)
 			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+]i|t}\n");
 		else if (option[1] == 'i')
+		{
+			_sendMessageToClient(client, HEX_INFO + " You successfully turned the channel into invite mode\n");
 			_modes |= 1 << INVITE;
+		}
 		else
 			_modes |= 1 << TOPIC;
 	}

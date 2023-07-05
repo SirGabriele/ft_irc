@@ -79,7 +79,6 @@ class	Server
 		void	_sendMessage(const Client &, const Client &, const std::string &) const;
 		void	_join(std::istringstream &, Client &);
 		void	_createChannel(const std::string &, Client &);
-		void	_createChannel(const std::string &, const std::string &, Client &);
 		void	_displayClient(const Client &, const std::string &) const;
 
 		void	_nick(std::istringstream &, Client &);
@@ -100,12 +99,14 @@ class	Server
 		void		_sendToChannel(std::istringstream &, const std::string &, const Client &) const;
 		std::string	_extractString(std::istringstream &) const;
 
-		void		_part(std::istringstream &, Client &);
-		bool		_doesChannelExist(const Client &, const std::string &) const;
-		void		_removeClientFromChannel(Client &, Channel &);
-		void		_kick(std::istringstream &, Client &);
+		void	_part(std::istringstream &, Client &);
+		bool	_doesChannelExist(const Client &, const std::string &) const;
+		void	_removeClientFromChannel(Client &, Channel &);
+		void	_kick(std::istringstream &, Client &);
 
-		void		_kickUserFromChannel(Client &, Channel &, const std::string &);
+		void	_kickUserFromChannel(Client &, Channel &, const std::string &);
+
+		void	_invite(std::istringstream &, Client &);
 
 		void		_unsetOperatorChannel(std::istringstream & iss, Channel & channel, Client const & client);
 		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Channel & channel, Client const & client);
@@ -115,7 +116,6 @@ class	Server
 		void		_mode(std::istringstream & iss, Client const & client);
 		void		_topic(std::istringstream & iss, Client const & client);
 
-		const Client	&_getClient(int) const;
 		int				_getClientIndex(int) const;
 		int				_getClientIndex(const std::string &) const;
 
