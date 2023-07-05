@@ -104,7 +104,6 @@ void	Channel::deleteOp(Client const & client)
 			return ;
 		}
 	}
-	_sendMessageToClient(client, "This client is not an operator of this channel\n");
 }
 
 void	Channel::addInvitedUser(const std::string &username)

@@ -19,6 +19,8 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 		message += '\n';
 	kicked.leaveChannel(channel.getName());
 	channel.deleteUsername(kicked.getUsername().second);
+	if (channel.isClientOp(kicked.getUsername().second) == true)
+		channel.deleteOp(kicked);
 	_sendMessageToClient(kicked, message);
 	message = HEX_INFO + " User '" + kicked.getUsername().second + "' has been kicked from the channel '" + channel.getName() + "'";
 	if (reason.length() > 0)
@@ -38,26 +40,31 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 	iss.ignore(std::numeric_limits<std::streamsize>::max(), '#'); // no '#' detected
 	if (iss.eof() == true)
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> :<username> <reason>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> :<username> <optional reason>\n");
 		return ;
 	}
 	iss >> channelName;
 	channelName.insert(0, 1, '#');
 	
-	if (_doesChannelExist(client, channelName) == false || _allChannels[channelName].isClientOp(client.getUsername().second) == false)
+	if (_doesChannelExist(client, channelName) == false)
 		return ;
+	else if (_allChannels[channelName].isClientOp(client.getUsername().second) == false)
+	{
+		_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to execute this command\n");
+		return ;
+	}
 
 	iss.ignore(std::numeric_limits<std::streamsize>::max(), ':'); // no ':' detected
 	if (iss.eof() == true)
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> :<username> <reason>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: /kick <#channel> :<username> <optional reason>\n");
 		return ;
 	}
 	iss >> username;
 
 	if (_allChannels[channelName].isClientMember(username) == false)
 	{
-		_sendMessageToClient(client, HEX_INFO + " This user is not a member of this channel\n");
+		_sendMessageToClient(client, HEX_INFO + " This user '" + username + "' is not a member of the channel '" + channelName + "'\n");
 		return ;
 	}
 	iss.ignore(1); // jumps the space after username

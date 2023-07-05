@@ -7,6 +7,8 @@ void	Server::_removeClientFromChannel(Client &client, Channel &channel)
 
 	client.leaveChannel(channelName);
 	channel.deleteUsername(clientUsername);
+	if (channel.isClientOp(clientUsername) == true)
+		channel.deleteOp(client);
 	_sendMessageToChannel(channel, HEX_INFO + " User '" + clientUsername + "' left the channel '" + channelName + "'\n");
 	_sendMessageToClient(client, HEX_INFO + " You left the channel '" + channelName + "'\n");
 }
@@ -26,14 +28,25 @@ bool	Server::_doesChannelExist(const Client &client, const std::string &channelN
 void	Server::_part(std::istringstream &iss, Client &client)
 {
 	std::string	channelName;
+	std::string	garbage;
 
 	iss >> channelName;
-
-	std::map<std::string, Channel>::const_iterator	it = _allChannels.find(channelName);
-	
-	if(_isChannelNameValid(channelName, client) == false)
+	if (iss.eof() == true)
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: /part <#channel>\n");
 		return ;
-	else if (it == _allChannels.end() || client.isInChannel(channelName) == false)
+	}
+
+	iss >> garbage;
+	if (iss.eof() == false)
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: /part <#channel>\n");
+		return ;
+	}
+
+	if(_isChannelNameValid(channelName, client) == false || _doesChannelExist(client, channelName) == false)
+		return ;
+	else if (client.isInChannel(channelName) == false)
 		_sendMessageToClient(client, HEX_INFO + " You can not leave a channel you have not joined previously\n");
 	else
 		_removeClientFromChannel(client, _allChannels[channelName]);

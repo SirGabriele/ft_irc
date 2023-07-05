@@ -5,7 +5,6 @@ void	Server::_detectCommand(Client & client)
 	std::istringstream	iss(client.getInput());
 	std::string			token;
 	
-	std::cout << "--------Detect command--------" <<std::endl; // A VIRER----------------------
 	iss >> token;
 	std::cout << client.getInput() << std::endl;
 	if (token.compare("CAP") == 0)

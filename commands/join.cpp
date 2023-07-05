@@ -33,7 +33,8 @@ void	Server::_join(std::istringstream &iss, Client &client)
 	std::map<std::string, Channel>::iterator	it;
 	std::string									channel;
 	std::string									password;
-	
+	std::string									username;
+
 	iss >> channel;
 	if (iss.eof() == true)
 	{
@@ -59,27 +60,29 @@ void	Server::_join(std::istringstream &iss, Client &client)
 	}
 	else // this channel exists. Try to join it
 	{
-		if (it->second.isClientMember(client.getUsername().second) == true)
-			_sendMessageToClient(client, HEX_INFO + " You are already member of this channel\n");
+		std::string	clientUsername = client.getUsername().second;
+
+		if (it->second.isClientMember(clientUsername) == true)
+			_sendMessageToClient(client, HEX_INFO + " You are already member of the channel '" + channel + "'\n");
 		else if (it->second.isBitSet(PASSWORD) == false && password.length() != 0)
 			_sendMessageToClient(client, HEX_INFO + " This is a public channel, you must not provide a password to join it\n");
 		else if (it->second.isBitSet(PASSWORD) == true && password.length() == 0)
 			_sendMessageToClient(client, HEX_INFO + " This is a private channel that requires the correct password to join\n");
 		else if (it->second.isBitSet(PASSWORD) == true && password != it->second.getPassword())
-			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join this channel\n");
-		else if (it->second.isBitSet(INVITE) == true && _allChannels[channel].isClientInvited(client.getUsername().second) == false)
-			_sendMessageToClient(client, HEX_INFO + " This channel is in invite mode only and you have not been invited\n");
+			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join the channel '" + channel + "'\n");
+		else if (it->second.isBitSet(INVITE) == true && _allChannels[channel].isClientInvited(clientUsername) == false)
+			_sendMessageToClient(client, HEX_INFO + " The channel '" + channel + "' is in invite mode only and you have not been invited\n");
 		else if (it->second.isBitSet(USER_LIMIT) == true && it->second.getNbMembers() >= it->second.getUserLimit())
-			_sendMessageToClient(client, HEX_INFO + " This channel is currently full\n");
+			_sendMessageToClient(client, HEX_INFO + " The channel '" + channel + "' is currently full\n");
 		else
 		{
-			it->second.addNewUsername(client.getUsername().second);
+			it->second.addNewUsername(clientUsername);
 			client.addJoinedChannelName(it->first);
-			_sendMessageToChannel(it->second, HEX_INFO + ' ' + client.getUsername().second + " joined the channel\n");
+			_sendMessageToChannel(it->second, HEX_INFO + ' ' + clientUsername + " joined the channel '" + channel + "'\n");
 			if (it->second.isBitSet(TOPIC) == true)
-				_sendMessageToClient(client, HEX_INFO + " The topic of this channel is: " + it->second.getTopic());
+				_sendMessageToClient(client, HEX_INFO + " The topic of the channel '" + channel + "' is: " + it->second.getTopic());
 			if (it->second.isBitSet(INVITE) == true)
-				it->second.deleteInvitedUser(client.getUsername().second);
+				it->second.deleteInvitedUser(clientUsername);
 		}
 	}
 }
