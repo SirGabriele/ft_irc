@@ -55,7 +55,6 @@ class	Channel
 		std::string						_topic;
 		int								_modes;
 		int								_userLimit;
-		std::string						_topic;
 
     void		_setPasswordChannel(std::istringstream & iss, Client const & client);
 		void		_setOperatorChannel(std::istringstream & iss, Client const & client);

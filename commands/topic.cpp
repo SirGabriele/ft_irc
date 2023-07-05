@@ -14,7 +14,7 @@ void	Server::_topic(std::istringstream & iss, Client const & client)
 		if (it == _allChannels.end())
 			_sendMessageToClient(client, channelStr + " doest not exist\n");
 		else if (it->second.isBitSet(TOPIC) == false)
-			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + \
+			_sendMessageToClient(client, HEX_BOLD + "[" + it->second.getName() + "]" + HEX_RESET + \
 				" The TOPIC command is not activated\n");
 		else
 			it->second.manageTopicChannel(iss, client);
