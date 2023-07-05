@@ -19,6 +19,7 @@ void	Channel::_setPasswordChannel(std::istringstream & iss, Client const & clien
 	{
 		_password = password;
 		_modes |= 1 << PASSWORD;
+		_sendMessageToClient(client, HEX_INFO + " You successfully turned the password mode on\n");
 	}
 }
 
@@ -36,6 +37,8 @@ void	Channel::_setOperatorChannel(std::istringstream & iss, Client const & clien
 		if (iss.eof() == false)
 			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <user>\n");
 		addOp(client);
+		_sendMessageToClient(client, HEX_INFO + " You successfully turned '" + \
+			client.getUsername().second + "' into operator\n");
 	}
 }
 
@@ -75,6 +78,8 @@ void	Channel::_setUserLimitChannel(std::istringstream & iss, Client const & clie
 		{
 			_modes |= 1 << USER_LIMIT;
 			_userLimit = limitInt; 
+			_sendMessageToClient(client, HEX_INFO + " You successfully set the user limit to " + \
+				_userLimit + "\n");
 		}
 	}
 }
@@ -98,10 +103,13 @@ void	Channel::_addOptionToChannel(std::istringstream & iss, const std::string & 
 			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+]i|t}\n");
 		else if (option[1] == 'i')
 		{
-			_sendMessageToClient(client, HEX_INFO + " You successfully turned the channel into invite mode\n");
+			_sendMessageToClient(client, HEX_INFO + " You successfully turned the invite mode on\n");
 			_modes |= 1 << INVITE;
 		}
 		else
+		{
+			_sendMessageToClient(client, HEX_INFO + " You successfully turned the topic mode on\n");
 			_modes |= 1 << TOPIC;
+		}
 	}
 }
