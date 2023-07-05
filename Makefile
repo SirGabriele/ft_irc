@@ -18,7 +18,8 @@ COMMANDS =	join.cpp					\
 			kick.cpp					\
 			mode.cpp					\
 			addOptionToChannel.cpp		\
-			deleteOptionFromChannel.cpp
+			topic.cpp					\
+			deleteOptionFromChannel.cpp	\
 
 HEADERS =	headers/colours.hpp	\
 			headers/Server.hpp	\

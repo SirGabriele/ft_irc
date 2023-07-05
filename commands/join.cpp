@@ -72,11 +72,13 @@ void	Server::_join(std::istringstream &iss, Client &client)
 			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join this channel\n");
 		else
 		{
-			if (it->second.getNbMembers() < it->second.getUserLimit())
+			if ((it->second.getNbMembers() < it->second.getUserLimit() && it->second.isBitSet(USER_LIMIT) == true)
+					|| it->second.isBitSet(USER_LIMIT) == false)
 			{
 				it->second.addNewUsername(client.getUsername().second);
 				client.addJoinedChannelName(it->first);
-				_sendMessageToChannel(it->second, HEX_INFO + ' ' + client.getUsername().second + " joined the channel\n");
+				_sendMessageToChannel(it->second, HEX_INFO + ' ' + client.getUsername().second + \
+					" joined the channel\n");
 			}
 			else
 				_sendMessageToClient(client, "This channel is full\n");

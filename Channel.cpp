@@ -128,6 +128,32 @@ void	Channel::manageOption(std::istringstream & iss, Client const & client)
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
 }
 
+void	Channel::manageTopicChannel(std::istringstream & iss, Client const & client)
+{
+	std::string	subject;
+
+	iss >> subject;
+	if (iss.eof() == true)
+	{
+		if (_topic.empty() == true)
+			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + \
+				" The topic has not been set yet\n");
+		else
+			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + " TOPIC: " + _topic + "\n");
+	}
+	else
+	{
+		_topic.clear();
+		subject += " ";
+		while (iss.eof() == false)
+		{
+			_topic += subject;
+			iss >> subject;
+			subject += " ";
+		}
+	}
+}
+
 void	Channel::_sendMessageToClient(const Client &client, const std::string &message) const
 {
 	if (send(client.getSocket(), message.c_str(), message.length(), MSG_NOSIGNAL) < 0)
@@ -148,4 +174,5 @@ const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (thi
 const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}
 
 const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
+
 	/*	END OF GETTERS	*/

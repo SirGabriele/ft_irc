@@ -35,6 +35,7 @@ class	Channel
 		void	clearMemberNames(void);
 		bool	isBitSet(t_modes option) const;
 		void	manageOption(std::istringstream & iss, Client const & client);
+		void	manageTopicChannel(std::istringstream & iss, Client const & client);
 
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
