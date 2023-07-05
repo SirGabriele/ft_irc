@@ -5,14 +5,10 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name): _name(name), _password(""), _topic(""), _modes(0)
+Channel::Channel(const std::string &name, const std::string &creator): _name(name), _password(""), _topic(""), _modes(0)
 {
-
-}
-
-Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _topic(""), _modes(0)
-{
-
+	this->_allOps.push_back(creator);
+	this->_memberNames.push_back(creator);
 }
 
 Channel::Channel(const Channel &src)
@@ -66,6 +62,16 @@ bool	Channel::isClientOp(const std::string &username) const
 	return (false);
 }
 
+bool	Channel::isClientInvited(const std::string &username) const
+{
+	for (std::vector<std::string>::size_type i = 0; i < _inviteList.size(); i++)
+	{
+		if (_inviteList[i] == username)
+			return (true);
+	}
+	return (false);
+}
+
 void	Channel::deleteUsername(const std::string &username)
 {
 	for (std::vector<std::pair<std::string, int> >::size_type i = 0; i < this->_memberNames.size(); i++)
@@ -89,6 +95,20 @@ void	Channel::deleteOp(const std::string &username)
 	{
 		if (_allOps[i] == username)
 			_allOps.erase(_allOps.begin() + i);
+	}
+}
+
+void	Channel::addInvitedUser(const std::string &username)
+{
+	this->_inviteList.push_back(username);
+}
+
+void	Channel::deleteInvitedUser(const std::string &username)
+{
+	for (std::vector<std::string>::size_type i = 0; i < this->_inviteList.size(); i++)
+	{
+		if (_inviteList[i] == username)
+			_inviteList.erase(_inviteList.begin() + i);
 	}
 }
 
@@ -130,15 +150,17 @@ void	Channel::_sendMessageToClient(const Client &client, const std::string &mess
 	/*	END OF PUBLIC METHODS	*/
 
 	/*	START OF GETTERS	*/
-const std::string	&Channel::getPassword(void) const	{return (this->_password);}
-
-const std::string	&Channel::getName(void) const	{return (this->_name);}
-
 const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (this->_memberNames);}
 
 const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}
 
-const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
+const std::string	&Channel::getPassword(void) const	{return (this->_password);}
+
+const std::string	&Channel::getName(void) const	{return (this->_name);}
+
+const std::string	&Channel::getTopic(void) const	{return (this->_topic);}
+
+int	Channel::getUserLimit(void) const	{return (_userLimit);}
 	/*	END OF GETTERS	*/
 
 	/*	START OF SETTERS	*/

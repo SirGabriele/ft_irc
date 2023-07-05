@@ -17,7 +17,6 @@ Server::~Server(void)
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
 	{
 		this->_allClients[i].closeSocket();
-		this->_allClients.erase(this->_allClients.begin() + i);
 	}
 	std::cout << "Server has been turned off" << std::endl;
 }
@@ -189,7 +188,7 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 		return ;
 	}
 
-	Client	toFind = this->_getClient(i);
+	Client	toFind = this->_allClients[i];
 
 	if (toFind.getUsername().first == true)
 	{
@@ -226,14 +225,16 @@ void	Server::_shutdownChannel(const std::string &channelName)
 //	_allChannels[channelName].clearMemberNames();
 }
 */
+
 /*
 void	Server::_shutdownServer(void)
 {
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
 	{
-		this->_quit(this->_allClients[i]);
+//		this->_quit(this->_allClients[i]);
 	}
-}*/
+}
+*/
 	/*	END OF PRIVATE METHODS	*/
 
 	/*	START OF GETTERS	*/
@@ -242,22 +243,6 @@ int	Server::getSocket(void) const
 	return (this->_socket);
 }
 
-/*
-fd_set	Server::getReadFds(void) const
-{
-	return (this->_readfds);
-}
-
-fd_set	Server::getWriteFds(void) const
-{
-	return (this->_writefds);
-}
-
-int	Server::getMaxFd(void) const
-{
-	return (this->_maxFd);
-}
-*/
 int	Server::_getClientIndex(int socket) const
 {
 	for (std::vector<Client>::size_type i = 0; i < this->_allClients.size(); i++)
@@ -277,16 +262,6 @@ int	Server::_getClientIndex(const std::string &username) const
 	}
 	return (-1);
 }
-
-const Client	&Server::_getClient(int index) const
-{
-	return (this->_allClients[index]);
-}
-/*const Channel	&Server::getChannel(const std::string &name) const
-{
-	std::map<std::string, Channel>::iterator	it = this->_allChannels.find(name);
-}*/
-
 	/*	END OF GETTERS*/
 
 	/*	START OF SETTERS	*/

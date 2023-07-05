@@ -22,7 +22,6 @@ class	Channel
 	public:
 		Channel(void);
 		Channel(const Channel &src);
-		Channel(const std::string &);
 		Channel(const std::string &, const std::string &);
 		~Channel(void);
 
@@ -30,18 +29,22 @@ class	Channel
 		void	deleteUsername(const std::string &);
 		void	addOp(const std::string &);
 		void	deleteOp(const std::string &);
+		void	addInvitedUser(const std::string &);
+		void	deleteInvitedUser(const std::string &);
 		bool	isClientMember(const std::string &) const;
 		bool	isClientOp(const std::string &) const;
+		bool	isClientInvited(const std::string &) const;
 		void	clearMemberNames(void);
 		bool	isBitSet(t_modes option) const;
 		void	manageOption(std::istringstream & iss, Client const & client);
 
+		const std::vector<std::string>		&getMemberNames(void) const;
+		const std::vector<std::string>		&getOps(void) const;
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
 		const std::string					&getOp(void) const;
-		const std::vector<std::string>		&getMemberNames(void) const;
-		const std::vector<std::string>		&getOps(void) const;
-		const int							&getUserLimit(void) const;
+		const std::string					&getTopic(void) const;
+		int									getUserLimit(void) const;
 
 	private:
 		Channel							&operator=(const Channel &src);

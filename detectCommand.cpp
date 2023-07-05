@@ -27,18 +27,14 @@ void	Server::_detectCommand(Client &client)
 		_whois(iss, client);
 	else if (token.compare("channels") == 0 || token.compare("CHANNELS") == 0)
 		_displayChannels(iss, client);
-//	else if (token.compare("QUIT") == 0)
-//		_quit(client);
 	else if(token.compare("PART") == 0)
 		_part(iss, client);
 	else if (token.compare("KICK") == 0)
 		_kick(iss, client);
-	/*else if (token.compare("INVITE") == 0)
-		//invite command
-	else if (token.compare("TOPIC") == 0)
-		//topic command*/
 	else if (token.compare("MODE") == 0)
 		_mode(iss, client);
+	else if (token.compare("INVITE") == 0)
+		_invite(iss, client);
 	else
 	{
 		token = "Unknown command " + token + "\n";
