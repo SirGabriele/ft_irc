@@ -175,6 +175,7 @@ void	Channel::manageTopicChannel(std::istringstream & iss, Client const & client
 			iss >> subject;
 			subject += " ";
 		}
+		_sendMessageToClient(client, HEX_INFO + " You successfully updated the topic\n");
 	}
 }
 
