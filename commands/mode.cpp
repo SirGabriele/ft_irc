@@ -20,7 +20,9 @@ void	Server::_mode(std::istringstream & iss, Client const & client)
 		_sendMessageToClient(client, HEX_INFO + " This channel does not exist\n");
 	else
 	{
-		if (it->second.isClientOp(client.getUsername().second) == false)
+		if (it->second.isClientMember(client.getUsername().second) == false)
+			_sendMessageToClient(client, HEX_INFO + " You must be in the channel to execute this command\n");
+		else if (it->second.isClientOp(client.getUsername().second) == false)
 			_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to execute this command\n");
 		else
 			it->second.manageOption(iss, client);

@@ -37,8 +37,7 @@ void	Channel::_setOperatorChannel(std::istringstream & iss, Client const & clien
 		if (iss.eof() == false)
 			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <user>\n");
 		addOp(client);
-		_sendMessageToClient(client, HEX_INFO + " You successfully turned '" + \
-			client.getUsername().second + "' into operator\n");
+		_sendMessageToClient(client, HEX_INFO + " You successfully turned '" + user + "' into operator\n");
 	}
 }
 
