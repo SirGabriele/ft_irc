@@ -79,7 +79,7 @@ void	Channel::_setUserLimitChannel(std::istringstream & iss, Client const & clie
 			_modes |= 1 << USER_LIMIT;
 			_userLimit = limitInt; 
 			_sendMessageToClient(client, HEX_INFO + " You successfully set the user limit to " + \
-				_userLimit + "\n");
+				limitStr + "\n");
 		}
 	}
 }
