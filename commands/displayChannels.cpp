@@ -18,9 +18,12 @@ void	Server::_displayChannels(std::istringstream &iss, const Client &client) con
 		{
 			message += "- " + it->first;
 			if (it->second.isBitSet(PASSWORD) == true)
-				message += " (private)\n";
+				message += " - protected";
 			else
-				message += " (public)\n";
+				message += " - public";
+			if (it->second.isBitSet(INVITE) == true)
+				message += " - invite only";
+			message += '\n';
 			it++;
 		}
 		_sendMessageToClient(client, message);

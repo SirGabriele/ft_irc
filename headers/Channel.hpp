@@ -48,15 +48,18 @@ class	Channel
 	private:
 		Channel							&operator=(const Channel &src);
 		std::vector<std::string>		_memberNames;
+		std::vector<std::string>		_inviteList;
 		std::vector<std::string>		_allOps;
 		std::string						_name;
 		std::string						_password;
+		std::string						_topic;
 		int								_modes;
 		int								_userLimit;
 		std::string						_topic;
 
-		void		_setPasswordChannel(std::istringstream & iss, Client const & client);
+    void		_setPasswordChannel(std::istringstream & iss, Client const & client);
 		void		_setOperatorChannel(std::istringstream & iss, Client const & client);
+    bool    _isLimitNumeric(std::string const & limitStr);
 		void		_setUserLimitChannel(std::istringstream & iss, Client const & client);
 		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Client const & client);
 		void		_unsetOperatorChannel(std::istringstream & iss, Client const & client);

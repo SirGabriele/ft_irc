@@ -5,12 +5,12 @@ Channel::Channel(void)
 
 }
 
-Channel::Channel(const std::string &name): _name(name), _password(""), _modes(0), _topic("")
+Channel::Channel(const std::string &name): _name(name), _password(""), _topic(""), _modes(0)
 {
 
 }
 
-Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _modes(0)
+Channel::Channel(const std::string &name, const std::string &password): _name(name), _password(password), _topic(""), _modes(0)
 {
 
 }
@@ -30,9 +30,11 @@ Channel	&Channel::operator=(const Channel &src)
 	if (this != &src)
 	{
 		this->_memberNames= src._memberNames;
+		this->_inviteList = src._inviteList;
 		this->_allOps = src._allOps;
 		this->_name = src._name;
 		this->_password = src._password;
+		this->_topic = src._topic;
 		this->_modes = src._modes;
 	}
 	return (*this);
@@ -174,5 +176,4 @@ const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (thi
 const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}
 
 const int	&Channel::getUserLimit(void) const	{return (_userLimit);}
-
 	/*	END OF GETTERS	*/

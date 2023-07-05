@@ -7,12 +7,12 @@ void	Channel::_unsetOperatorChannel(std::istringstream & iss, Client const & cli
 
 	iss >> user;
 	if (iss.eof())
-		_sendMessageToClient(client, "Usage: MODE <#channel> [-o] <user>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-o] <user>\n");
 	else
 	{
 		iss >> garbage;
 		if (iss.eof() == false)
-			_sendMessageToClient(client, "Usage: MODE <#channel> [-o] <user>\n");
+			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-o] <user>\n");
 		deleteOp(client);
 	}
 }
@@ -22,7 +22,7 @@ void	Channel::_deleteOptionFromChannel(std::istringstream & iss, std::string & o
     std::string garbage;
 
 	if (option.find_first_not_of("itkol", 1) != std::string::npos || option.length() > 2)
-		_sendMessageToClient(client, "Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
 	else if (option[1] == 'o')
 		_unsetOperatorChannel(iss, client);
 	else if (option[1] == 'k')
