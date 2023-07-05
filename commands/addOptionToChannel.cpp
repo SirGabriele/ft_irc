@@ -41,8 +41,10 @@ void	Channel::_setOperatorChannel(std::istringstream & iss, Client const & clien
 	}
 }
 
-bool	Channel::_isLimitNumeric(std::string const & limitStr)
+bool	Channel::_isLimitValid(std::string const & limitStr)
 {
+	if (limitStr[0] == '0' && limitStr.length() == 1)
+		return (false);
 	for (size_t i = 0; i < limitStr.length(); i++)
 	{
 		if (std::isdigit(limitStr[i]) == 0)
@@ -66,8 +68,8 @@ void	Channel::_setUserLimitChannel(std::istringstream & iss, Client const & clie
 	iss >> limitStr;
 	if (iss.eof() == false)
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+l] <limit>\n");
-	else if (_isLimitNumeric(limitStr) == false)
-		_sendMessageToClient(client, HEX_INFO + " The limit must be numeric\n");
+	else if (_isLimitValid(limitStr) == false)
+		_sendMessageToClient(client, HEX_INFO + " The limit must be a valid number between 1 and 50\n");
 	else
 	{
 		limitInt = std::atoi(limitStr.c_str());

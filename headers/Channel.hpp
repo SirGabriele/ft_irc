@@ -60,7 +60,7 @@ class	Channel
 
     void		_setPasswordChannel(std::istringstream & iss, Client const & client);
 		void		_setOperatorChannel(std::istringstream & iss, Client const & client);
-    bool    _isLimitNumeric(std::string const & limitStr);
+    bool    _isLimitValid(std::string const & limitStr);
 		void		_setUserLimitChannel(std::istringstream & iss, Client const & client);
 		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Client const & client);
 		void		_unsetOperatorChannel(std::istringstream & iss, Client const & client);
