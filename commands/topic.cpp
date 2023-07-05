@@ -15,9 +15,6 @@ void	Server::_topic(std::istringstream & iss, Client const & client)
 			_sendMessageToClient(client, HEX_INFO + " The channel '" + channelStr + "' does not exist\n");
 		else if (it->second.isClientMember(client.getUsername().second) == false)
 			_sendMessageToClient(client, HEX_INFO + " You are not part of '" + channelStr + "'\n");
-		else if (it->second.isClientOp(client.getUsername().second) == false)
-			_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to " + \
-				"execute this command\n");
 		else if (it->second.isBitSet(TOPIC) == false)
 			_sendMessageToClient(client, HEX_INFO + " The TOPIC mode is not activated\n");
 		else

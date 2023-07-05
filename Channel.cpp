@@ -162,6 +162,9 @@ void	Channel::manageTopicChannel(std::istringstream & iss, Client const & client
 		else
 			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + " TOPIC: " + _topic + "\n");
 	}
+	else if (isClientOp(client.getUsername().second) == false)
+		_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to " + \
+			"update the topic\n");
 	else
 	{
 		_topic.clear();
