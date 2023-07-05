@@ -4,6 +4,8 @@ void	Server::_createChannel(const std::string &channel, Client &client)
 {
 	Channel	newChannel(channel, client.getUsername().second);
 
+	newChannel.addNewUsername(client.getUsername().second);
+	newChannel.addOp(client);
 	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }
@@ -67,7 +69,7 @@ void	Server::_join(std::istringstream &iss, Client &client)
 			_sendMessageToClient(client, HEX_INFO + " Incorrect password. Can not join this channel\n");
 		else if (it->second.isBitSet(INVITE) == true && _allChannels[channel].isClientInvited(client.getUsername().second) == false)
 			_sendMessageToClient(client, HEX_INFO + " This channel is in invite mode only and you have not been invited\n");
-		else if (it->second.isBitSet(USER_LIMIT) == true && static_cast<int>(_allChannels[channel].getMemberNames().size()) > _allChannels[channel].getUserLimit())
+		else if (it->second.isBitSet(USER_LIMIT) == true && it->second.getNbMembers() >= it->second.getUserLimit())
 			_sendMessageToClient(client, HEX_INFO + " This channel is currently full\n");
 		else
 		{

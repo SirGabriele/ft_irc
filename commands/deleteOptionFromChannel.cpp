@@ -1,54 +1,43 @@
 #include "Channel.hpp"
 
-void	Channel::_unsetPasswordChannel(std::istringstream &iss, const Client &client)
-{
-	std::string	garbage;
-
-	iss >> garbage;
-	if (iss.eof() == false)
-	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-k]\n");
-		return ;
-	}
-
-	_unsetModes(PASSWORD);
-	this->_password = "";
-}
-
 void	Channel::_unsetOperatorChannel(std::istringstream & iss, Client const & client)
 {
 	std::string	user;
+	std::string	garbage;
 
+	iss >> user;
 	if (iss.eof())
-		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-o] <user>\n");
 	else
 	{
-		iss >> user;
-		deleteOp(user);
+		iss >> garbage;
+		if (iss.eof() == false)
+			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-o] <user>\n");
+		deleteOp(client);
 	}
 }
 
 void	Channel::_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Client const & client)
 {
-	std::string	garbage;
+    std::string garbage;
 
-	if (option.length() > 2 || option.find_first_not_of("itkol", 1) != std::string::npos)
+	if (option.find_first_not_of("itkol", 1) != std::string::npos || option.length() > 2)
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
 	else if (option[1] == 'o')
 		_unsetOperatorChannel(iss, client);
 	else if (option[1] == 'k')
-		_unsetPasswordChannel(iss, client);
+		_modes &= 0 << PASSWORD;
 	else if (option[1] == 'l')
-		_unsetModes(USER_LIMIT);
-	else if (option[1] == 'i' || option[1] == 't')
+		_modes &= 0 << USER_LIMIT;
+	else
 	{
-		iss >> garbage;
+        iss >> garbage;
 
-		if (iss.eof() == false)
-			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[-]i|t\n");
+        if (iss.eof() == false)
+            _sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[-]i|t\n");
 		else if (option[1] == 'i')
-			_unsetModes(INVITE);
+			 _modes &= 0 << INVITE;
 		else
-			_unsetModes(TOPIC);
+			 _modes &= 0 << TOPIC;
 	}
 }

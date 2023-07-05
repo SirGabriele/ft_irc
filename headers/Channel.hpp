@@ -27,8 +27,8 @@ class	Channel
 
 		void	addNewUsername(const std::string &);
 		void	deleteUsername(const std::string &);
-		void	addOp(const std::string &);
-		void	deleteOp(const std::string &);
+		void	addOp(Client const & client);
+		void	deleteOp(Client const & client);
 		void	addInvitedUser(const std::string &);
 		void	deleteInvitedUser(const std::string &);
 		bool	isClientMember(const std::string &) const;
@@ -37,14 +37,16 @@ class	Channel
 		void	clearMemberNames(void);
 		bool	isBitSet(t_modes option) const;
 		void	manageOption(std::istringstream & iss, Client const & client);
+		void	manageTopicChannel(std::istringstream & iss, Client const & client);
 
 		const std::vector<std::string>		&getMemberNames(void) const;
 		const std::vector<std::string>		&getOps(void) const;
+		const std::vector<std::string>		&getOps(void) const;
 		const std::string					&getName(void) const;
 		const std::string					&getPassword(void) const;
-		const std::string					&getOp(void) const;
 		const std::string					&getTopic(void) const;
 		int									getUserLimit(void) const;
+		int									getNbMembers(void) const;
 
 	private:
 		Channel							&operator=(const Channel &src);
@@ -57,18 +59,14 @@ class	Channel
 		int								_modes;
 		int								_userLimit;
 
-		void		_setPasswordChannel(std::istringstream & iss, Client const & client);
-		void		_unsetPasswordChannel(std::istringstream & iss, Client const & client);
+    void		_setPasswordChannel(std::istringstream & iss, Client const & client);
+		void		_setOperatorChannel(std::istringstream & iss, Client const & client);
+    bool    _isLimitNumeric(std::string const & limitStr);
 		void		_setUserLimitChannel(std::istringstream & iss, Client const & client);
 		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Client const & client);
 		void		_unsetOperatorChannel(std::istringstream & iss, Client const & client);
 		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Client const & client);
 		void		_sendMessageToClient(const Client &, const std::string &) const;
-
-		void		_setPassword(const std::string &password);
-		void		_setModes(t_modes option);
-		void		_unsetModes(t_modes option);
-		void		_setUserLimit(int limit);
 };
 
 #endif /*CHANNEL_HPP*/
