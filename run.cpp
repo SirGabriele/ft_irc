@@ -12,14 +12,13 @@ void	Server::_receiveData(int socket)
 		char    buffer[BUFFER_SIZE];
 		int     howManyBitsRead;
 		
-//		std::memset(buffer, '\0', sizeof(buffer));
 		howManyBitsRead = recv(socket, buffer, BUFFER_SIZE, 0);
 		if (howManyBitsRead == -1)
 		{
 			std::cerr << "Failed recv()" << std::endl;
 			return ;
 		}
-		else if (howManyBitsRead > 0)
+		else if (howManyBitsRead >= 0)
 		{
 			buffer[howManyBitsRead] = '\0';
 			_processInput(socket, buffer);

@@ -15,6 +15,7 @@ COMMANDS =	join.cpp					\
 			privmsg.cpp					\
 			pass.cpp					\
 			part.cpp					\
+			quit.cpp					\
 			kick.cpp					\
 			mode.cpp					\
 			invite.cpp					\

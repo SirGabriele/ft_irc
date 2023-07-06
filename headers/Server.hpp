@@ -50,7 +50,7 @@ class	Server
 
 		void	start(int, std::string &);
 		bool	run(void);
-		void	displayChannels(Client &) const;
+
 
 //		int		getMaxFd(void) const;
 		int		getSocket(void) const;
@@ -80,6 +80,8 @@ class	Server
 		void	_join(std::istringstream &, Client &);
 		void	_createChannel(const std::string &, Client &);
 		void	_displayClient(const Client &, const std::string &) const;
+		void	_displayAllClients(std::istringstream &, const Client &) const;
+		void	_displayChannels(Client &) const;
 
 		void	_nick(std::istringstream &, Client &);
 
@@ -102,8 +104,11 @@ class	Server
 		void	_part(std::istringstream &, Client &);
 		bool	_doesChannelExist(const Client &, const std::string &) const;
 		void	_removeClientFromChannel(Client &, Channel &);
-		void	_kick(std::istringstream &, Client &);
 
+		void	_quit(Client &);
+		void	_disconnectClientFromAllChannels(const std::vector<std::string> &, const std::string &);
+
+		void	_kick(std::istringstream &, Client &);
 		void	_kickUserFromChannel(Client &, Channel &, const std::string &);
 
 		void	_invite(std::istringstream &, Client &);

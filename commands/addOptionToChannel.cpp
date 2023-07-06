@@ -25,19 +25,27 @@ void	Channel::_setPasswordChannel(std::istringstream & iss, Client const & clien
 
 void	Channel::_setOperatorChannel(std::istringstream & iss, Client const & client)
 {
-	std::string	user;
+	std::string	username;
 	std::string	garbage;
 
-	iss >> user;
+	iss >> username;
 	if (iss.eof())
-		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <user>\n");
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <username>\n");
+		return ;
+	}
+
+	iss >> garbage;
+	if (iss.eof() == false)
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <username>\n");
+	else if (isClientMember(username) == false)
+		_sendMessageToClient(client, HEX_INFO + " This user is not a member of this channel\n");
+	else if (isClientOp(username) == true)
+		_sendMessageToClient(client, HEX_INFO + " This user is already an operator of this channel\n");
 	else
 	{
-		iss >> garbage;
-		if (iss.eof() == false)
-			_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [+o] <user>\n");
-		addOp(client);
-		_sendMessageToClient(client, HEX_INFO + " You successfully turned '" + user + "' into operator\n");
+		addOp(username);
+		_sendMessageToClient(client, HEX_INFO + " You successfully turned '" + username + "' into operator\n");
 	}
 }
 

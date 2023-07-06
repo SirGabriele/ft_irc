@@ -2,7 +2,6 @@
 #include <limits>
 
 /*
-Hexchat sends:
 PRIVMSG #channel :1 2 3 4 5 6 7 8 9 10
 
 PRIVMSG username :1 2 3 4 5 6 7 8 9 10

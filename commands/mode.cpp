@@ -8,7 +8,7 @@ void	Server::_mode(std::istringstream & iss, Client const & client)
 	iss >> channel;
 	if (iss.eof())
 	{
-		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <argument>\n");
+		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
 		return ;
 	}
 

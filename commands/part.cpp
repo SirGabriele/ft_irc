@@ -5,11 +5,17 @@ void	Server::_removeClientFromChannel(Client &client, Channel &channel)
 	std::string	channelName	= channel.getName();
 	std::string	clientUsername = client.getUsername().second;
 
+	if (channel.isClientOp(clientUsername) == true)
+		channel.deleteOp(clientUsername);
+
 	client.leaveChannel(channelName);
 	channel.deleteUsername(clientUsername);
-	if (channel.isClientOp(clientUsername) == true)
-		channel.deleteOp(client);
-	_sendMessageToChannel(channel, HEX_INFO + " User '" + clientUsername + "' left the channel '" + channelName + "'\n");
+
+	if (channel.getMemberNames().size() == 0)
+		_allChannels.erase(channelName);
+	else
+		_sendMessageToChannel(channel, HEX_INFO + " User '" + clientUsername + "' left the channel '" + channelName + "'\n");
+
 	_sendMessageToClient(client, HEX_INFO + " You left the channel '" + channelName + "'\n");
 }
 

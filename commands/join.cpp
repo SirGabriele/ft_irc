@@ -4,8 +4,6 @@ void	Server::_createChannel(const std::string &channel, Client &client)
 {
 	Channel	newChannel(channel, client.getUsername().second);
 
-//	newChannel.addNewUsername(client.getUsername().second);
-//	newChannel.addOp(client);
 	client.addJoinedChannelName(newChannel.getName());
 	_allChannels.insert(_allChannels.end(), std::make_pair(channel, newChannel));
 }

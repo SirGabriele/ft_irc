@@ -34,6 +34,8 @@ void	Server::_invite(std::istringstream &iss, Client &client)
 		_sendMessageToClient(client, HEX_INFO + " You can only invite people to join a channel that is on invite mode only\n");
 	else if (_isUsernameAlreadyTaken(username) == false)
 		_sendMessageToClient(client, HEX_INFO + " Unknown username\n");
+	else if (_allChannels[channel].isClientInvited(username) == true)
+		_sendMessageToClient(client, HEX_INFO + " This user has already been invited\n");
 	else if (_allChannels[channel].isClientMember(username) == true)
 		_sendMessageToClient(client, HEX_INFO + " This user is already member of this channel\n");
 	else

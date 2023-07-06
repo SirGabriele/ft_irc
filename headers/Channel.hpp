@@ -27,8 +27,8 @@ class	Channel
 
 		void	addNewUsername(const std::string &);
 		void	deleteUsername(const std::string &);
-		void	addOp(Client const & client);
-		void	deleteOp(Client const & client);
+		void	addOp(const std::string &);
+		void	deleteOp(const std::string &);
 		void	addInvitedUser(const std::string &);
 		void	deleteInvitedUser(const std::string &);
 		bool	isClientMember(const std::string &) const;

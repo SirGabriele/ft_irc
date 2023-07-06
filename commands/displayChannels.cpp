@@ -13,7 +13,7 @@ void	Server::_displayChannels(std::istringstream &iss, const Client &client) con
 		_sendMessageToClient(client, HEX_INFO + " There is currently no existing channel\n");
 	else
 	{
-		message = HEX_INFO + " List of all channels currently existing :" + '\n';
+		message = HEX_INFO + " List of all channels currently existing:\n";
 		while (it != this->_allChannels.end())
 		{
 			message += "- " + it->first;

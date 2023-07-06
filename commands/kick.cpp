@@ -10,6 +10,7 @@ KICK IRC #channel :username reason oui non peut-etre
 
 void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::string &reason)
 {
+	std::string	kickedUsername = kicked.getUsername().second;
 	std::string	message;
 
 	message = HEX_INFO + " You have been kicked from the channel '" + channel.getName() + "'";
@@ -18,11 +19,11 @@ void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::s
 	else
 		message += '\n';
 	kicked.leaveChannel(channel.getName());
-	channel.deleteUsername(kicked.getUsername().second);
-	if (channel.isClientOp(kicked.getUsername().second) == true)
-		channel.deleteOp(kicked);
+	channel.deleteUsername(kickedUsername);
+	if (channel.isClientOp(kickedUsername) == true)
+		channel.deleteOp(kickedUsername);
 	_sendMessageToClient(kicked, message);
-	message = HEX_INFO + " User '" + kicked.getUsername().second + "' has been kicked from the channel '" + channel.getName() + "'";
+	message = HEX_INFO + " User '" + kickedUsername + "' has been kicked from the channel '" + channel.getName() + "'";
 	if (reason.length() > 0)
 		message += " for the following reason: " + reason + '\n';
 	else

@@ -146,6 +146,13 @@ void	Server::_processInput(int socket, const char *buffer)
 		std::cerr << "Failed to get client's index" << std::endl;
 		return ;
 	}
+	else if (buffer[0] == '\0') // received '\0', lost connection with this socket
+	{
+		std::cout << "Lost connection with user '" + _allClients[i].getUsername().second + "'" << std::endl;
+		_quit(this->_allClients[i]);
+		return ;
+	}
+
 	this->_allClients[i].completeInput(buffer);
 
 	std::string::size_type j = this->_allClients[i].getInput().find_first_of('\n', 0);
@@ -192,7 +199,8 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 
 	if (toFind.getUsername().first == true)
 	{
-		message = HEX_BOLD + "Username: " + HEX_RESET + toFind.getUsername().second + '\n';
+		message = "---------------------------------------------------------------\n";
+		message += HEX_BOLD + "Username: " + HEX_RESET + toFind.getUsername().second + '\n';
 		if (toFind.getNickname().first == true)
 			message += HEX_BOLD + "Nickname: " + HEX_RESET + toFind.getNickname().second + '\n';
 		if (joinedChannels.size() != 0)
@@ -204,7 +212,29 @@ void	Server::_displayClient(const Client &client, const std::string &username) c
 			}
 			message += '\n';
 		}
+		message += "---------------------------------------------------------------\n";
 		_sendMessageToClient(client, message);
+	}
+}
+
+void	Server::_displayAllClients(std::istringstream &iss, const Client &client) const
+{
+	std::string	message;
+	std::string	garbage;
+
+	iss >> garbage;
+	if (iss.eof() == false)
+	{
+		_sendMessageToClient(client, HEX_INFO + " Usage: /users\n");
+		return ;
+	}
+	message = HEX_INFO + " List of all users currently authentified:\n";
+	for (std::vector<Client>::const_iterator it = _allClients.begin(); it != _allClients.end(); it++)
+	{
+		if (it->getAuthentification() == false)
+			continue ;
+		else
+			_displayClient(client, it->getUsername().second);
 	}
 }
 

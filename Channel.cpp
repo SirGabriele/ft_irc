@@ -85,21 +85,16 @@ void	Channel::deleteUsername(const std::string &username)
 	}
 }
 
-void	Channel::addOp(Client const & client)
+void	Channel::addOp(const std::string &username)
 {
-	std::string	username = client.getUsername().second;
-
-	if (isClientMember(username) == true)
-		this->_allOps.push_back(username);
-	else if (isClientOp(username) == false)
-		_sendMessageToClient(client, "<" + username + "> does not belong to this channel\n");
+	this->_allOps.push_back(username);
 }
 
-void	Channel::deleteOp(Client const & client)
+void	Channel::deleteOp(const std::string &username)
 {
 	for (std::vector<std::string>::size_type i = 0; i < this->_allOps.size(); i++)
 	{
-		if (_allOps[i] == client.getUsername().second)
+		if (_allOps[i] == username)
 		{
 			_allOps.erase(_allOps.begin() + i);
 			return ;
@@ -148,36 +143,6 @@ void	Channel::manageOption(std::istringstream & iss, Client const & client)
 		_deleteOptionFromChannel(iss, option, client);
 	else
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> {[+|-]i|t|k|o|l} <optional argument>\n");
-}
-
-void	Channel::manageTopicChannel(std::istringstream & iss, Client const & client)
-{
-	std::string	subject;
-
-	iss >> subject;
-	if (iss.eof() == true)
-	{
-		if (_topic.empty() == true)
-			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + \
-				" The topic has not been set yet\n");
-		else
-			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + " TOPIC: " + _topic + "\n");
-	}
-	else if (isClientOp(client.getUsername().second) == false)
-		_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to " + \
-			"update the topic\n");
-	else
-	{
-		_topic.clear();
-		subject += " ";
-		while (iss.eof() == false)
-		{
-			_topic += subject;
-			iss >> subject;
-			subject += " ";
-		}
-		_sendMessageToClient(client, HEX_INFO + " You successfully updated the topic\n");
-	}
 }
 
 void	Channel::_sendMessageToClient(const Client &client, const std::string &message) const
