@@ -11,6 +11,11 @@ void	Channel::_unsetOperatorChannel(std::istringstream & iss, Client const & cli
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-o] <username>\n");
 		return ;
 	}
+	else if (username == "passBot")
+	{
+		_sendMessageToClient(client, HEX_INFO + " You can only send private messages to passBot\n");
+		return ;
+	}
 	iss >> garbage;
 	if (iss.eof() == false)
 		_sendMessageToClient(client, HEX_INFO + " Usage: MODE <#channel> [-o] <username>\n");

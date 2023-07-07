@@ -117,15 +117,22 @@ void	serverCommunication(int sockfd)
 	write(sockfd, servPass.c_str(), servPass.length());
 	while (g_signal == 0)
 	{
-		ret = read(sockfd, buf, 1024);
+		ret = recv(sockfd, buf, 1024, MSG_DONTWAIT);
 		if (ret == -1)
 		{
-			if (g_signal != 130)
-				std::cerr << "Error: cannot read socket\n";
-			return ;
+			if (g_signal == 130)
+			{
+				std::cerr << "passBot has been shutdown\n";
+				return ;
+			}
+			continue ;
 		}
 		else if (ret == 0)
+		{
+			std::cerr << "Server has been shutdown" << std::endl;
 			return ;
+		}
+		else
 		buf[ret] = '\0';
 		password = processInput(buf);
 		ret = write(sockfd, password.c_str(), password.length());

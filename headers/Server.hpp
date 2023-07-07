@@ -135,7 +135,6 @@ class	Server
 		std::vector<Client>				_allClients;
 		struct sockaddr_in				_sin;
 		std::string						_password;
-		Client							_passBot;
 		fd_set							_readfds;
 		int								_socket;
 		int								_port;

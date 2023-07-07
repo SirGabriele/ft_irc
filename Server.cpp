@@ -140,10 +140,7 @@ void	Server::_acceptNewClient(void)
 
 void	Server::_processInput(int socket, const char *buffer)
 {
-	int	i = 0;
-
-	if (socket != _passBot.getSocket())
-		i = _getClientIndex(socket);
+	int	i = this->_getClientIndex(socket);
 	if (i == -1)
 	{
 		std::cerr << "Failed to get client's index" << std::endl;
@@ -161,10 +158,7 @@ void	Server::_processInput(int socket, const char *buffer)
 	std::string::size_type j = this->_allClients[i].getInput().find_first_of('\n', 0);
 	if (j != std::string::npos) // command has a '\n' thus can be executed
 	{
-		if (i == 0)
-			this->_detectCommand(_passBot);
-		else
-			this->_detectCommand(this->_allClients[i]);
+		this->_detectCommand(this->_allClients[i]);
 		if (static_cast<std::vector<Client>::size_type>(i) < this->_allClients.size() && this->_allClients[i].getSocket() == socket)
 			this->_allClients[i].resetInput();
 	}

@@ -25,12 +25,6 @@ void	Server::_pass(std::istringstream & iss, Client & client)
 		client.setNickname("passBot");
 		client.setUsername("passBot");
 		client.setAuthentification(true);
-
-		int	i = _getClientIndex("passBot");
-		_passBot = _allClients[i];
-		_allClients.erase(_allClients.begin() + i);
-		_maxFd = 0;
-		_setMaxFd();
 	}
 	else
 		_sendMessageToClient(client, HEX_INFO + " Incorrect password\n");

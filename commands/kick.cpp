@@ -62,7 +62,11 @@ void	Server::_kick(std::istringstream &iss, Client &client)
 		return ;
 	}
 	iss >> username;
-
+	if (username == "passBot")
+	{
+		_sendMessageToClient(client, HEX_INFO + " You can only send private messages to passBot\n");
+		return ;
+	}
 	if (_allChannels[channelName].isClientMember(username) == false)
 	{
 		_sendMessageToClient(client, HEX_INFO + " This user '" + username + "' is not a member of the channel '" + channelName + "'\n");
