@@ -15,6 +15,16 @@ std::string	Server::_extractString(std::istringstream &iss) const
 	return (extractedMessage);
 }
 
+void	Server::_sendToBot(std::istringstream &iss, const Client & client) const
+{
+	std::string	message;
+	int			i = _getClientIndex("passBot");
+
+	iss.ignore(1); //ignore the space after 'passBot <command> <value>'
+	std::getline(iss, message);
+	_sendMessageToClient(_allClients[i], client.getUsername().second + ' ' + message);
+}
+
 void	Server::_sendToClient(std::istringstream &iss, const std::string &username, const Client & client) const
 {
 	std::string	message;
@@ -38,7 +48,8 @@ void	Server::_sendToClient(std::istringstream &iss, const std::string &username,
 	message += _extractString(iss);
 	message += '\n';
 	_sendMessageToClient(_allClients[recipientIndex], HEX_BOLD + "From " + HEX_RESET + client.getUsername().second + ": " + message);
-	_sendMessageToClient(client, HEX_BOLD + "To " + HEX_RESET + username + ": " + message);
+	if (client.getUsername().second != "passBot")
+		_sendMessageToClient(client, HEX_BOLD + "To " + HEX_RESET + username + ": " + message);
 }
 
 void	Server::_sendToChannel(std::istringstream &iss, const std::string &channelName, const Client & client) const
@@ -77,6 +88,8 @@ void	Server::_privmsg(std::istringstream & iss, const Client & client) const
 			_sendMessageToClient(client, HEX_INFO + " Usage: /msg <#channel|username> :<message>\n");
 		else if (id[0] == '#')
 			_sendToChannel(iss, id, client);
+		else if (id == "passBot")
+			_sendToBot(iss, client);
 		else
 			_sendToClient(iss, id, client);
 }		

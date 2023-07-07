@@ -44,6 +44,5 @@ bool	Server::run(void)
 				_receiveData(i);
 		}
 	}
-//	_shutdownServer();
 	return (true);
 }

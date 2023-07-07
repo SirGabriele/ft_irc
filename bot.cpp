@@ -3,10 +3,22 @@
 #include <netdb.h>
 #include <cstdlib>
 #include <unistd.h>
+#include <sstream>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <limits>
+#include <signal.h>
 
-std::string	passwordGenerator(void);
+int	g_signal = 0;
 
-bool	isPortNumeric(std::string port)
+void	handleSignal(int sig)
+{
+	static_cast<void>(sig);
+	std::cout << '\n';
+	g_signal = 130;
+}
+
+int	getPort(std::string port)
 {
 	size_t	pos;
 
@@ -17,9 +29,14 @@ bool	isPortNumeric(std::string port)
 			std::cout << "Error: <port> must be a positive integer\n";
 		else
 			std::cout << "Error: <port> must be numeric\n";
-		return (false);
+		return (-1);
 	}
-	return (true);
+
+	int i = std::atoi(port.c_str());
+
+	if (i > 65535)
+		return (-1);
+	return (i);
 }
 
 int	createSocket(void)
@@ -46,27 +63,76 @@ int	ft_strlen(char *buf)
 	return (i);
 }
 
+std::string passwordGenerator(int length)
+{
+	std::string password;
+    
+	for (int i = 0; i < length; i++)
+		password += (std::rand() % 94 + 32);
+	password += '\n';
+	return (password);
+}   
+
+std::string	processInput(const std::string &input)
+{
+	std::istringstream	iss(input);
+	std::string			username;
+	std::string			command;
+	std::string			value;
+	int					valueInt;
+
+	iss >> username;
+
+	std::string			message = "PRIVMSG " + username + " :";
+
+	iss.ignore(std::numeric_limits<std::streamsize>::max(), ':');
+	if (iss.eof() == true)
+		message += "Usage: /msg passBot :generate <value>\n";
+
+	iss >> command;
+	if (iss.eof() == true || command != "generate")
+	{
+		message += "I'm sorry, the only command I know is 'generate <password length>'\n";
+		return (message);
+	}
+	else
+	{
+		iss >> value;
+		valueInt = std::atoi(value.c_str());
+		if (value.find_first_not_of("0123456789") != std::string::npos || value.length() > 2 || valueInt <= 0 || valueInt > 50)
+			message += "Password length must be numeric and between 1 and 50\n";
+		else
+			message += passwordGenerator(valueInt);
+	}
+	return (message);
+}
+
 void	serverCommunication(int sockfd)
 {
 	std::string	password;
+	std::string servPass = "PASS Uz/}TGO$5vG<QW-2*Rr}=dkKs%[D38@$4j#i3m)O!PlRC5!hgs\n";
 	char		buf[1024];
 	int			ret;
 
-	while (1)
+	write(sockfd, servPass.c_str(), servPass.length());
+	while (g_signal == 0)
 	{
 		ret = read(sockfd, buf, 1024);
 		if (ret == -1)
 		{
-			std::cout << "Error: cannot read socket\n";
-			continue ;
+			if (g_signal != 130)
+				std::cerr << "Error: cannot read socket\n";
+			return ;
 		}
-		password = passwordGenerator();
+		else if (ret == 0)
+			return ;
+		buf[ret] = '\0';
+		password = processInput(buf);
 		ret = write(sockfd, password.c_str(), password.length());
 		if (ret == -1)
-		if (ret == -1)
 		{
-			std::cout << "Error: cannot write on socket\n";
-			continue ;
+			std::cerr << "Error: cannot write on socket\n";
+			return ;
 		}
 	}
 }
@@ -81,20 +147,30 @@ void	connectToServer(int port)
 		return ;
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(port);
-	serveraddr.sin_addr.s_addr = INADDR_ANY;
+	serveraddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 	if (connect(sockfd, reinterpret_cast<struct sockaddr *>(&serveraddr), sizeof(serveraddr)) == -1)
-		std::cout << "Error connecting to server\n";
+		std::cerr << "Error connecting to server\n";
 	else
 		serverCommunication(sockfd);
+	close(sockfd);
 }
 
 int	main(int argc, char **argv)
 {
 	if (argc != 2)
-		std::cout << "Usage: ./botIrc <port>\n";
+	{
+		std::cerr << "Usage: ./passBot <port>\n";
+		return (1);
+	}
+
+	int i = getPort(argv[1]);
+
+	if (i == -1)
+		return (1);
 	else
 	{
-		if (isPortNumeric(argv[1]) == true)
-			connectToServer(std::atoi(argv[1]));
+		signal(SIGINT, handleSignal);
+		connectToServer(std::atoi(argv[1]));
 	}
+	return (0);
 }

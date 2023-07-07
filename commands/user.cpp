@@ -50,6 +50,8 @@ void	Server::_user(std::istringstream &iss, Client &client)
 		_sendMessageToClient(client, HEX_INFO + " This is already your username\n");
 	else if (_isUsernameAlreadyTaken(username) == true)
 		_sendMessageToClient(client, HEX_INFO + " This username is already taken\n");
+	else if (username == "passBot")
+		_sendMessageToClient(client, HEX_INFO + " You can not choose this username\n");
 	else
 	{
 		client.setUsername(username);

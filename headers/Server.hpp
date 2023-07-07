@@ -34,6 +34,7 @@
 # define HEX_INFO std::string("\x02[INFO]\x0F")
 # define HEX_BOLD std::string("\x02")
 # define HEX_RESET std::string("\x0F")
+# define BOT_PASS "Uz/}TGO$5vG<QW-2*Rr}=dkKs%[D38@$4j#i3m)O!PlRC5!hgs"
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
 # define BUFFER_SIZE 1024
@@ -97,6 +98,7 @@ class	Server
 		bool	_isChannelNameValid(const std::string &, const Client &) const;
 
 		void		_privmsg(std::istringstream &, const Client & client) const;
+		void		_sendToBot(std::istringstream &, const Client &) const;
 		void		_sendToClient(std::istringstream &, const std::string &, const Client &) const;
 		void		_sendToChannel(std::istringstream &, const std::string &, const Client &) const;
 		std::string	_extractString(std::istringstream &) const;
