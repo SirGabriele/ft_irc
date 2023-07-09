@@ -14,7 +14,9 @@
 # include <string>
 # include <vector>
 
-# include "colours.hpp"
+/*	Colours	*/
+# define RESET "\e[0m"
+# define B_HI_RED "\e[1;91m"
 
 class	Client
 {
@@ -60,19 +62,6 @@ class	Client
 		bool							_authentification;
 		std::string						_input;
 		int								_socket;
-
-	/*	START OF EXCEPTIONS	*/
-	class	Error: public std::exception
-	{
-		public:
-			Error(const std::string &) throw();
-			~Error(void) throw();
-			const char	*what(void) const throw();
-
-		private:
-			const std::string	_errMsg;
-	};
-	/*	END OF EXCEPTIONS*/
 };
 
 #endif /*CLIENT_HPP*/

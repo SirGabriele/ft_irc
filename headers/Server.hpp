@@ -1,33 +1,10 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-/*  struct sockaddr_in  */
-# include <netinet/in.h>
-
-/*	getprotobyname()	*/
-# include <netdb.h>
-
-/*	htons()	*/
-# include <arpa/inet.h>
-
-/*	socket(), getsockopt(), bind(), listen(), accept()	*/
-# include <sys/types.h>
-# include <sys/socket.h>
-
-/*	close()	*/
-# include <unistd.h>
-
 /*	select()	*/
-# include <sys/select.h>
-# include <sstream>
-# include <iostream>
-# include <string>
-# include <vector>
 # include <map>
 # include <sstream>
 
-# include "colours.hpp"
-# include "Client.hpp"
 # include "Channel.hpp"
 
 /*	Hexchat text formatting	*/
@@ -35,6 +12,9 @@
 # define HEX_BOLD std::string("\x02")
 # define HEX_RESET std::string("\x0F")
 # define BOT_PASS "Uz/}TGO$5vG<QW-2*Rr}=dkKs%[D38@$4j#i3m)O!PlRC5!hgs"
+
+/*	Colours	*/
+# define B_HI_GREEN "\e[1;92m"
 
 # define MAX_PENDING_CON 10 //max pending connections, second argument of the listen function
 # define BUFFER_SIZE 1024
@@ -53,10 +33,7 @@ class	Server
 		bool	run(void);
 
 
-//		int		getMaxFd(void) const;
 		int		getSocket(void) const;
-/*		fd_set	getReadFds(void) const;
-		fd_set	getWriteFds(void) const;*/
 
 	private:
 		Server(const Server &src);

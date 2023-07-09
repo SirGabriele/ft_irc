@@ -1,9 +1,6 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include <string>
-# include <vector>
-
 # include "Client.hpp"
 # include "Server.hpp"
 
@@ -58,13 +55,15 @@ class	Channel
 		int								_modes;
 		int								_userLimit;
 
-    void		_setPasswordChannel(std::istringstream & iss, Client const & client);
+    	void		_setPasswordChannel(std::istringstream & iss, Client const & client);
 		void		_setOperatorChannel(std::istringstream & iss, Client const & client);
-    bool    _isLimitValid(std::string const & limitStr);
+ 		bool    	_isLimitValid(std::string const & limitStr);
 		void		_setUserLimitChannel(std::istringstream & iss, Client const & client);
-		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, Client const & client);
+		void		_addOptionToChannel(std::istringstream & iss, const std::string & option, \
+						Client const & client);
 		void		_unsetOperatorChannel(std::istringstream & iss, Client const & client);
-		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Client const & client);
+		void		_deleteOptionFromChannel(std::istringstream & iss, std::string & option, \
+						Client const & client);
 		void		_sendMessageToClient(const Client &, const std::string &) const;
 };
 

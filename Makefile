@@ -7,9 +7,9 @@ SRC =	main.cpp			\
 		Client.cpp			\
 		Channel.cpp			\
 		detectCommand.cpp	\
-		run.cpp
+		run.cpp				\
 
-SRC_BOT =	bot.cpp
+SRC_BOT =	bot.cpp	\
 
 COMMANDS =	join.cpp					\
 			nick.cpp					\
@@ -25,13 +25,11 @@ COMMANDS =	join.cpp					\
 			invite.cpp					\
 			addOptionToChannel.cpp		\
 			topic.cpp					\
-			deleteOptionFromChannel.cpp
+			deleteOptionFromChannel.cpp	\
 
-HEADERS =	headers/colours.hpp	\
-			headers/Server.hpp	\
+HEADERS =	headers/Server.hpp	\
 			headers/Client.hpp	\
 			headers/Channel.hpp	\
-			headers/ircserv.hpp
 
 INCLUDE_FOLDER = -I headers/
 
@@ -42,7 +40,7 @@ OBJS = $(SRCS:%.cpp=$(OBJS_PATH)%.o)
 OBJ_BOT = $(SRC_BOT:%.cpp=$(OBJS_PATH)%.o)
 
 SRCS =	$(SRC)								\
-		$(addprefix commands/, $(COMMANDS))
+		$(addprefix commands/, $(COMMANDS))	\
 
 CC = c++
 

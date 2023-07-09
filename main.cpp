@@ -1,4 +1,4 @@
-#include "ircserv.hpp"
+#include "Server.hpp"
 
 /*	atoi()	*/
 #include <cstdlib>

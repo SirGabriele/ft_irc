@@ -1,5 +1,4 @@
 #include "Server.hpp"
-# include "ircserv.hpp"
 
 Server::Server(void): _password(""), _socket(0), _port(0), _maxFd(0)
 {

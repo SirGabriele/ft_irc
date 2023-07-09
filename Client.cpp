@@ -127,20 +127,3 @@ void	Client::setAuthentification(bool status)
 	_authentification = status;
 }
 	/*END OF SETTERS	*/
-
-	/*	START OF EXCEPTIONS	*/
-Client::Error::Error(const std::string &str) throw(): _errMsg(str)
-{
-
-}
-
-Client::Error::~Error(void) throw()
-{
-
-}
-
-const char	*Client::Error::what(void) const throw()
-{
-	return (this->_errMsg.c_str());
-}
-	/*	END OF EXCEPTIONS	*/
