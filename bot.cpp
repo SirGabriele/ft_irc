@@ -76,34 +76,26 @@ std::string passwordGenerator(int length)
 std::string	processInput(const std::string &input)
 {
 	std::istringstream	iss(input);
+	std::string			message;
 	std::string			username;
 	std::string			command;
 	std::string			value;
 	int					valueInt;
 
-	iss >> username;
-
-	std::string			message = "PRIVMSG " + username + " :";
-
-	iss.ignore(std::numeric_limits<std::streamsize>::max(), ':');
-	if (iss.eof() == true)
-		message += "Usage: /msg passBot :generate <value>\n";
-
-	iss >> command;
-	if (iss.eof() == true || command != "generate")
+	iss >> username >> command >> value;
+	message = "PRIVMSG " + username + " :";
+	if (iss.eof() == false || command.empty() == true || value.empty() == true
+		|| (command.empty() == false && command.compare(":generate") != 0))
 	{
-		message += "I'm sorry, the only command I know is 'generate <password length>'\n";
+		message += "Usage: /msg passBot :generate <value>\n";
 		return (message);
 	}
+	valueInt = std::atoi(value.c_str());
+	if (value.find_first_not_of("0123456789") != std::string::npos
+			|| value.length() > 2 || valueInt <= 0 || valueInt > 50)
+		message += "Password length must be numeric and between 1 and 50\n";
 	else
-	{
-		iss >> value;
-		valueInt = std::atoi(value.c_str());
-		if (value.find_first_not_of("0123456789") != std::string::npos || value.length() > 2 || valueInt <= 0 || valueInt > 50)
-			message += "Password length must be numeric and between 1 and 50\n";
-		else
-			message += passwordGenerator(valueInt);
-	}
+		message += passwordGenerator(valueInt);
 	return (message);
 }
 
@@ -133,7 +125,7 @@ void	serverCommunication(int sockfd)
 			return ;
 		}
 		else
-		buf[ret] = '\0';
+			buf[ret] = '\0';
 		password = processInput(buf);
 		ret = write(sockfd, password.c_str(), password.length());
 		if (ret == -1)

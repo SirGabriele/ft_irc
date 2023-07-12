@@ -1,130 +1,124 @@
-!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
-!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
-!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
-!_TAG_PROGRAM_NAME	Exuberant Ctags	//
-!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
-Channel	Channel.cpp	/^Channel::Channel(const Channel &src)$/;"	f	class:Channel
-Channel	Channel.cpp	/^Channel::Channel(const std::string &name, const std::string &creator): _name(name), _password(""), _topic(""), _modes(0), _userLimit(0)$/;"	f	class:Channel
-Channel	Channel.cpp	/^Channel::Channel(void)$/;"	f	class:Channel
-Client	Client.cpp	/^Client::Client(const Client &src)$/;"	f	class:Client
-Client	Client.cpp	/^Client::Client(void): _username(false, ""), _nickname(false, ""), _password(false), _authentification(false), _input(""), _socket(0)$/;"	f	class:Client
-Error	Server.cpp	/^Server::Error::Error(const std::string &str) throw(): _errMsg(str)$/;"	f	class:Server::Error
-Server	Server.cpp	/^Server::Server(const Server &src)$/;"	f	class:Server
-Server	Server.cpp	/^Server::Server(void): _password(""), _socket(0), _port(0), _maxFd(0)$/;"	f	class:Server
-_acceptNewClient	Server.cpp	/^void	Server::_acceptNewClient(void)$/;"	f	class:Server
-_addOptionToChannel	commands/addOptionToChannel.cpp	/^void	Channel::_addOptionToChannel(std::istringstream & iss, const std::string & option, Client const & client)$/;"	f	class:Channel
-_bindSocket	Server.cpp	/^void	Server::_bindSocket(void) const$/;"	f	class:Server
-_closeSocket	Server.cpp	/^void	Server::_closeSocket(void) const$/;"	f	class:Server
-_createChannel	commands/join.cpp	/^void	Server::_createChannel(const std::string &channel, Client &client)$/;"	f	class:Server
-_createSocket	Server.cpp	/^void	Server::_createSocket(void)$/;"	f	class:Server
-_deleteOptionFromChannel	commands/deleteOptionFromChannel.cpp	/^void	Channel::_deleteOptionFromChannel(std::istringstream & iss, std::string & option, Client const & client)$/;"	f	class:Channel
-_detectCommand	detectCommand.cpp	/^void	Server::_detectCommand(Client & client)$/;"	f	class:Server
-_disconnectClientFromAllChannels	commands/quit.cpp	/^void	Server::_disconnectClientFromAllChannels(const std::vector<std::string> &joinedChannelsNames, const std::string &username)$/;"	f	class:Server
-_displayAllClients	Server.cpp	/^void	Server::_displayAllClients(std::istringstream &iss, const Client &client) const$/;"	f	class:Server
-_displayChannels	commands/displayChannels.cpp	/^void	Server::_displayChannels(std::istringstream &iss, const Client &client) const$/;"	f	class:Server
-_displayClient	Server.cpp	/^void	Server::_displayClient(const Client &client, const std::string &username) const$/;"	f	class:Server
-_doesChannelExist	commands/part.cpp	/^bool	Server::_doesChannelExist(const Client &client, const std::string &channelName) const$/;"	f	class:Server
-_extractString	commands/privmsg.cpp	/^std::string	Server::_extractString(std::istringstream &iss) const$/;"	f	class:Server
-_getClientIndex	Server.cpp	/^int	Server::_getClientIndex(const std::string &username) const$/;"	f	class:Server
-_getClientIndex	Server.cpp	/^int	Server::_getClientIndex(int socket) const$/;"	f	class:Server
-_initSinValues	Client.cpp	/^void	Client::_initSinValues(void)$/;"	f	class:Client
-_initSinValues	Server.cpp	/^void	Server::_initSinValues(void)$/;"	f	class:Server
-_invite	commands/invite.cpp	/^void	Server::_invite(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_isChannelNameValid	commands/join.cpp	/^bool	Server::_isChannelNameValid(const std::string &channel, const Client &client) const$/;"	f	class:Server
-_isLimitValid	commands/addOptionToChannel.cpp	/^bool	Channel::_isLimitValid(std::string const & limitStr)$/;"	f	class:Channel
-_isUsernameAlreadyTaken	commands/user.cpp	/^bool	Server::_isUsernameAlreadyTaken(const std::string &username) const$/;"	f	class:Server
-_join	commands/join.cpp	/^void	Server::_join(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_kick	commands/kick.cpp	/^void	Server::_kick(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_kickUserFromChannel	commands/kick.cpp	/^void	Server::_kickUserFromChannel(Client &kicked, Channel &channel, const std::string &reason)$/;"	f	class:Server
-_listenSocket	Server.cpp	/^void	Server::_listenSocket(void) const$/;"	f	class:Server
-_mode	commands/mode.cpp	/^void	Server::_mode(std::istringstream & iss, Client const & client)$/;"	f	class:Server
-_nick	commands/nick.cpp	/^void	Server::_nick(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_part	commands/part.cpp	/^void	Server::_part(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_pass	commands/pass.cpp	/^void	Server::_pass(std::istringstream & iss, Client & client)$/;"	f	class:Server
-_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::istringstream & iss, const Client & client) const$/;"	f	class:Server
-_processInput	Server.cpp	/^void	Server::_processInput(int socket, const char *buffer)$/;"	f	class:Server
-_quit	commands/quit.cpp	/^void	Server::_quit(Client &client)$/;"	f	class:Server
-_receiveData	run.cpp	/^void	Server::_receiveData(int socket)$/;"	f	class:Server
-_removeClientFromChannel	commands/part.cpp	/^void	Server::_removeClientFromChannel(Client &client, Channel &channel)$/;"	f	class:Server
-_sendMessageToChannel	Server.cpp	/^void	Server::_sendMessageToChannel(const Channel &channel, const std::string &message) const$/;"	f	class:Server
-_sendMessageToClient	Channel.cpp	/^void	Channel::_sendMessageToClient(const Client &client, const std::string &message) const$/;"	f	class:Channel
-_sendMessageToClient	Server.cpp	/^void	Server::_sendMessageToClient(const Client &client, const std::string &message) const$/;"	f	class:Server
-_sendToBot	commands/privmsg.cpp	/^void	Server::_sendToBot(std::istringstream &iss, const Client & client) const$/;"	f	class:Server
-_sendToChannel	commands/privmsg.cpp	/^void	Server::_sendToChannel(std::istringstream &iss, const std::string &channelName, const Client & client) const$/;"	f	class:Server
-_sendToClient	commands/privmsg.cpp	/^void	Server::_sendToClient(std::istringstream &iss, const std::string &username, const Client & client) const$/;"	f	class:Server
-_setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/;"	f	class:Server
-_setOperatorChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setOperatorChannel(std::istringstream & iss, Client const & client)$/;"	f	class:Channel
-_setPasswordChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setPasswordChannel(std::istringstream & iss, Client const & client)$/;"	f	class:Channel
-_setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/;"	f	class:Server
-_setUserLimitChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setUserLimitChannel(std::istringstream & iss, Client const & client)$/;"	f	class:Channel
-_topic	commands/topic.cpp	/^void	Server::_topic(std::istringstream & iss, Client const & client)$/;"	f	class:Server
-_unsetOperatorChannel	commands/deleteOptionFromChannel.cpp	/^void	Channel::_unsetOperatorChannel(std::istringstream & iss, Client const & client)$/;"	f	class:Channel
-_user	commands/user.cpp	/^void	Server::_user(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_userHexchat	commands/user.cpp	/^void	Server::_userHexchat(std::istringstream &iss, Client &client)$/;"	f	class:Server
-_whois	commands/whois.cpp	/^void	Server::_whois(std::istringstream &iss, const Client &client) const$/;"	f	class:Server
-addInvitedUser	Channel.cpp	/^void	Channel::addInvitedUser(const std::string &username)$/;"	f	class:Channel
-addJoinedChannelName	Client.cpp	/^void	Client::addJoinedChannelName(const std::string &channel)$/;"	f	class:Client
-addNewUsername	Channel.cpp	/^void	Channel::addNewUsername(const std::string &username)$/;"	f	class:Channel
-addOp	Channel.cpp	/^void	Channel::addOp(const std::string &username)$/;"	f	class:Channel
-clearJoinedChannelsNames	Client.cpp	/^void	Client::clearJoinedChannelsNames(void)$/;"	f	class:Client
-clearMemberNames	Channel.cpp	/^void	Channel::clearMemberNames(void)$/;"	f	class:Channel
-closeSocket	Client.cpp	/^void	Client::closeSocket(void) const$/;"	f	class:Client
-completeInput	Client.cpp	/^void	Client::completeInput(const char *toAdd)$/;"	f	class:Client
-connectToServer	bot.cpp	/^void	connectToServer(int port)$/;"	f
-createSocket	bot.cpp	/^int	createSocket(void)$/;"	f
-deleteInvitedUser	Channel.cpp	/^void	Channel::deleteInvitedUser(const std::string &username)$/;"	f	class:Channel
-deleteOp	Channel.cpp	/^void	Channel::deleteOp(const std::string &username)$/;"	f	class:Channel
-deleteUsername	Channel.cpp	/^void	Channel::deleteUsername(const std::string &username)$/;"	f	class:Channel
-ft_strlen	bot.cpp	/^int	ft_strlen(char *buf)$/;"	f
-g_signal	bot.cpp	/^int	g_signal = 0;$/;"	v
-g_signal	main.cpp	/^int	g_signal = 0;$/;"	v
-getAuthentification	Client.cpp	/^bool				Client::getAuthentification(void) const { return (this->_authentification); }$/;"	f	class:Client
-getInput	Client.cpp	/^const std::string	&Client::getInput(void)	const	{return (this->_input);}$/;"	f	class:Client
-getJoinedChannelsNames	Client.cpp	/^const std::vector<std::string>	&Client::getJoinedChannelsNames(void) const	{return (this->_joinedChannelsNames);}$/;"	f	class:Client
-getMemberNames	Channel.cpp	/^const std::vector<std::string>	&Channel::getMemberNames(void) const	{return (this->_memberNames);}$/;"	f	class:Channel
-getName	Channel.cpp	/^const std::string	&Channel::getName(void) const	{return (this->_name);}$/;"	f	class:Channel
-getNbMembers	Channel.cpp	/^int	Channel::getNbMembers(void) const	{return (_memberNames.size());}$/;"	f	class:Channel
-getNickname	Client.cpp	/^const std::pair<bool, std::string>	&Client::getNickname(void) const	{return (this->_nickname);}$/;"	f	class:Client
-getOps	Channel.cpp	/^const std::vector<std::string>	&Channel::getOps(void) const	{return (this->_allOps);}$/;"	f	class:Channel
-getPassword	Channel.cpp	/^const std::string	&Channel::getPassword(void) const	{return (this->_password);}$/;"	f	class:Channel
-getPassword	Client.cpp	/^bool				Client::getPassword(void) const	{return (this->_password);}$/;"	f	class:Client
-getPort	bot.cpp	/^int	getPort(std::string port)$/;"	f
-getSin	Client.cpp	/^struct sockaddr_in	Client::getSin(void) const	{return (this->_sin);}$/;"	f	class:Client
-getSocket	Client.cpp	/^int	Client::getSocket(void) const	{return (this->_socket);}$/;"	f	class:Client
-getSocket	Server.cpp	/^int	Server::getSocket(void) const$/;"	f	class:Server
-getTopic	Channel.cpp	/^const std::string	&Channel::getTopic(void) const	{return (this->_topic);}$/;"	f	class:Channel
-getUserLimit	Channel.cpp	/^int	Channel::getUserLimit(void) const	{return (_userLimit);}$/;"	f	class:Channel
-getUsername	Client.cpp	/^const std::pair<bool, std::string>	&Client::getUsername(void) const	{return (this->_username);}$/;"	f	class:Client
-handleSignal	bot.cpp	/^void	handleSignal(int sig)$/;"	f
-handleSignal	main.cpp	/^void	handleSignal(int sig)$/;"	f
-isBitSet	Channel.cpp	/^bool	Channel::isBitSet(t_modes option) const$/;"	f	class:Channel
-isClientInvited	Channel.cpp	/^bool	Channel::isClientInvited(const std::string &username) const$/;"	f	class:Channel
-isClientMember	Channel.cpp	/^bool	Channel::isClientMember(const std::string &username) const$/;"	f	class:Channel
-isClientOp	Channel.cpp	/^bool	Channel::isClientOp(const std::string &username) const$/;"	f	class:Channel
-isInChannel	Client.cpp	/^bool	Client::isInChannel(const std::string &name) const$/;"	f	class:Client
-isPortValid	main.cpp	/^int	isPortValid(std::string &portStr)$/;"	f
-leaveChannel	Client.cpp	/^void	Client::leaveChannel(const std::string &channel)$/;"	f	class:Client
-main	bot.cpp	/^int	main(int argc, char **argv)$/;"	f
-main	main.cpp	/^int	main(int argc, char **argv)$/;"	f
-manageOption	Channel.cpp	/^void	Channel::manageOption(std::istringstream & iss, Client const & client)$/;"	f	class:Channel
-manageTopicChannel	commands/topic.cpp	/^void	Channel::manageTopicChannel(std::istringstream & iss, Client const & client)$/;"	f	class:Channel
-operator =	Channel.cpp	/^Channel	&Channel::operator=(const Channel &src)$/;"	f	class:Channel
-operator =	Client.cpp	/^Client	&Client::operator=(const Client &src)$/;"	f	class:Client
-operator =	Server.cpp	/^Server	&Server::operator=(const Server &src)$/;"	f	class:Server
-passwordGenerator	bot.cpp	/^std::string passwordGenerator(int length)$/;"	f
-processInput	bot.cpp	/^std::string	processInput(const std::string &input)$/;"	f
-resetInput	Client.cpp	/^void	Client::resetInput(void)$/;"	f	class:Client
-run	run.cpp	/^bool	Server::run(void)$/;"	f	class:Server
-serverCommunication	bot.cpp	/^void	serverCommunication(int sockfd)$/;"	f
-setAuthentification	Client.cpp	/^void	Client::setAuthentification(bool status)$/;"	f	class:Client
-setNickname	Client.cpp	/^void	Client::setNickname(const std::string &nickname)$/;"	f	class:Client
-setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_password = status;}$/;"	f	class:Client
-setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket = socket;}$/;"	f	class:Client
-setUsername	Client.cpp	/^void	Client::setUsername(const std::string &username)$/;"	f	class:Client
-start	Server.cpp	/^void	Server::start(int port, std::string &password)$/;"	f	class:Server
-what	Server.cpp	/^const char	*Server::Error::what(void) const throw()$/;"	f	class:Server::Error
-~Channel	Channel.cpp	/^Channel::~Channel(void)$/;"	f	class:Channel
-~Client	Client.cpp	/^Client::~Client(void)$/;"	f	class:Client
-~Error	Server.cpp	/^Server::Error::~Error(void) throw()$/;"	f	class:Server::Error
-~Server	Server.cpp	/^Server::~Server(void)$/;"	f	class:Server
+Channel	Channel.cpp	/^Channel::Channel(void)$/
+Channel	Channel.cpp	/^Channel::Channel(const Channel &src)$/
+Channel::Channel	Channel.cpp	/^Channel::Channel(const std::string &name, const st/
+Client	Client.cpp	/^Client::Client(const Client &src)$/
+Client::Client	Client.cpp	/^Client::Client(void): _username(false, ""), _nickn/
+Mbot.cpp	bot.cpp	/^int	main(int argc, char **argv)$/
+Mmain.cpp	main.cpp	/^int	main(int argc, char **argv)$/
+Server	Server.cpp	/^Server::Server(const Server &src)$/
+Server::Error::Error	Server.cpp	/^Server::Error::Error(const std::string &str) throw/
+Server::Server	Server.cpp	/^Server::Server(void): _password(""), _socket(0), _/
+_acceptNewClient	Server.cpp	/^void	Server::_acceptNewClient(void)$/
+_addOptionToChannel	commands/addOptionToChannel.cpp	/^void	Channel::_addOptionToChannel(std::istringstre/
+_bindSocket	Server.cpp	/^void	Server::_bindSocket(void) const$/
+_closeSocket	Server.cpp	/^void	Server::_closeSocket(void) const$/
+_createChannel	commands/join.cpp	/^void	Server::_createChannel(const std::string &cha/
+_createSocket	Server.cpp	/^void	Server::_createSocket(void)$/
+_deleteOptionFromChannel	commands/deleteOptionFromChannel.cpp	/^void	Channel::_deleteOptionFromChannel(std::istrin/
+_detectCommand	detectCommand.cpp	/^void	Server::_detectCommand(Client & client)$/
+_disconnectClientFromAllChannels	commands/quit.cpp	/^void	Server::_disconnectClientFromAllChannels(cons/
+_displayAllClients	Server.cpp	/^void	Server::_displayAllClients(std::istringstream/
+_displayChannels	commands/displayChannels.cpp	/^void	Server::_displayChannels(std::istringstream &/
+_displayClient	Server.cpp	/^void	Server::_displayClient(const Client &client, /
+_doesChannelExist	commands/part.cpp	/^bool	Server::_doesChannelExist(const Client &clien/
+_extractString	commands/privmsg.cpp	/^std::string	Server::_extractString(std::istringstr/
+_getClientIndex	Server.cpp	/^int	Server::_getClientIndex(int socket) const$/
+_getClientIndex	Server.cpp	/^int	Server::_getClientIndex(const std::string &use/
+_initSinValues	Server.cpp	/^void	Server::_initSinValues(void)$/
+_initSinValues	Client.cpp	/^void	Client::_initSinValues(void)$/
+_invite	commands/invite.cpp	/^void	Server::_invite(std::istringstream &iss, Clie/
+_isChannelNameValid	commands/join.cpp	/^bool	Server::_isChannelNameValid(const std::string/
+_isLimitValid	commands/addOptionToChannel.cpp	/^bool	Channel::_isLimitValid(std::string const & li/
+_isUsernameAlreadyTaken	commands/user.cpp	/^bool	Server::_isUsernameAlreadyTaken(const std::st/
+_join	commands/join.cpp	/^void	Server::_join(std::istringstream &iss, Client/
+_kick	commands/kick.cpp	/^void	Server::_kick(std::istringstream &iss, Client/
+_kickUserFromChannel	commands/kick.cpp	/^void	Server::_kickUserFromChannel(Client &kicked, /
+_listenSocket	Server.cpp	/^void	Server::_listenSocket(void) const$/
+_mode	commands/mode.cpp	/^void	Server::_mode(std::istringstream & iss, Clien/
+_nick	commands/nick.cpp	/^void	Server::_nick(std::istringstream &iss, Client/
+_part	commands/part.cpp	/^void	Server::_part(std::istringstream &iss, Client/
+_pass	commands/pass.cpp	/^void	Server::_pass(std::istringstream & iss, Clien/
+_privmsg	commands/privmsg.cpp	/^void	Server::_privmsg(std::istringstream & iss, co/
+_processInput	Server.cpp	/^void	Server::_processInput(int socket, const char /
+_quit	commands/quit.cpp	/^void	Server::_quit(Client &client)$/
+_receiveData	run.cpp	/^void	Server::_receiveData(int socket)$/
+_removeClientFromChannel	commands/part.cpp	/^void	Server::_removeClientFromChannel(Client &clie/
+_sendMessageToChannel	Server.cpp	/^void	Server::_sendMessageToChannel(const Channel &/
+_sendMessageToClient	Server.cpp	/^void	Server::_sendMessageToClient(const Client &cl/
+_sendMessageToClient	Channel.cpp	/^void	Channel::_sendMessageToClient(const Client &c/
+_sendToBot	commands/privmsg.cpp	/^void	Server::_sendToBot(std::istringstream &iss, c/
+_sendToChannel	commands/privmsg.cpp	/^void	Server::_sendToChannel(std::istringstream &is/
+_sendToClient	commands/privmsg.cpp	/^void	Server::_sendToClient(std::istringstream &iss/
+_setMaxFd	Server.cpp	/^void	Server::_setMaxFd(void)$/
+_setOperatorChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setOperatorChannel(std::istringstre/
+_setPasswordChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setPasswordChannel(std::istringstre/
+_setSockOptReuseAddr	Server.cpp	/^void	Server::_setSockOptReuseAddr(void) const$/
+_setUserLimitChannel	commands/addOptionToChannel.cpp	/^void	Channel::_setUserLimitChannel(std::istringstr/
+_topic	commands/topic.cpp	/^void	Server::_topic(std::istringstream & iss, Clie/
+_unsetOperatorChannel	commands/deleteOptionFromChannel.cpp	/^void	Channel::_unsetOperatorChannel(std::istringst/
+_user	commands/user.cpp	/^void	Server::_user(std::istringstream &iss, Client/
+_userHexchat	commands/user.cpp	/^void	Server::_userHexchat(std::istringstream &iss,/
+_whois	commands/whois.cpp	/^void	Server::_whois(std::istringstream &iss, const/
+addInvitedUser	Channel.cpp	/^void	Channel::addInvitedUser(const std::string &us/
+addJoinedChannelName	Client.cpp	/^void	Client::addJoinedChannelName(const std::strin/
+addNewUsername	Channel.cpp	/^void	Channel::addNewUsername(const std::string &us/
+addOp	Channel.cpp	/^void	Channel::addOp(const std::string &username)$/
+clearJoinedChannelsNames	Client.cpp	/^void	Client::clearJoinedChannelsNames(void)$/
+clearMemberNames	Channel.cpp	/^void	Channel::clearMemberNames(void)$/
+closeSocket	Client.cpp	/^void	Client::closeSocket(void) const$/
+completeInput	Client.cpp	/^void	Client::completeInput(const char *toAdd)$/
+connectToServer	bot.cpp	/^void	connectToServer(int port)$/
+createSocket	bot.cpp	/^int	createSocket(void)$/
+deleteInvitedUser	Channel.cpp	/^void	Channel::deleteInvitedUser(const std::string /
+deleteOp	Channel.cpp	/^void	Channel::deleteOp(const std::string &username/
+deleteUsername	Channel.cpp	/^void	Channel::deleteUsername(const std::string &us/
+ft_strlen	bot.cpp	/^int	ft_strlen(char *buf)$/
+g_signal	bot.cpp	12
+g_signal	main.cpp	9
+getAuthentification	Client.cpp	/^bool				Client::getAuthentification(void) const { /
+getInput	Client.cpp	/^const std::string	&Client::getInput(void)	const	{r/
+getJoinedChannelsNames	Client.cpp	/^const std::vector<std::string>	&Client::getJoinedC/
+getMemberNames	Channel.cpp	/^const std::vector<std::string>	&Channel::getMember/
+getName	Channel.cpp	/^const std::string	&Channel::getName(void) const	{r/
+getNbMembers	Channel.cpp	/^int	Channel::getNbMembers(void) const	{return (_me/
+getNickname	Client.cpp	/^const std::pair<bool, std::string>	&Client::getNic/
+getOps	Channel.cpp	/^const std::vector<std::string>	&Channel::getOps(vo/
+getPassword	Client.cpp	/^bool				Client::getPassword(void) const	{return (t/
+getPassword	Channel.cpp	/^const std::string	&Channel::getPassword(void) cons/
+getPort	bot.cpp	/^int	getPort(std::string port)$/
+getSin	Client.cpp	/^struct sockaddr_in	Client::getSin(void) const	{ret/
+getSocket	Server.cpp	/^int	Server::getSocket(void) const$/
+getSocket	Client.cpp	/^int	Client::getSocket(void) const	{return (this->_/
+getTopic	Channel.cpp	/^const std::string	&Channel::getTopic(void) const	{/
+getUserLimit	Channel.cpp	/^int	Channel::getUserLimit(void) const	{return (_us/
+getUsername	Client.cpp	/^const std::pair<bool, std::string>	&Client::getUse/
+handleSignal	bot.cpp	/^void	handleSignal(int sig)$/
+handleSignal	main.cpp	/^void	handleSignal(int sig)$/
+isBitSet	Channel.cpp	/^bool	Channel::isBitSet(t_modes option) const$/
+isClientInvited	Channel.cpp	/^bool	Channel::isClientInvited(const std::string &u/
+isClientMember	Channel.cpp	/^bool	Channel::isClientMember(const std::string &us/
+isClientOp	Channel.cpp	/^bool	Channel::isClientOp(const std::string &userna/
+isInChannel	Client.cpp	/^bool	Client::isInChannel(const std::string &name) /
+isPortValid	main.cpp	/^int	isPortValid(std::string &portStr)$/
+leaveChannel	Client.cpp	/^void	Client::leaveChannel(const std::string &chann/
+manageOption	Channel.cpp	/^void	Channel::manageOption(std::istringstream & is/
+manageTopicChannel	commands/topic.cpp	/^void	Channel::manageTopicChannel(std::istringstrea/
+operator=	Server.cpp	/^Server	&Server::operator=(const Server &src)$/
+operator=	Client.cpp	/^Client	&Client::operator=(const Client &src)$/
+operator=	Channel.cpp	/^Channel	&Channel::operator=(const Channel &src)$/
+passwordGenerator	bot.cpp	/^std::string passwordGenerator(int length)$/
+processInput	bot.cpp	/^std::string	processInput(const std::string &input)/
+resetInput	Client.cpp	/^void	Client::resetInput(void)$/
+run	run.cpp	/^bool	Server::run(void)$/
+serverCommunication	bot.cpp	/^void	serverCommunication(int sockfd)$/
+setAuthentification	Client.cpp	/^void	Client::setAuthentification(bool status)$/
+setNickname	Client.cpp	/^void	Client::setNickname(const std::string &nickna/
+setPassword	Client.cpp	/^void	Client::setPassword(bool status)	{this->_pass/
+setSocket	Client.cpp	/^void	Client::setSocket(int socket)	{this->_socket /
+setUsername	Client.cpp	/^void	Client::setUsername(const std::string &userna/
+start	Server.cpp	/^void	Server::start(int port, std::string &password/
+what	Server.cpp	/^const char	*Server::Error::what(void) const throw(/
+~Channel	Channel.cpp	/^Channel::~Channel(void)$/
+~Client	Client.cpp	/^Client::~Client(void)$/
+~Error	Server.cpp	/^Server::Error::~Error(void) throw()$/
+~Server	Server.cpp	/^Server::~Server(void)$/

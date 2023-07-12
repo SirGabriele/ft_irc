@@ -14,20 +14,17 @@ void	Channel::manageTopicChannel(std::istringstream & iss, Client const & client
 	if (iss.eof() == true) // displaying the topic
 	{
 		if (_topic.empty() == true)
-			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + " The topic has not been set yet\n");
+			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + \
+				" The topic has not been set yet\n");
 		else
-			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + " TOPIC: " + _topic + "\n");
+			_sendMessageToClient(client, HEX_BOLD + "[" + _name + "]" + HEX_RESET + \
+				" TOPIC: " + _topic + "\n");
 	}
 	else // modifying the topic
 	{
 		if (subject[0] != ':')
 		{
 			_sendMessageToClient(client, HEX_INFO + " Usage: /topic <#channel> :<new subject>\n");
-			return ;
-		}
-		else if (isClientOp(client.getUsername().second) == false)
-		{
-			_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to update the topic\n");
 			return ;
 		}
 		std::getline(iss, leftovers);
@@ -53,8 +50,9 @@ void	Server::_topic(std::istringstream & iss, Client const & client)
 			_sendMessageToClient(client, HEX_INFO + " The channel '" + channelStr + "' does not exist\n");
 		else if (it->second.isClientMember(client.getUsername().second) == false)
 			_sendMessageToClient(client, HEX_INFO + " You are not part of '" + channelStr + "'\n");
-		else if (it->second.isBitSet(TOPIC) == false)
-			_sendMessageToClient(client, HEX_INFO + " The TOPIC mode is not activated\n");
+		else if (it->second.isBitSet(TOPIC) == true
+				&& it->second.isClientOp(client.getUsername().second) == false)
+			_sendMessageToClient(client, HEX_INFO + " You must be operator of the channel to update the topic\n");
 		else
 			it->second.manageTopicChannel(iss, client);
 	}
