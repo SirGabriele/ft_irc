@@ -95,8 +95,9 @@ CFLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 all: $(NAME)
 
-bonus: $(NAME_BOT)
+bonus:
 	@make BONUS=1
+	@make $(NAME_BOT) BONUS=1
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME)
