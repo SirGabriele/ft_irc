@@ -103,6 +103,7 @@ void	serverCommunication(int sockfd)
 {
 	std::string	password;
 	std::string servPass = "PASS Uz/}TGO$5vG<QW-2*Rr}=dkKs%[D38@$4j#i3m)O!PlRC5!hgs\n";
+	std::string	bufStr;
 	char		buf[1024];
 	int			ret;
 
@@ -126,7 +127,13 @@ void	serverCommunication(int sockfd)
 		}
 		else
 			buf[ret] = '\0';
-		password = processInput(buf);
+		bufStr = buf;
+		if (bufStr == "\002[INFO]\017 passBot is already connected\n")
+		{
+			std::cout << "Someone stole my identify, I am getting out of here" << std::endl;
+			return ;
+		}
+		password = processInput(bufStr);
 		ret = write(sockfd, password.c_str(), password.length());
 		if (ret == -1)
 		{
