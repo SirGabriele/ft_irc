@@ -67,7 +67,6 @@ void	Channel::_deleteOptionFromChannel(std::istringstream & iss, std::string & o
 	}
 	else if (option[1] == 't')
 	{
-		_topic.clear();
 		 _modes &= 0 << TOPIC;
 		_sendMessageToClient(client, HEX_INFO + " You successfully turned the topic mode off\n");
 	}
