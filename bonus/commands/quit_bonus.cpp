@@ -21,6 +21,8 @@ void	Server::_quit(Client &client)
 	int	i = _getClientIndex(client.getUsername().second);
 
 	std::cout << "Client '" << client.getUsername().second << "' has been disconnected from the server" << std::endl;
+	if (client.getUsername().second == "passBot")
+		_botConnected = false;
 	this->_disconnectClientFromAllChannels(client.getJoinedChannelsNames(), client.getUsername().second);
 	FD_CLR(client.getSocket(), &this->_readfds);
 	client.closeSocket();
