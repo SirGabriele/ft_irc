@@ -27,7 +27,7 @@ void	Server::_sendToBot(std::istringstream &iss, const Client & client) const
 	}
 	iss.ignore(1); //ignore the space after 'passBot <command> <value>'
 	std::getline(iss, message);
-	_sendMessageToClient(_allClients[i], client.getUsername().second + ' ' + message);
+	_sendMessageToClient(_allClients[i], client.getUsername().second + ' ' + message + '\n');
 }
 
 void	Server::_sendToClient(std::istringstream &iss, const std::string &username, const Client & client) const
