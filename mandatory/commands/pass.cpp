@@ -20,12 +20,7 @@ void	Server::_pass(std::istringstream & iss, Client & client)
 		_sendMessageToClient(client, HEX_INFO + " Correct password\n");
 	}
 	else if (password == BOT_PASS)
-	{
-		client.setPassword(true);
-		client.setNickname("passBot");
-		client.setUsername("passBot");
-		client.setAuthentification(true);
-	}
+		_quit(client);
 	else
 		_sendMessageToClient(client, HEX_INFO + " Incorrect password\n");
 }

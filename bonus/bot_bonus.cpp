@@ -80,11 +80,12 @@ std::string	processInput(const std::string &input)
 	std::string			username;
 	std::string			command;
 	std::string			value;
+	std::string			garbage;
 	int					valueInt;
 
-	iss >> username >> command >> value;
+	iss >> username >> command >> value >> garbage;
 	message = "PRIVMSG " + username + " :";
-	if (iss.eof() == false || command.empty() == true || value.empty() == true
+	if (garbage.empty() == false || command.empty() == true || value.empty() == true
 		|| (command.empty() == false && command.compare(":generate") != 0))
 	{
 		message += "Usage: /msg passBot :generate <value>\n";
@@ -122,7 +123,7 @@ void	serverCommunication(int sockfd)
 		}
 		else if (ret == 0)
 		{
-			std::cerr << "Server has been shutdown" << std::endl;
+			std::cerr << "Lost connection with server" << std::endl;
 			return ;
 		}
 		else
